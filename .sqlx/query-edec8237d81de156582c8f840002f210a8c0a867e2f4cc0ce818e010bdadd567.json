@@ -1,0 +1,54 @@
+{
+  "db_name": "MySQL",
+  "query": "\n        SELECT items.id, items.name, items.price, items.stock\n        FROM items\n        JOIN categories ON categories.id = items.category_id\n        WHERE items.category_id = ?\n        AND   items.price      >= ?\n        ORDER BY items.created_at DESC LIMIT ?, ?\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": {
+          "type": "LongLong",
+          "flags": "NOT_NULL | PRIMARY_KEY | AUTO_INCREMENT",
+          "max_size": 20
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "max_size": 1020
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "price",
+        "type_info": {
+          "type": "NewDecimal",
+          "flags": "NOT_NULL",
+          "max_size": 14
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "stock",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL",
+          "max_size": 11
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "edec8237d81de156582c8f840002f210a8c0a867e2f4cc0ce818e010bdadd567"
+}

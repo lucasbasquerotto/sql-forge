@@ -1,0 +1,24 @@
+{
+  "db_name": "MySQL",
+  "query": "\n        SELECT COUNT(*) AS total\n        FROM items\n        \n        WHERE items.category_id = ?\n        AND   items.price      >= ?\n        \n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "total",
+        "type_info": {
+          "type": "LongLong",
+          "flags": "NOT_NULL | BINARY",
+          "max_size": 21
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "79e50e4b3cb50411df866c3d48c730bec1729e4c6ceb0cdcb34ccac589b7fe7f"
+}

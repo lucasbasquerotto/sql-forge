@@ -1,0 +1,34 @@
+{
+  "db_name": "MySQL",
+  "query": "\n        SELECT t1.id AS field_1, t1.name AS field_2\n        FROM users t1\n        \n        WHERE 1 = 1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "field_1",
+        "type_info": {
+          "type": "LongLong",
+          "flags": "NOT_NULL | PRIMARY_KEY | AUTO_INCREMENT",
+          "max_size": 20
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "field_2",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "max_size": 1020
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "fbe1e07d03116f04a7b5456f7b44c13a65fe7965b8af2cfa30d4d8ce702193c9"
+}

@@ -1,0 +1,81 @@
+name: sql-forge CI
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+      - '.gitignore'
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - '.gitignore'
+
+env:
+  CARGO_TERM_COLOR: always
+  DATABASE_URL: mysql://root:root@127.0.0.1:3306/sql_forge_test
+  SQLX_OFFLINE: "false"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: sql_forge_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rust Cache
+        uses: swatinem/rust-cache@v2
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            default-libmysqlclient-dev pkg-config
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Install sqlx-cli
+        run: |
+          if ! command -v sqlx &> /dev/null; then
+            cargo install sqlx-cli --no-default-features --features native-tls,mysql
+          fi
+
+      - name: cargo check
+        run: cargo check --tests
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: cargo fmt
+        run: cargo fmt --all -- --check
+
+      - name: cargo clippy
+        run: cargo clippy --tests -- -D warnings
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: cargo test
+        run: cargo test
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: Verify that .sqlx/ files are up to date
+        run: cargo sqlx prepare --check -- --tests
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}

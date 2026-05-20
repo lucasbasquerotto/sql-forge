@@ -3,6 +3,14 @@ name = "sql-forge"
 version = "0.1.0"
 edition = "2021"
 
+[package.metadata.sql_forge]
+db = "sqlx::MySql"
+
 [dependencies]
 sql-forge-macro = { path = "./crates/sql-forge-macro" }
 sql-forge-trait = { path = "./crates/sql-forge-trait" }
+
+[dev-dependencies]
+rust_decimal = "1.41"
+sqlx = { version = "0.8", features = ["mysql", "runtime-tokio", "rust_decimal"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }

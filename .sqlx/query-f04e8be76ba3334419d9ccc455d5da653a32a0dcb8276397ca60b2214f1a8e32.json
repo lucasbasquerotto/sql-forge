@@ -1,0 +1,24 @@
+{
+  "db_name": "MySQL",
+  "query": "\n        SELECT GROUP_CONCAT(items.name ORDER BY items.id)\n        FROM items\n        WHERE items.category_id = ?\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "GROUP_CONCAT(items.name ORDER BY items.id)",
+        "type_info": {
+          "type": "LongBlob",
+          "flags": "",
+          "max_size": 16384
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "f04e8be76ba3334419d9ccc455d5da653a32a0dcb8276397ca60b2214f1a8e32"
+}
