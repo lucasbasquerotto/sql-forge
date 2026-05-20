@@ -1,0 +1,8 @@
+[package]
+name = "sql-forge"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sql-forge-macro = { path = "./crates/sql-forge-macro" }
+sql-forge-trait = { path = "./crates/sql-forge-trait" }
