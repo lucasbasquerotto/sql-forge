@@ -29,10 +29,12 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd "mysqladmin ping -h 127.0.0.1"
+          --health-cmd "mysql -h127.0.0.1 -uroot -proot sql_forge_test -e 'SELECT 1 FROM users LIMIT 1'"
           --health-interval 5s
           --health-timeout 3s
           --health-retries 15
+        volumes:
+          - ${{ github.workspace }}/tests/init.sql:/docker-entrypoint-initdb.d/init.sql
 
     steps:
       - uses: actions/checkout@v4
