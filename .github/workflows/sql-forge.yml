@@ -28,13 +28,6 @@ jobs:
           MYSQL_DATABASE: sql_forge_test
         ports:
           - 3306:3306
-        options: >-
-          --health-cmd "mysql -h127.0.0.1 -uroot -proot sql_forge_test -e 'SELECT 1 FROM users LIMIT 1'"
-          --health-interval 5s
-          --health-timeout 3s
-          --health-retries 15
-        volumes:
-          - ${{ github.workspace }}/tests/init.sql:/docker-entrypoint-initdb.d/init.sql
 
     steps:
       - uses: actions/checkout@v4
@@ -46,12 +39,20 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            default-libmysqlclient-dev pkg-config
+            default-libmysqlclient-dev mysql-client pkg-config
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
+
+      - name: Wait for MySQL and init test database
+        run: |
+          until mysqladmin ping -h 127.0.0.1 -uroot -proot --silent; do
+            echo "waiting for mysql..."
+            sleep 2
+          done
+          mysql -h 127.0.0.1 -uroot -proot sql_forge_test < tests/init.sql
 
       - name: Install sqlx-cli
         run: |
