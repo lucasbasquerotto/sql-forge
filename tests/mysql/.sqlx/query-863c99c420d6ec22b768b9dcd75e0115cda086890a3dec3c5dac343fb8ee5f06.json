@@ -1,0 +1,24 @@
+{
+  "db_name": "MySQL",
+  "query": "\n        SELECT items.name\n        FROM items\n        WHERE items.category_id = ?\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "max_size": 1020
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "863c99c420d6ec22b768b9dcd75e0115cda086890a3dec3c5dac343fb8ee5f06"
+}

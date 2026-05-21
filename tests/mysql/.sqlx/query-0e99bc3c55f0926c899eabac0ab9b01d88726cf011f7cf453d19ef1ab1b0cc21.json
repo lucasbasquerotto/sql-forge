@@ -1,6 +1,6 @@
 {
   "db_name": "MySQL",
-  "query": "\n        SELECT\n            p.id,\n            p.name,\n            p.price,\n            p.stock,\n            p.category\n        FROM products p\n        WHERE 1 = 1\n         AND p.category = ? \n         AND p.price >= ? \n         AND p.price <= ? \n         AND p.stock > 0 \n         ORDER BY p.price ASC \n         LIMIT ?, ? \n        ",
+  "query": "\n        SELECT\n            p.id,\n            p.name,\n            p.price,\n            p.stock,\n            p.category\n        FROM products p\n        WHERE 1 = 1\n         AND p.category = ? \n         AND p.price >= ? \n         AND p.price <= ? \n         AND p.stock > 0 \n         ORDER BY p.price ASC \n         LIMIT ? OFFSET ? \n        ",
   "describe": {
     "columns": [
       {
@@ -60,5 +60,5 @@
       false
     ]
   },
-  "hash": "bc3f9e2976ab7e3c11c9880a4bd40a277691619b31cdae35577a41615f89f107"
+  "hash": "0e99bc3c55f0926c899eabac0ab9b01d88726cf011f7cf453d19ef1ab1b0cc21"
 }

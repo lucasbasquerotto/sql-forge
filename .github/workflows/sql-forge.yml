@@ -13,21 +13,35 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  DATABASE_URL: mysql://root:root@127.0.0.1:3306/sql_forge_test
   SQLX_OFFLINE: "false"
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        db-type: [mysql, postgres]
 
     services:
       mysql:
-        image: mysql:8.0
+        image: ${{ matrix.db-type == 'mysql' && 'mysql:8.0.45' || '' }}
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: sql_forge_test
         ports:
           - 3306:3306
+      postgres:
+        image: ${{ matrix.db-type == 'postgres' && 'postgres:18.4' || '' }}
+        env:
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: sql_forge_test
+        ports:
+          - 5432:5432
+
+    env:
+      DATABASE_URL: ${{ matrix.db-type == 'mysql' && 'mysql://root:root@127.0.0.1:3306/sql_forge_test' || matrix.db-type == 'postgres' && 'postgres://postgres:root@127.0.0.1:5432/sql_forge_test' || '' }}
+      SQL_FORGE_DB_TYPE: ${{ matrix.db-type == 'mysql' && 'sqlx::MySql' || 'sqlx::Postgres' }}
+      SQLX_ENV_DIR: tests/${{ matrix.db-type }}/.sqlx
 
     steps:
       - uses: actions/checkout@v4
@@ -39,46 +53,53 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            default-libmysqlclient-dev mysql-client pkg-config
+            default-libmysqlclient-dev \
+            libpq-dev \
+            mysql-client \
+            pkg-config \
+            postgresql-client
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
 
-      - name: Wait for MySQL and init test database
+      - name: Wait for database and init
         run: |
-          until mysqladmin ping -h 127.0.0.1 -uroot -proot --silent; do
-            echo "waiting for mysql..."
-            sleep 2
-          done
-          mysql -h 127.0.0.1 -uroot -proot sql_forge_test < tests/init.sql
+          if [ "${{ matrix.db-type }}" = "mysql" ]; then
+            until mysqladmin ping -h 127.0.0.1 -uroot -proot --silent; do
+              echo "waiting for mysql..."
+              sleep 2
+            done
+            mysql -h 127.0.0.1 -uroot -proot sql_forge_test < tests/init.sql
+          else
+            until pg_isready -h 127.0.0.1 -U postgres; do
+              echo "waiting for postgres..."
+              sleep 2
+            done
+            PGPASSWORD=root psql -h 127.0.0.1 -U postgres -d sql_forge_test -f tests/init-pg.sql
+          fi
+
+      - name: Copy .sqlx metadata for this database type
+        run: cp -r tests/${{ matrix.db-type }}/.sqlx .sqlx
 
       - name: Install sqlx-cli
         run: |
           if ! command -v sqlx &> /dev/null; then
-            cargo install sqlx-cli --no-default-features --features native-tls,mysql
+            cargo install sqlx-cli --no-default-features --features native-tls,mysql,postgres
           fi
 
       - name: cargo check
         run: cargo check --tests
-        env:
-          DATABASE_URL: ${{ env.DATABASE_URL }}
 
       - name: cargo fmt
         run: cargo fmt --all -- --check
 
       - name: cargo clippy
         run: cargo clippy --tests -- -D warnings
-        env:
-          DATABASE_URL: ${{ env.DATABASE_URL }}
 
       - name: cargo test
         run: cargo test
-        env:
-          DATABASE_URL: ${{ env.DATABASE_URL }}
 
       - name: Verify that .sqlx/ files are up to date
         run: cargo sqlx prepare --check -- --tests
-        env:
-          DATABASE_URL: ${{ env.DATABASE_URL }}

@@ -1,3 +1,15 @@
+x-rust-base: &rust-base
+  image: rust:1.93.0
+  working_dir: /app
+  command: >
+    sh -c "
+      apt-get update &&
+      apt-get install -y --no-install-recommends default-libmysqlclient-dev libpq-dev pkg-config &&
+      cargo install sqlx-cli &&
+      rustup component add rustfmt clippy &&
+      tail -f /dev/null
+    "
+
 services:
   mysql:
     image: mysql:8.0.45
@@ -17,31 +29,61 @@ services:
       timeout: 3s
       retries: 15
 
-  rust:
-    image: rust:1.93.0
-    container_name: sql-forge-rust
-    working_dir: /app
-    command: >
-      sh -c "
-        apt-get update &&
-        apt-get install -y --no-install-recommends default-libmysqlclient-dev pkg-config &&
-        cargo install sqlx-cli &&
-        rustup component add rustfmt clippy &&
-        tail -f /dev/null
-      "
+  pg:
+    image: postgres:18.4
+    container_name: sql-forge-pg
     environment:
-      DATABASE_URL: mysql://root:root@mysql:3306/sql_forge_test
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: sql_forge_test
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./tests/init-pg.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - pg-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+  rust-mysql:
+    <<: *rust-base
+    container_name: sql-forge-rust-mysql
+    environment:
       SQLX_OFFLINE: "false"
+      SQLX_OFFLINE_DIR: tests/mysql/.sqlx
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      DATABASE_URL: mysql://root:root@mysql:3306/sql_forge_test
+      SQL_FORGE_DB_TYPE: "sqlx::MySql"
     volumes:
       - .:/app:rw
       - cargo-registry:/usr/local/cargo/registry
       - cargo-git:/usr/local/cargo/git
+      - ./tests/mysql/.sqlx:/app/.sqlx:rw
     depends_on:
       mysql:
         condition: service_healthy
 
+  rust-pg:
+    <<: *rust-base
+    container_name: sql-forge-rust-pg
+    environment:
+      SQLX_OFFLINE: "false"
+      SQLX_OFFLINE_DIR: tests/postgres/.sqlx
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      DATABASE_URL: postgres://postgres:root@pg:5432/sql_forge_test
+      SQL_FORGE_DB_TYPE: "sqlx::Postgres"
+    volumes:
+      - .:/app:rw
+      - cargo-registry:/usr/local/cargo/registry
+      - cargo-git:/usr/local/cargo/git
+      - ./tests/postgres/.sqlx:/app/.sqlx:rw
+    depends_on:
+      pg:
+        condition: service_healthy
+
 volumes:
   mysql-data:
+  pg-data:
   cargo-registry:
   cargo-git:

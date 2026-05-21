@@ -1,0 +1,34 @@
+{
+  "db_name": "MySQL",
+  "query": "\n        SELECT name, price FROM products\n        WHERE category = ?\n        ORDER BY id\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "max_size": 1020
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "price",
+        "type_info": {
+          "type": "NewDecimal",
+          "flags": "NOT_NULL",
+          "max_size": 14
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "507a3d8b5db8ba62e029bf8bc07d683d3b85727e3b7be1e446fff7625cfebe10"
+}

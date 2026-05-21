@@ -1,0 +1,26 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT t1.id AS field_1, t1.name AS field_2\n        FROM users t1\n        \n        WHERE 1 = 1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "field_1",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "field_2",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "fbe1e07d03116f04a7b5456f7b44c13a65fe7965b8af2cfa30d4d8ce702193c9"
+}

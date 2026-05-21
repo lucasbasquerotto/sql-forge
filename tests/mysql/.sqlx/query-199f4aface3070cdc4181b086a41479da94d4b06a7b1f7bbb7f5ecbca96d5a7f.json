@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "UPDATE products SET stock = 50 WHERE id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "199f4aface3070cdc4181b086a41479da94d4b06a7b1f7bbb7f5ecbca96d5a7f"
+}

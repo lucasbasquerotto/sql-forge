@@ -1,0 +1,50 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT\n            p.id,\n            p.name,\n            p.price,\n            p.stock,\n            p.category\n        FROM products p\n        WHERE 1 = 1\n         AND p.category = $1 \n         AND p.price >= $2 \n         AND p.price <= $3 \n         AND p.stock > 0 \n         ORDER BY p.id ASC \n         LIMIT $4 OFFSET $5 \n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "price",
+        "type_info": "Numeric"
+      },
+      {
+        "ordinal": 3,
+        "name": "stock",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 4,
+        "name": "category",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Numeric",
+        "Numeric",
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "e8ffd9a9c48e1028b011c84c3a6d65aeb0a32bff9b674a2aea2bd51ca6d11da6"
+}

@@ -1,5 +1,9 @@
 use rust_decimal::Decimal;
+use sql_forge::db_type;
 use sql_forge::sql_forge;
+
+pub type AppDb = db_type!();
+pub type DbPool = sqlx::Pool<AppDb>;
 
 #[derive(sqlx::FromRow, Debug, PartialEq)]
 struct User {
@@ -26,23 +30,22 @@ struct Item {
 
 #[derive(sqlx::FromRow, Debug, PartialEq)]
 struct AmountResult {
-    total: i64,
+    total: Option<i64>,
 }
 
 struct Filter {
-    max_id: u64,
-    limit: u64,
+    max_id: i64,
+    limit: i64,
 }
 
 fn db_url() -> String {
-    std::env::var("DATABASE_URL")
-        .unwrap_or_else(|_| "mysql://root:root@127.0.0.1:3306/sql_forge_test".to_string())
+    std::env::var("DATABASE_URL").expect("DATABASE_URL not defined")
 }
 
-async fn pool() -> sqlx::MySqlPool {
-    sqlx::MySqlPool::connect(&db_url()).await.expect(
-        "cannot connect to test database; start MySQL and create the sql_forge_test database",
-    )
+async fn pool() -> DbPool {
+    sqlx::Pool::<AppDb>::connect(&db_url())
+        .await
+        .expect("cannot connect to test database")
 }
 
 #[tokio::test]
@@ -51,8 +54,8 @@ async fn basic_query_with_inline_params() {
 
     let users: Vec<User> = sql_forge!(
         User,
-        "SELECT id, name FROM users WHERE id <= :max_id LIMIT :limit",
-        ( :max_id = 3u64, :limit = 10u64 )
+        "SELECT id, name FROM users WHERE id <= :max_id AND :max_id >= id LIMIT :limit",
+        ( :max_id = 3i64, :limit = 10i64 )
     )
     .fetch_all(&pool)
     .await
@@ -71,7 +74,7 @@ async fn scalar_output() {
     let count: i64 = sql_forge!(
         i64,
         "SELECT COUNT(*) FROM users WHERE id > :min_id",
-        ( :min_id = 2u64 )
+        ( :min_id = 2i64 )
     )
     .fetch_one(&pool)
     .await
@@ -136,7 +139,7 @@ async fn section_dynamic_where() {
 async fn section_with_local_params() {
     let pool = pool().await;
 
-    let max_id = 4u64;
+    let max_id = 4i64;
 
     let users: Vec<User> = sql_forge!(
         User,
@@ -199,7 +202,7 @@ async fn grouped_sections() {
 async fn list_parameter_in_clause() {
     let pool = pool().await;
 
-    let ids = vec![1i32, 3, 5];
+    let ids = vec![1i64, 3, 5];
 
     let users: Vec<User> = sql_forge!(
         User,
@@ -220,7 +223,7 @@ async fn list_parameter_in_clause() {
 async fn list_parameter_with_empty_guard() {
     let pool = pool().await;
 
-    let ids: Vec<i32> = vec![];
+    let ids: Vec<i64> = vec![];
 
     let users: Vec<User> = sql_forge!(
         User,
@@ -246,8 +249,8 @@ async fn list_parameter_with_empty_guard() {
 async fn multiple_results_group() {
     let pool = pool().await;
 
-    let category_id = 1i32;
-    let min_price = 100.0f64;
+    let category_id = 1i64;
+    let min_price = Decimal::new(10000, 2);
 
     let group = sql_forge!(
         (
@@ -277,7 +280,7 @@ async fn multiple_results_group() {
                     "items.id, items.name, items.price, items.stock",
                     "JOIN categories ON categories.id = items.category_id",
                     (
-                        "ORDER BY items.created_at DESC LIMIT :start, :limit",
+                        "ORDER BY items.created_at DESC LIMIT :limit OFFSET :start",
                         ( :start = 0i64, :limit = 50i64 ),
                     ),
                 ),
@@ -297,7 +300,7 @@ async fn multiple_results_group() {
         .expect("list query failed");
 
     assert!(
-        total.total >= 3,
+        total.total.unwrap_or(0) >= 3,
         "expected at least 3 items in Electronics with price >= 100"
     );
     assert!(items.len() >= 3);
@@ -309,12 +312,12 @@ async fn multiple_results_group() {
 async fn multiple_results_scalar_key() {
     let pool = pool().await;
 
-    let category_id = 2i32;
+    let category_id = 2i64;
 
     let group = sql_forge!(
         (
             >amount = scalar i64,
-            >names = scalar String,
+            >first_name = scalar String,
         ),
         r#"
         SELECT {#fields}
@@ -325,7 +328,7 @@ async fn multiple_results_scalar_key() {
         (
             #fields = match {>amount} {
                 true => "COUNT(*)",
-                false => "GROUP_CONCAT(items.name ORDER BY items.id)",
+                false => "items.name",
             },
         )
     );
@@ -335,14 +338,14 @@ async fn multiple_results_scalar_key() {
         .fetch_one(&pool)
         .await
         .expect("count query failed");
-    let names: String = group
-        .names
+    let first_name: String = group
+        .first_name
         .fetch_one(&pool)
         .await
-        .expect("names query failed");
+        .expect("first_name query failed");
 
     assert_eq!(count, 1);
-    assert_eq!(names, "Rust Book");
+    assert_eq!(first_name, "Rust Book");
 }
 
 #[allow(clippy::unnecessary_literal_unwrap)]
@@ -351,12 +354,12 @@ async fn combining_features_example() {
     let pool = pool().await;
 
     let category = Some("Electronics");
-    let price_min = Some(50.0f64);
-    let price_max: Option<f64> = None;
+    let price_min = Some(Decimal::new(5000, 2));
+    let price_max: Option<Decimal> = None;
     let in_stock_only = true;
     let order_by = Some("price_desc".to_string());
-    let page: u64 = 0;
-    let page_size = Some(10u64);
+    let page: i64 = 0;
+    let page_size = Some(10i64);
 
     let products: Vec<Product> = sql_forge!(
         Product,
@@ -409,7 +412,7 @@ async fn combining_features_example() {
             },
             #limit = match page_size.is_some() {
                 true => (
-                    " LIMIT :offset, :size ",
+                    " LIMIT :size OFFSET :offset ",
                     ( :offset = page * page_size.unwrap(), :size = page_size.unwrap() ),
                 ),
                 false => "",
@@ -437,7 +440,15 @@ async fn combining_features_example() {
 async fn execute_only_query() {
     let pool = pool().await;
 
-    let _result = sql_forge!(
+    sql_forge!(
+        "UPDATE products SET stock = 50 WHERE id = :id",
+        ( :id = 1i64 ),
+    )
+    .execute(&pool)
+    .await
+    .expect("reset stock failed");
+
+    sql_forge!(
         r#"
         UPDATE products SET stock = stock + 1 WHERE id = :id
         "#,
@@ -454,5 +465,97 @@ async fn execute_only_query() {
     assert_eq!(
         row.0, 51,
         "stock should have been incremented from 50 to 51"
+    );
+}
+
+#[tokio::test]
+async fn execute_only_insert_update_delete() {
+    let pool = pool().await;
+
+    let names = ["Temp A", "Temp B", "Temp C"];
+    let base_price = Decimal::new(9999, 2);
+
+    for (i, name) in names.iter().enumerate() {
+        sql_forge!(
+            r#"
+            INSERT INTO products (name, price, stock, category)
+            VALUES (:name, :price, :stock, :category)
+            "#,
+            (
+                :name = name,
+                :price = base_price + Decimal::new(i as i64, 2),
+                :stock = 10i64,
+                :category = "Temporary",
+            ),
+        )
+        .execute(&pool)
+        .await
+        .expect("insert failed");
+    }
+
+    sql_forge!(
+        r#"
+        UPDATE products
+        SET price = :new_price
+        WHERE category = :category AND name = :name
+        "#,
+        (
+            :new_price = Decimal::new(4999, 2),
+            :category = "Temporary",
+            :name = "Temp B",
+        ),
+    )
+    .execute(&pool)
+    .await
+    .expect("update failed");
+
+    #[derive(sqlx::FromRow)]
+    struct TempRow {
+        #[expect(dead_code)]
+        name: String,
+        price: Decimal,
+    }
+
+    let rows: Vec<TempRow> = sql_forge!(
+        TempRow,
+        r#"
+        SELECT name, price FROM products
+        WHERE category = :cat
+        ORDER BY id
+        "#,
+        ( :cat = "Temporary" ),
+    )
+    .fetch_all(&pool)
+    .await
+    .expect("select after update failed");
+
+    assert_eq!(rows.len(), 3);
+    assert_eq!(rows[0].price, Decimal::new(9999, 2));
+    assert_eq!(rows[1].price, Decimal::new(4999, 2));
+    assert_eq!(rows[2].price, Decimal::new(10001, 2));
+
+    sql_forge!(
+        r#"
+        DELETE FROM products
+        WHERE category = :category
+        "#,
+        ( :category = "Temporary" ),
+    )
+    .execute(&pool)
+    .await
+    .expect("delete failed");
+
+    let remaining: i64 = sql_forge!(
+        i64,
+        "SELECT COUNT(*) FROM products WHERE category = :cat",
+        ( :cat = "Temporary" ),
+    )
+    .fetch_one(&pool)
+    .await
+    .expect("count after delete failed");
+
+    assert_eq!(
+        remaining, 0,
+        "all temporary products should have been deleted"
     );
 }

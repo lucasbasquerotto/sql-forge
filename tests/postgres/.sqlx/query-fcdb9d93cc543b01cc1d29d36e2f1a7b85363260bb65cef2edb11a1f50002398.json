@@ -1,0 +1,26 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT t1.id AS field_1, o.name AS field_2\n        FROM users t1\n         JOIN organisations o ON o.id = t1.id \n        WHERE 1 = 1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "field_1",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "field_2",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "fcdb9d93cc543b01cc1d29d36e2f1a7b85363260bb65cef2edb11a1f50002398"
+}

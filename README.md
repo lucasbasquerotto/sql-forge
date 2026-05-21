@@ -66,7 +66,7 @@ sql_forge!(
 
 ## Specifying the database type
 
-The DB type can be given explicitly as the first argument or inferred from `Cargo.toml` metadata.
+The DB type can be given explicitly as the first argument, via the `SQL_FORGE_DB_TYPE` environment variable, or inferred from `Cargo.toml` metadata (lowest priority).
 
 ### Explicit
 
@@ -74,14 +74,20 @@ The DB type can be given explicitly as the first argument or inferred from `Carg
 sql_forge!(sqlx::MySql, User, "SELECT ...", ...)
 ```
 
-### Via Cargo.toml (project-wide default)
+### Via environment variable (project-wide default)
+
+```sh
+SQL_FORGE_DB_TYPE=sqlx::MySql cargo build
+```
+
+### Via Cargo.toml (fallback)
 
 ```toml
 [package.metadata.sql_forge]
 db = "sqlx::MySql"
 ```
 
-When the metadata key is present, the first argument may be the model type directly.
+When any of the above is configured, the first macro argument may be the model type directly instead of the DB type.
 
 ---
 
@@ -314,6 +320,53 @@ fn users_by_ids_query(ids: Vec<i32>) -> impl EnhancedQuery<User, Db = AppDb> {
 // Later, at call site:
 let query = users_by_ids_query(vec![1, 2, 3]);
 let users = query.fetch_all(&pool).await?;
+```
+
+### Execute-only (no model)
+
+When the model type is omitted entirely, the macro produces a value implementing `EnhancedQueryExecute`. Only `.execute(executor)` is available and there is no return type to deserialize into. This is useful for `INSERT`, `UPDATE`, `DELETE`, and other DML statements.
+
+```rust
+use sql_forge::EnhancedQueryExecute;
+
+let result = sql_forge!(
+    "UPDATE products SET stock = stock + 1 WHERE id = :id",
+    ( :id = 42i64 ),
+)
+.execute(&pool)
+.await?;
+```
+
+Sections work the same way:
+
+```rust
+let rows_affected = sql_forge!(
+    "UPDATE products SET price = :new_price {#filter}",
+    ( :new_price = 10.0 ),
+    (
+        #filter = (
+            " WHERE category = :cat ",
+            ( :cat = "Electronics" ),
+        ),
+    ),
+)
+.execute(&pool)
+.await?;
+```
+
+The parameter source can also be a struct:
+
+```rust
+struct UpdateFilter { id: i64, new_price: f64 }
+
+let filter = UpdateFilter { id: 1, new_price: 15.0 };
+
+let result = sql_forge!(
+    "UPDATE products SET price = :new_price WHERE id = :id",
+    filter,
+)
+.execute(&pool)
+.await?;
 ```
 
 ---

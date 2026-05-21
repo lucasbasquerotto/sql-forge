@@ -6,6 +6,7 @@ use proc_macro::TokenStream;
 use proc_macro2::{Delimiter, Group, Span, TokenStream as TokenStream2, TokenTree};
 use quote::{format_ident, quote};
 use std::collections::{HashMap, HashSet};
+use std::fmt::Write;
 use std::fs;
 use std::path::Path;
 use syn::parse::{Parse, ParseStream};
@@ -553,10 +554,26 @@ impl Parse for EnhancedQueryInput {
 // Database type resolution
 // =============================================================================
 
-fn resolve_db_from_cargo_toml() -> Result<Type, String> {
-    let manifest_dir = std::env::var("CARGO_MANIFEST_DIR").map_err(|_| {
-        "sql_forge!: could not read CARGO_MANIFEST_DIR; pass DB as first macro argument"
-    })?;
+fn resolve_db_from_env() -> Result<Type, String> {
+    if let Ok(val) = std::env::var("SQL_FORGE_DB_TYPE") {
+        return syn::parse_str::<Type>(&val).map_err(|err| {
+            format!(
+                "sql_forge!: invalid DB type `{}` in SQL_FORGE_DB_TYPE env var: {}",
+                val, err
+            )
+        });
+    }
+
+    let manifest_dir = match std::env::var("CARGO_MANIFEST_DIR") {
+        Ok(d) => d,
+        Err(_) => {
+            return Err(
+                "sql_forge!: pass DB as first macro argument, set SQL_FORGE_DB_TYPE, \
+                 or configure [package.metadata.sql_forge] in Cargo.toml"
+                    .to_string(),
+            );
+        }
+    };
     let manifest_path = Path::new(&manifest_dir).join("Cargo.toml");
 
     let cargo_toml = fs::read_to_string(&manifest_path).map_err(|err| {
@@ -577,7 +594,8 @@ fn resolve_db_from_cargo_toml() -> Result<Type, String> {
         .and_then(|v| v.get("db"))
         .and_then(|v| v.as_str())
         .ok_or_else(|| {
-            "sql_forge!: missing [package.metadata.sql_forge] db = \"...\" in Cargo.toml; pass DB as first macro argument or configure metadata"
+            "sql_forge!: missing [package.metadata.sql_forge] db = \"...\" in Cargo.toml, \
+             SQL_FORGE_DB_TYPE env var, or DB as first macro argument"
         })?;
 
     syn::parse_str::<Type>(db_str).map_err(|err| {
@@ -586,6 +604,17 @@ fn resolve_db_from_cargo_toml() -> Result<Type, String> {
             db_str, err
         )
     })
+}
+
+fn uses_dollar_params(db: &Type) -> bool {
+    let Type::Path(type_path) = db else {
+        return false;
+    };
+    type_path
+        .path
+        .segments
+        .last()
+        .is_some_and(|s| s.ident == "Postgres")
 }
 
 fn is_builtin_scalar_type(ty: &Type) -> bool {
@@ -802,7 +831,11 @@ fn parse_text_parts(text: &str) -> Vec<TextPart> {
     parts
 }
 
-fn render_validator_text(text: &str) -> (String, Vec<(String, bool)>) {
+fn render_validator_text(
+    text: &str,
+    use_dollar_params: bool,
+    param_offset: &mut usize,
+) -> (String, Vec<(String, bool)>) {
     let mut out_sql = String::new();
     let mut occurrences = Vec::new();
 
@@ -810,7 +843,12 @@ fn render_validator_text(text: &str) -> (String, Vec<(String, bool)>) {
         match part {
             TextPart::Lit(lit) => out_sql.push_str(&lit),
             TextPart::Param { name, is_list } => {
-                out_sql.push('?');
+                if use_dollar_params {
+                    *param_offset += 1;
+                    write!(out_sql, "${}", *param_offset).unwrap();
+                } else {
+                    out_sql.push('?');
+                }
                 occurrences.push((name, is_list));
             }
         }
@@ -1116,18 +1154,20 @@ fn build_param_bindings(
     Ok((declared_params, bindings))
 }
 
-/// Builds the `?`-style SQL string and argument list for the compile-time
+/// Builds the placeholders SQL string and argument list for the compile-time
 /// validator (sqlx::query_as! / query_scalar!). Each `:param` in the SQL is
-/// replaced by `?`, and the corresponding value expression is collected into
-/// the args list.
+/// replaced by `?` (MySQL/SQLite) or `$1`/`$2`/... (PostgreSQL), and the
+/// corresponding value expression is collected into the args list.
 fn render_validator_args(
     sql: &str,
     local_params: &HashMap<String, syn::Ident>,
     top_level_params: &HashMap<String, syn::Ident>,
     allow_top_level_fallback: bool,
+    use_dollar_params: bool,
+    param_offset: &mut usize,
     sql_span: Span,
 ) -> Result<(String, Vec<TokenStream2>), TokenStream> {
-    let (rendered_sql, occurrences) = render_validator_text(sql);
+    let (rendered_sql, occurrences) = render_validator_text(sql, use_dollar_params, param_offset);
     let mut args = Vec::<TokenStream2>::new();
 
     for (name, is_list) in occurrences {
@@ -1307,8 +1347,10 @@ fn collect_used_param_names_in_sql(sql: &str) -> Vec<String> {
 /// )
 /// ```
 ///
-/// The DB type may be omitted when `[package.metadata.sql_forge] db = "..."` is
-/// set in `Cargo.toml`.
+/// The DB type may be omitted when `SQL_FORGE_DB_TYPE` is set (e.g.
+/// `SQL_FORGE_DB_TYPE=sqlx::MySql`) or when
+/// `[package.metadata.sql_forge] db = "..."` is set in `Cargo.toml`.
+/// The env var takes priority over Cargo.toml metadata.
 ///
 /// # Parameters
 ///
@@ -1439,6 +1481,33 @@ fn collect_used_param_names_in_sql(sql: &str) -> Vec<String> {
 /// each implementing `EnhancedQuery<T, Db = DB>` and usable with any SQLx
 /// executor method (`fetch_one`, `fetch_all`, etc.).
 ///
+/// # Execute-only (no model)
+///
+/// When the model type is omitted, the macro produces a value implementing
+/// `EnhancedQueryExecute`. Only `.execute(executor)`
+/// is available and there is no return type to deserialize into. This is useful
+/// for `INSERT`, `UPDATE`, `DELETE`, and other DML statements.
+///
+/// ```rust,ignore
+/// sql_forge!(
+///     "UPDATE products SET stock = stock + 1 WHERE id = :id",
+///     ( :id = 42i64 ),
+/// )
+/// .execute(&pool)
+/// .await?;
+/// ```
+///
+/// Sections and struct parameter sources work the same way as in model-backed queries:
+///
+/// ```rust,ignore
+/// sql_forge!(
+///     "UPDATE products SET price = :new_price {#filter}",
+///     ( #filter = "WHERE category = :cat", ( :cat = "Electronics" ) ),
+/// )
+/// .execute(&pool)
+/// .await?;
+/// ```
+///
 /// # Caveats
 ///
 /// **String literals containing `:`**
@@ -1485,7 +1554,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
     // ---- Phase 2: Resolve database type (from macro arg or Cargo.toml) ----
     let db = match db {
         Some(db) => db,
-        None => match resolve_db_from_cargo_toml() {
+        None => match resolve_db_from_env() {
             Ok(db) => db,
             Err(msg) => {
                 return syn::Error::new(Span::call_site(), msg)
@@ -1494,6 +1563,8 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
             }
         },
     };
+
+    let use_dollar_params = uses_dollar_params(&db);
 
     // ---- Phase 3: Build result case definitions ----
     // Each result case is (optional_key, model_type, optional_scalar_type).
@@ -1711,6 +1782,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
             let mut sql_case = String::new();
             let mut case_setup = Vec::<TokenStream2>::new();
             let mut case_args = Vec::<TokenStream2>::new();
+            let mut param_offset = 0usize;
             let empty_params = HashMap::<String, syn::Ident>::new();
 
             for segment in &segments {
@@ -1721,6 +1793,8 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                             &empty_params,
                             &declared_params,
                             true,
+                            use_dollar_params,
+                            &mut param_offset,
                             sql_span,
                         ) {
                             Ok(value) => value,
@@ -1756,6 +1830,8 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                             &local_params,
                             &declared_params,
                             true,
+                            use_dollar_params,
+                            &mut param_offset,
                             fragment.span,
                         ) {
                             Ok(value) => value,
@@ -2188,20 +2264,19 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
     .into()
 }
 
-/// Expands to the database type configured in `[package.metadata.sql_forge]`
-/// of the caller's `Cargo.toml`.
-///
-/// ```toml
-/// [package.metadata.sql_forge]
-/// db = "sqlx::MySql"
-/// ```
+/// Expands to the database type from the `SQL_FORGE_DB_TYPE` environment variable,
+/// falling back to `[package.metadata.sql_forge]` in `Cargo.toml`.
 ///
 /// ```rust,ignore
 /// use sql_forge::db_type;
 ///
 /// pub type AppDb = db_type!();
-/// // expands to: pub type AppDb = sqlx::MySql;
+/// // expands to the type set via SQL_FORGE_DB_TYPE or Cargo.toml metadata
 /// ```
+///
+/// Priority:
+/// 1. `SQL_FORGE_DB_TYPE` env var (e.g. `sqlx::MySql`, `sqlx::Postgres`)
+/// 2. `[package.metadata.sql_forge] db = "..."` in `Cargo.toml`
 #[proc_macro]
 pub fn db_type(input: TokenStream) -> TokenStream {
     if !input.is_empty() {
@@ -2210,7 +2285,7 @@ pub fn db_type(input: TokenStream) -> TokenStream {
             .into();
     }
 
-    match resolve_db_from_cargo_toml() {
+    match resolve_db_from_env() {
         Ok(db) => quote! { #db }.into(),
         Err(msg) => syn::Error::new(Span::call_site(), msg)
             .to_compile_error()

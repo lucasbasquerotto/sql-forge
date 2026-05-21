@@ -1,6 +1,6 @@
 {
   "db_name": "MySQL",
-  "query": "\n        SELECT items.id, items.name, items.price, items.stock\n        FROM items\n        JOIN categories ON categories.id = items.category_id\n        WHERE items.category_id = ?\n        AND   items.price      >= ?\n        ORDER BY items.created_at DESC LIMIT ?, ?\n        ",
+  "query": "\n        SELECT items.id, items.name, items.price, items.stock\n        FROM items\n        JOIN categories ON categories.id = items.category_id\n        WHERE items.category_id = ?\n        AND   items.price      >= ?\n        ORDER BY items.created_at DESC LIMIT ? OFFSET ?\n        ",
   "describe": {
     "columns": [
       {
@@ -50,5 +50,5 @@
       false
     ]
   },
-  "hash": "edec8237d81de156582c8f840002f210a8c0a867e2f4cc0ce818e010bdadd567"
+  "hash": "d420e010a5a0ebe4a782b18ed007e0d3f09432de2fec18342e0de2fb7743932d"
 }

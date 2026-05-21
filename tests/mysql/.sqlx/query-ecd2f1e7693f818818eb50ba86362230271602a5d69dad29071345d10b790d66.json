@@ -1,0 +1,24 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT COUNT(*) FROM products WHERE category = ?",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "COUNT(*)",
+        "type_info": {
+          "type": "LongLong",
+          "flags": "NOT_NULL | BINARY",
+          "max_size": 21
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "ecd2f1e7693f818818eb50ba86362230271602a5d69dad29071345d10b790d66"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n        UPDATE products\n        SET price = ?\n        WHERE category = ? AND name = ?\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "fdaf7f830d10baaad8b70bef6771291d81adc48ec12a17cc843a0851c1cd5d70"
+}
