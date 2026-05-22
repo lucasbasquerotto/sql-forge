@@ -1,7 +1,12 @@
 [package]
 name = "sql-forge-trait"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
+description = "Trait definitions for sql-forge."
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+readme = "README.md"
 
 [dependencies]
 sqlx = { version = "0.8", default-features = false }

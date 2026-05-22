@@ -7,6 +7,7 @@ on:
       - '.gitignore'
   push:
     branches: [main]
+    tags: ['v*']
     paths-ignore:
       - 'README.md'
       - '.gitignore'
@@ -115,3 +116,61 @@ jobs:
 
       - name: Verify that .sqlx/ files are up to date
         run: cargo sqlx prepare --check -- --tests
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Verify all crate versions match the tag
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          WORKSPACE_VERSION=$(awk '
+            $0 == "[workspace.package]" { in_workspace_package = 1; next }
+            /^\[/ { in_workspace_package = 0 }
+            in_workspace_package && /^version = / {
+              gsub(/^version = "/, "")
+              gsub(/"$/, "")
+              print
+              exit
+            }
+          ' Cargo.toml)
+
+          for manifest in Cargo.toml crates/sql-forge-macro/Cargo.toml crates/sql-forge-trait/Cargo.toml; do
+            if ! grep -q '^version\.workspace = true$' "$manifest"; then
+              echo "ERROR: $manifest must inherit the workspace version."
+              exit 1
+            fi
+          done
+
+          if [ "$TAG_VERSION" != "$WORKSPACE_VERSION" ]; then
+            echo "ERROR: Tag version ($TAG_VERSION) does not match workspace version ($WORKSPACE_VERSION)."
+            exit 1
+          fi
+
+      - name: Publish sql-forge-trait
+        run: cargo publish -p sql-forge-trait
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+      - name: Wait for sql-forge-trait to be indexed
+        run: sleep 30
+
+      - name: Publish sql-forge-macro
+        run: cargo publish -p sql-forge-macro
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+      - name: Wait for sql-forge-macro to be indexed
+        run: sleep 30
+
+      - name: Publish sql-forge
+        run: cargo publish -p sql-forge
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
