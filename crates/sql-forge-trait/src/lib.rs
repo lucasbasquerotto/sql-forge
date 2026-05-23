@@ -1,4 +1,4 @@
-pub trait EnhancedQuery<Output> {
+pub trait SqlForgeQuery<Output> {
     type Db: sqlx::Database;
 
     fn fetch_all<'e, E>(
@@ -41,7 +41,7 @@ pub trait EnhancedQuery<Output> {
         Self::Db: 'e;
 }
 
-pub trait EnhancedQueryExecute {
+pub trait SqlForgeQueryExecute {
     type Db: sqlx::Database;
 
     fn execute<'e, E>(
@@ -57,12 +57,12 @@ pub trait EnhancedQueryExecute {
         Self::Db: 'e;
 }
 
-pub trait EnhancedQueryGroup {
+pub trait SqlForgeQueryGroup {
     type Db: sqlx::Database;
 }
 
-pub trait EnhancedQueryGroupGet<Key, Output>: EnhancedQueryGroup {
-    type Query: EnhancedQuery<Output, Db = Self::Db>;
+pub trait SqlForgeQueryGroupGet<Key, Output>: SqlForgeQueryGroup {
+    type Query: SqlForgeQuery<Output, Db = Self::Db>;
 
     fn get(self, _: Key) -> Self::Query;
 }

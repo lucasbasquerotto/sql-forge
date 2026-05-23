@@ -38,29 +38,25 @@ let users: Vec<User> = sql_forge!(
 
 ## Full syntax
 
-### Single result
-
 ```
 sql_forge!(
     [DB,]           // optional (sqlx::MySql | sqlx::Postgres | sqlx::Sqlite)
-    Model,          // return type
+    [Model,]        // optional result spec
     SQL,            // string literal
     [params,]       // optional parameter source
-    [(sections)]    // optional section map
+    [(sections),]   // optional section map
+    [..batch]       // optional batch source used by {( ... )}
 )
 ```
 
-### Multiple results
+`Model` has three forms:
 
-```
-sql_forge!(
-    [DB,]                                 // optional database type
-    ( >key1 = ModelA, >key2 = ModelB ),   // result map
-    SQL,                                  // string literal
-    [params,]                             // optional parameter source
-    [(sections)]                          // section map with {>key} matching
-)
-```
+- omitted: execute-only query; only `.execute(...)` is available
+- `Type` or `scalar Type`: a single result query
+- `( >key1 = TypeA, >key2 = scalar TypeB )`: a grouped multi-result query
+
+The trailing parameter source, section map, and batch source are optional.
+The batch source is a single `..expr` argument and is only needed when the SQL contains a `{( ... )}` batch section.
 
 ---
 
@@ -305,13 +301,13 @@ sql_forge!(
 .await?;
 ```
 
-The validator expands the batch to 3 copies so the SQL is valid for compile-time checking (`(?, ?, 10, 'Batch'), (?, ?, 10, 'Batch')`). At runtime the iterable drives the actual number of rows.
+The validator expands the batch to 3 copies so the SQL is valid for compile-time checking (`(?, ?, 10, 'Batch'), (?, ?, 10, 'Batch'), (?, ?, 10, 'Batch')`). At runtime the iterable drives the actual number of rows.
 
 ---
 
 ## Execution
 
-The macro expands to an `EnhancedQuery` value. Call `.fetch_all(executor)`, `.fetch_one(executor)`, or `.fetch_optional(executor)` directly on it:
+The macro expands to a `SqlForgeQuery` value. Call `.fetch_all(executor)`, `.fetch_one(executor)`, or `.fetch_optional(executor)` directly on it:
 
 ```rust
 let result = sql_forge!(User, "...", ...)
@@ -329,14 +325,14 @@ let result = query.fetch_one(&pool).await?;
 
 ### Returning a query from a function
 
-Use `impl EnhancedQuery<Model>` as the return type to build a query in one place and execute it elsewhere. The macro return type is unnameable, so `impl Trait` is the only option.
+Use `impl SqlForgeQuery<Model>` as the return type to build a query in one place and execute it elsewhere. The macro return type is unnameable, so `impl Trait` is the only option.
 
 ```rust
-use sql_forge::{sql_forge, db_type, EnhancedQuery};
+use sql_forge::{sql_forge, db_type, SqlForgeQuery};
 
 pub type AppDb = db_type!(); // or explicitly sqlx::MySql, sqlx::Postgres, etc.
 
-fn users_by_ids_query(ids: Vec<i32>) -> impl EnhancedQuery<User, Db = AppDb> {
+fn users_by_ids_query(ids: Vec<i32>) -> impl SqlForgeQuery<User, Db = AppDb> {
     sql_forge!(
         User,
         "SELECT id, name FROM users WHERE id IN (:ids)",
@@ -351,10 +347,10 @@ let users = query.fetch_all(&pool).await?;
 
 ### Execute-only (no model)
 
-When the model type is omitted entirely, the macro produces a value implementing `EnhancedQueryExecute`. Only `.execute(executor)` is available and there is no return type to deserialize into. This is useful for `INSERT`, `UPDATE`, `DELETE`, and other DML statements.
+When the model type is omitted entirely, the macro produces a value implementing `SqlForgeQueryExecute`. Only `.execute(executor)` is available and there is no return type to deserialize into. This is useful for `INSERT`, `UPDATE`, `DELETE`, and other DML statements.
 
 ```rust
-use sql_forge::EnhancedQueryExecute;
+use sql_forge::SqlForgeQueryExecute;
 
 let result = sql_forge!(
     "UPDATE products SET stock = stock + 1 WHERE id = :id",
@@ -398,7 +394,7 @@ let result = sql_forge!(
 
 ---
 
-## Multiple results (`EnhancedQueryGroup`)
+## Multiple results (`SqlForgeQueryGroup`)
 
 A single SQL template can produce **multiple independent queries** that share the same base SQL, parameters, and dynamic sections. This avoids duplicating the query structure when you need different result shapes (e.g., a count and a paginated list) from the same filters.
 
@@ -417,7 +413,7 @@ sql_forge!(
 )
 ```
 
-Each key becomes a field on the returned group object, holding its own `EnhancedQuery<Type, Db = DB>`.
+Each key becomes a field on the returned group object, holding its own `SqlForgeQuery<Type, Db = DB>`.
 
 ### Conditional sections with `{>key}`
 
@@ -441,7 +437,7 @@ In the section map, the special expression `{>key_name}` evaluates to `true` whe
 ### Complete example
 
 ```rust
-use sql_forge::{sql_forge, EnhancedQuery, EnhancedQueryGroup, EnhancedQueryGroupGet};
+use sql_forge::{sql_forge, SqlForgeQuery, SqlForgeQueryGroup, SqlForgeQueryGroupGet};
 use crate::models::general::ListAndAmount;
 
 pub type AppDb = sqlx::MySql;
@@ -454,8 +450,8 @@ fn build_item_query(
     category_id: i32,
     min_price: f64,
 ) -> ListAndAmount<
-    impl EnhancedQuery<AmountResult, Db = AppDb>,
-    impl EnhancedQuery<Item, Db = AppDb>,
+    impl SqlForgeQuery<AmountResult, Db = AppDb>,
+    impl SqlForgeQuery<Item, Db = AppDb>,
 > {
     let group = sql_forge!(
         (
@@ -553,13 +549,13 @@ use crate::models::general::ListAndAmount;
 
 fn query_items(...)
     -> ListAndAmount<
-        impl EnhancedQuery<AmountResult, Db = AppDb>,
-        impl EnhancedQuery<Item, Db = AppDb>,
+        impl SqlForgeQuery<AmountResult, Db = AppDb>,
+        impl SqlForgeQuery<Item, Db = AppDb>,
     >
 { ... }
 ```
 
-The group struct (`__EnhancedQueryGroup`) generated by the macro is unnameable, so a wrapper like `ListAndAmount` is the recommended way to return individual queries from a function. You can also call `.into_parts()` on the group result to destructure it into a tuple of the individual queries.
+The group struct (`__SqlForgeQueryGroup`) generated by the macro is unnameable, so a wrapper like `ListAndAmount` is the recommended way to return individual queries from a function. You can also call `.into_parts()` on the group result to destructure it into a tuple of the individual queries.
 
 ---
 

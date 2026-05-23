@@ -108,7 +108,7 @@ impl Parse for SectionAssign {
 }
 
 /// The fully-parsed macro invocation.
-struct EnhancedQueryInput {
+struct SqlForgeInput {
     db: Option<Type>,
     result: ResultSpec,
     force_scalar: bool,
@@ -420,10 +420,10 @@ fn parse_section_value(input: ParseStream<'_>, width: usize) -> syn::Result<Sect
 }
 
 // =============================================================================
-// Top-level macro input parsing (EnhancedQueryInput::parse)
+// Top-level macro input parsing (SqlForgeInput::parse)
 // =============================================================================
 
-impl Parse for EnhancedQueryInput {
+impl Parse for SqlForgeInput {
     fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
         let (db, result, force_scalar, sql) = if input.peek(LitStr) {
             let sql = parse_sql_template(input)?;
@@ -1439,23 +1439,20 @@ fn collect_used_param_names_in_sql(sql: &str) -> Vec<String> {
 /// ```text
 /// sql_forge!(
 ///     [DB,]        // optional: sqlx::MySql | sqlx::Postgres | sqlx::Sqlite
-///     Model,       // return type (struct or scalar primitive)
-///     SQL,         // string literal  or  { braced token template }
+///     [Model,]     // optional result spec
+///     SQL,         // string literal
 ///     [params,]    // optional: ( :name = expr, ... )  or  struct_expr
-///     [(sections)] // optional: ( #name = ..., ... )
+///     [(sections),]// optional: ( #name = ..., ... )
+///     [..batch]    // optional: batch source expression used by {( ... )}
 /// )
 ///
-/// ### Multiple results
+/// `Model` has three forms:
+/// - omitted: execute-only query; only `.execute(...)` is available
+/// - `Type` or `scalar Type`: a single result query
+/// - `( >key1 = TypeA, >key2 = scalar TypeB )`: a grouped multi-result query
 ///
-/// ```ignore
-/// sql_forge!(
-///     [DB,]
-///     ( >key1 = ModelA, >key2 = scalar i64 ),  // result map
-///     SQL,
-///     [params,]
-///     [(sections)]                             // sections may use {>key} match
-/// )
-/// ```
+/// The trailing parameter source, section map, and batch source are optional.
+/// The batch source may appear alongside the others as a single `..expr` argument.
 ///
 /// The DB type may be omitted when `SQL_FORGE_DB_TYPE` is set (e.g.
 /// `SQL_FORGE_DB_TYPE=sqlx::MySql`) or when
@@ -1597,7 +1594,7 @@ fn collect_used_param_names_in_sql(sql: &str) -> Vec<String> {
 ///
 /// # Multiple results
 ///
-/// A result map produces an `EnhancedQueryGroup` with one query per key.
+/// A result map produces a `SqlForgeQueryGroup` with one query per key.
 /// Each key can be a struct or a primitive (used as a scalar):
 ///
 /// ```rust,ignore
@@ -1618,13 +1615,13 @@ fn collect_used_param_names_in_sql(sql: &str) -> Vec<String> {
 /// ```
 ///
 /// The generated struct has one field per key (`group.count`, `group.items`),
-/// each implementing `EnhancedQuery<T, Db = DB>` and usable with any SQLx
+/// each implementing `SqlForgeQuery<T, Db = DB>` and usable with any SQLx
 /// executor method (`fetch_one`, `fetch_all`, etc.).
 ///
 /// # Execute-only (no model)
 ///
 /// When the model type is omitted, the macro produces a value implementing
-/// `EnhancedQueryExecute`. Only `.execute(executor)`
+/// `SqlForgeQueryExecute`. Only `.execute(executor)`
 /// is available and there is no return type to deserialize into. This is useful
 /// for `INSERT`, `UPDATE`, `DELETE`, and other DML statements.
 ///
@@ -1679,7 +1676,7 @@ fn collect_used_param_names_in_sql(sql: &str) -> Vec<String> {
 pub fn sql_forge(input: TokenStream) -> TokenStream {
     // ---- Phase 1: Parse the macro input into structured data ----
     let preprocessed = preprocess_result_key_placeholders(TokenStream2::from(input));
-    let EnhancedQueryInput {
+    let SqlForgeInput {
         db,
         result,
         force_scalar,
@@ -1687,7 +1684,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
         params,
         sections,
         batch,
-    } = match syn::parse2::<EnhancedQueryInput>(preprocessed) {
+    } = match syn::parse2::<SqlForgeInput>(preprocessed) {
         Ok(v) => v,
         Err(err) => return err.to_compile_error().into(),
     };
@@ -1923,7 +1920,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
 
     for (result_key, model_opt, scalar_model_ty) in result_cases.iter() {
         let suffix = result_key.clone().unwrap_or_else(|| "single".to_string());
-        let query_ident = format_ident!("__EnhancedQuery_{}", suffix);
+        let query_ident = format_ident!("__SqlForgeQuery_{}", suffix);
         let query_value_ident = format_ident!("__sql_forge_value_{}", suffix);
 
         let flag_bindings = build_result_flag_bindings(&group_result_keys, result_key.as_deref());
@@ -2358,7 +2355,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
         };
         let trait_impl = if model_opt.is_none() {
             quote! {
-                impl<'args> sql_forge::EnhancedQueryExecute
+                impl<'args> sql_forge::SqlForgeQueryExecute
                     for #query_ident<'args>
                 {
                     type Db = #db;
@@ -2375,7 +2372,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
             }
         } else {
             quote! {
-                impl<'args> sql_forge::EnhancedQuery<#final_type>
+                impl<'args> sql_forge::SqlForgeQuery<#final_type>
                     for #query_ident<'args>
                 {
                     type Db = #db;
@@ -2452,11 +2449,11 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                 }
             });
 
-            let key_ty_ident = format_ident!("__EnhancedQueryGroupKey_{}", key);
+            let key_ty_ident = format_ident!("__SqlForgeQueryGroupKey_{}", key);
             group_trait_impls.push(quote! {
                 struct #key_ty_ident;
 
-                impl<'args> sql_forge::EnhancedQueryGroupGet<#key_ty_ident, #final_type> for __EnhancedQueryGroup<'args> {
+                impl<'args> sql_forge::SqlForgeQueryGroupGet<#key_ty_ident, #final_type> for __SqlForgeQueryGroup<'args> {
                     type Query = #query_ident<'args>;
 
                     fn get(self, _: #key_ty_ident) -> Self::Query {
@@ -2505,11 +2502,11 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
             #( #generated_query_defs )*
             #( #generated_query_values )*
 
-            struct __EnhancedQueryGroup<'args> {
+            struct __SqlForgeQueryGroup<'args> {
                 #( #group_field_defs, )*
             }
 
-            impl<'args> __EnhancedQueryGroup<'args> {
+            impl<'args> __SqlForgeQueryGroup<'args> {
                 #( #group_method_defs )*
 
                 pub fn into_parts(self) -> ( #( #group_field_tys ),* ) {
@@ -2517,13 +2514,13 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                 }
             }
 
-            impl<'args> sql_forge::EnhancedQueryGroup for __EnhancedQueryGroup<'args> {
+            impl<'args> sql_forge::SqlForgeQueryGroup for __SqlForgeQueryGroup<'args> {
                 type Db = #db;
             }
 
             #( #group_trait_impls )*
 
-            __EnhancedQueryGroup {
+            __SqlForgeQueryGroup {
                 #( #group_field_inits, )*
             }
         }
