@@ -1880,10 +1880,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
             }
         };
 
-        for ((name, action), section_cases) in named_actions
-            .into_iter()
-            .zip(variants_by_section.into_iter())
-        {
+        for ((name, action), section_cases) in named_actions.into_iter().zip(variants_by_section) {
             runtime_section_actions.insert(name.clone(), action);
             section_variants.insert(name, section_cases);
         }
@@ -1947,9 +1944,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                 }
             };
 
-            for (name_ident, section_cases) in
-                names.into_iter().zip(variants_by_section.into_iter())
-            {
+            for (name_ident, section_cases) in names.into_iter().zip(variants_by_section) {
                 section_variants_for_validation.insert(name_ident.to_string(), section_cases);
             }
         }

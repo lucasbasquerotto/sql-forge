@@ -1,5 +1,4 @@
 #![feature(prelude_import)]
-#[macro_use]
 extern crate std;
 #[prelude_import]
 use std::prelude::rust_2021::*;
@@ -1809,7 +1808,12 @@ pub const list_parameter_in_clause: test::TestDescAndFn = test::TestDescAndFn {
 fn list_parameter_in_clause() {
     let body = async {
         let pool = pool().await;
-        let ids = <[_]>::into_vec(::alloc::boxed::box_new([1i64, 3, 5]));
+        let ids = ::alloc::boxed::box_assume_init_into_vec_unsafe(
+            ::alloc::intrinsics::write_box_via_move(
+                ::alloc::boxed::Box::new_uninit(),
+                [1i64, 3, 5],
+            ),
+        );
         let users: Vec<User> = {
             let _sql_forge_validator = || {
                 let __enhanced_top_level_ids = &(ids);
@@ -5194,21 +5198,24 @@ fn execute_batch() {
             .execute(&pool)
             .await
             .ok();
-        let items = <[_]>::into_vec(
-            ::alloc::boxed::box_new([
-                BatchItem {
-                    name: "Batch A".to_string(),
-                    price: price_new(9999, 2),
-                },
-                BatchItem {
-                    name: "Batch B".to_string(),
-                    price: price_new(4999, 2),
-                },
-                BatchItem {
-                    name: "Batch C".to_string(),
-                    price: price_new(10001, 2),
-                },
-            ]),
+        let items = ::alloc::boxed::box_assume_init_into_vec_unsafe(
+            ::alloc::intrinsics::write_box_via_move(
+                ::alloc::boxed::Box::new_uninit(),
+                [
+                    BatchItem {
+                        name: "Batch A".to_string(),
+                        price: price_new(9999, 2),
+                    },
+                    BatchItem {
+                        name: "Batch B".to_string(),
+                        price: price_new(4999, 2),
+                    },
+                    BatchItem {
+                        name: "Batch C".to_string(),
+                        price: price_new(10001, 2),
+                    },
+                ],
+            ),
         );
         {
             let _sql_forge_validator = || {
@@ -5838,21 +5845,24 @@ fn execute_batch_full() {
             .execute(&pool)
             .await
             .ok();
-        let items = <[_]>::into_vec(
-            ::alloc::boxed::box_new([
-                BatchFullItem {
-                    name: "Batch A".to_string(),
-                    price: price_new(9999, 2),
-                    stock: 10i64,
-                    category: "BatchFull".to_string(),
-                },
-                BatchFullItem {
-                    name: "Batch B".to_string(),
-                    price: price_new(4999, 2),
-                    stock: 10i64,
-                    category: "BatchFull".to_string(),
-                },
-            ]),
+        let items = ::alloc::boxed::box_assume_init_into_vec_unsafe(
+            ::alloc::intrinsics::write_box_via_move(
+                ::alloc::boxed::Box::new_uninit(),
+                [
+                    BatchFullItem {
+                        name: "Batch A".to_string(),
+                        price: price_new(9999, 2),
+                        stock: 10i64,
+                        category: "BatchFull".to_string(),
+                    },
+                    BatchFullItem {
+                        name: "Batch B".to_string(),
+                        price: price_new(4999, 2),
+                        stock: 10i64,
+                        category: "BatchFull".to_string(),
+                    },
+                ],
+            ),
         );
         {
             let _sql_forge_validator = || {
