@@ -1,5 +1,5 @@
 error: sql_forge!: parameter :id has no mapping
- --> tests/mysql/tmp-ui/same_param_top_and_section_only_section_map.rs:9:9
+ --> tests/mysql/tmp-ui/same_param_top_and_section_only_section_map.rs:8:9
   |
-9 |         "SELECT id, name FROM users WHERE id >= :id {#filter}",
+8 |         "SELECT id, name FROM users WHERE id >= :id {#filter}",
   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

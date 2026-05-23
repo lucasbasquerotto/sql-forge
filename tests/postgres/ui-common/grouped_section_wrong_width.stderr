@@ -1,5 +1,5 @@
 error: sql_forge!: grouped section value must provide exactly 2 items
-  --> tests/postgres/tmp-ui/grouped_section_wrong_width.rs:14:37
+  --> tests/postgres/tmp-ui/grouped_section_wrong_width.rs:13:37
    |
-14 |                 true => ("", "", ""),
+13 |                 true => ("", "", ""),
    |                                     ^

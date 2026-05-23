@@ -1,5 +1,5 @@
 error: sql_forge!: duplicated section mapping
-  --> tests/sqlite/tmp-ui/duplicate_section_mapping.rs:12:14
+  --> tests/sqlite/tmp-ui/duplicate_section_mapping.rs:11:14
    |
-12 |             #filter = " WHERE id = 2 ",
+11 |             #filter = " WHERE id = 2 ",
    |              ^^^^^^

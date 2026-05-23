@@ -3,12 +3,12 @@ error: error returned from database: missing FROM-clause entry for table "o"
    |
 13 |       let _ = sql_forge!(
    |  _____________^
-14 | |         sqlx::Postgres,
-15 | |         Row,
-16 | |         r#"
+14 | |         Row,
+15 | |         r#"
+16 | |         SELECT t1.id AS field_1, {#field_2}
 ...  |
-31 | |         ),
-32 | |     );
+30 | |         ),
+31 | |     );
    | |_____^
    |
    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)

@@ -6,7 +6,6 @@ fn main() {
     let include_org = true;
 
     let _ = sql_forge!(
-        sqlx::Postgres,
         support::User,
         "SELECT id, name FROM users {#join_org} {#filter_org}",
         (

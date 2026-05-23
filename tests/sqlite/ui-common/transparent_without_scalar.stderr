@@ -1,113 +1,107 @@
 error: error returned from database: (code: 14) unable to open database file
-  --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:6:13
-   |
- 6 |       let _ = sql_forge!(
-   |  _____________^
- 7 | |         sqlx::Postgres,
- 8 | |         support::TransparentId,
- 9 | |         "SELECT id FROM users LIMIT 1",
-10 | |     );
-   | |_____^
-   |
-   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
+ --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:6:13
+  |
+6 |       let _ = sql_forge!(
+  |  _____________^
+7 | |         support::TransparentId,
+8 | |         "SELECT id FROM users LIMIT 1",
+9 | |     );
+  | |_____^
+  |
+  = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error[E0277]: the trait bound `TransparentId: FromRow<'_, PgRow>` is not satisfied
-  --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:8:9
-   |
- 6 |       let _ = sql_forge!(
-   |  _____________-
- 7 | |         sqlx::Postgres,
- 8 | |         support::TransparentId,
-   | |         ^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
- 9 | |         "SELECT id FROM users LIMIT 1",
-10 | |     );
-   | |_____- required by a bound introduced by this call
-   |
-help: the trait `FromRow<'_, PgRow>` is not implemented for `TransparentId`
-  --> tests/sqlite/tmp-ui/support/mod.rs
-   |
-   | pub struct TransparentId(pub i64);
-   | ^^^^^^^^^^^^^^^^^^^^^^^^
-   = help: the following other types implement trait `FromRow<'r, R>`:
-             `()` implements `FromRow<'r, R>`
-             `(T1, T2)` implements `FromRow<'r, R>`
-             `(T1, T2, T3)` implements `FromRow<'r, R>`
-             `(T1, T2, T3, T4)` implements `FromRow<'r, R>`
-             `(T1, T2, T3, T4, T5)` implements `FromRow<'r, R>`
-             `(T1, T2, T3, T4, T5, T6)` implements `FromRow<'r, R>`
-             `(T1, T2, T3, T4, T5, T6, T7)` implements `FromRow<'r, R>`
-             `(T1, T2, T3, T4, T5, T6, T7, T8)` implements `FromRow<'r, R>`
-           and $N others
+error[E0277]: the trait bound `TransparentId: FromRow<'_, SqliteRow>` is not satisfied
+ --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:7:9
+  |
+6 |       let _ = sql_forge!(
+  |  _____________-
+7 | |         support::TransparentId,
+  | |         ^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+8 | |         "SELECT id FROM users LIMIT 1",
+9 | |     );
+  | |_____- required by a bound introduced by this call
+  |
+help: the trait `FromRow<'_, SqliteRow>` is not implemented for `TransparentId`
+ --> tests/sqlite/tmp-ui/support/mod.rs
+  |
+  | pub struct TransparentId(pub i64);
+  | ^^^^^^^^^^^^^^^^^^^^^^^^
+  = help: the following other types implement trait `FromRow<'r, R>`:
+            `()` implements `FromRow<'r, R>`
+            `(T1, T2)` implements `FromRow<'r, R>`
+            `(T1, T2, T3)` implements `FromRow<'r, R>`
+            `(T1, T2, T3, T4)` implements `FromRow<'r, R>`
+            `(T1, T2, T3, T4, T5)` implements `FromRow<'r, R>`
+            `(T1, T2, T3, T4, T5, T6)` implements `FromRow<'r, R>`
+            `(T1, T2, T3, T4, T5, T6, T7)` implements `FromRow<'r, R>`
+            `(T1, T2, T3, T4, T5, T6, T7, T8)` implements `FromRow<'r, R>`
+          and $N others
 note: required by a bound in `QueryBuilder::<'args, DB>::build_query_as`
-  --> $CARGO/sqlx-core-$VERSION/src/query_builder.rs
-   |
-   |     pub fn build_query_as<'q, T: FromRow<'q, DB::Row>>(
-   |                                  ^^^^^^^^^^^^^^^^^^^^ required by this bound in `QueryBuilder::<'args, DB>::build_query_as`
+ --> $CARGO/sqlx-core-$VERSION/src/query_builder.rs
+  |
+  |     pub fn build_query_as<'q, T: FromRow<'q, DB::Row>>(
+  |                                  ^^^^^^^^^^^^^^^^^^^^ required by this bound in `QueryBuilder::<'args, DB>::build_query_as`
 help: use a unary tuple instead
-   |
- 6 ~     let _ = (sql_forge!(
- 7 |         sqlx::Postgres,
- 8 |         support::TransparentId,
- 9 |         "SELECT id FROM users LIMIT 1",
-10 ~     ),);
-   |
+  |
+6 ~     let _ = (sql_forge!(
+7 |         support::TransparentId,
+8 |         "SELECT id FROM users LIMIT 1",
+9 ~     ),);
+  |
 
-error[E0599]: the method `fetch_all` exists for struct `QueryAs<'_, Postgres, TransparentId, PgArguments>`, but its trait bounds were not satisfied
-  --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:6:13
-   |
- 6 |       let _ = sql_forge!(
-   |  _____________^
- 7 | |         sqlx::Postgres,
- 8 | |         support::TransparentId,
- 9 | |         "SELECT id FROM users LIMIT 1",
-10 | |     );
-   | |_____^ method cannot be called on `QueryAs<'_, Postgres, TransparentId, PgArguments>` due to unsatisfied trait bounds
-   |
-  ::: tests/sqlite/tmp-ui/support/mod.rs
-   |
-   |   pub struct TransparentId(pub i64);
-   |   ------------------------ doesn't satisfy `TransparentId: FromRow<'r, PgRow>`
-   |
-   = note: the following trait bounds were not satisfied:
-           `TransparentId: FromRow<'r, PgRow>`
-   = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
+error[E0599]: the method `fetch_all` exists for struct `QueryAs<'_, Sqlite, TransparentId, SqliteArguments<'args>>`, but its trait bounds were not satisfied
+ --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:6:13
+  |
+6 |       let _ = sql_forge!(
+  |  _____________^
+7 | |         support::TransparentId,
+8 | |         "SELECT id FROM users LIMIT 1",
+9 | |     );
+  | |_____^ method cannot be called due to unsatisfied trait bounds
+  |
+ ::: tests/sqlite/tmp-ui/support/mod.rs
+  |
+  |   pub struct TransparentId(pub i64);
+  |   ------------------------ doesn't satisfy `TransparentId: FromRow<'r, SqliteRow>`
+  |
+  = note: the following trait bounds were not satisfied:
+          `TransparentId: FromRow<'r, SqliteRow>`
+  = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error[E0599]: the method `fetch_one` exists for struct `QueryAs<'_, Postgres, TransparentId, PgArguments>`, but its trait bounds were not satisfied
-  --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:6:13
-   |
- 6 |       let _ = sql_forge!(
-   |  _____________^
- 7 | |         sqlx::Postgres,
- 8 | |         support::TransparentId,
- 9 | |         "SELECT id FROM users LIMIT 1",
-10 | |     );
-   | |_____^ method cannot be called on `QueryAs<'_, Postgres, TransparentId, PgArguments>` due to unsatisfied trait bounds
-   |
-  ::: tests/sqlite/tmp-ui/support/mod.rs
-   |
-   |   pub struct TransparentId(pub i64);
-   |   ------------------------ doesn't satisfy `TransparentId: FromRow<'r, PgRow>`
-   |
-   = note: the following trait bounds were not satisfied:
-           `TransparentId: FromRow<'r, PgRow>`
-   = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
+error[E0599]: the method `fetch_one` exists for struct `QueryAs<'_, Sqlite, TransparentId, SqliteArguments<'args>>`, but its trait bounds were not satisfied
+ --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:6:13
+  |
+6 |       let _ = sql_forge!(
+  |  _____________^
+7 | |         support::TransparentId,
+8 | |         "SELECT id FROM users LIMIT 1",
+9 | |     );
+  | |_____^ method cannot be called due to unsatisfied trait bounds
+  |
+ ::: tests/sqlite/tmp-ui/support/mod.rs
+  |
+  |   pub struct TransparentId(pub i64);
+  |   ------------------------ doesn't satisfy `TransparentId: FromRow<'r, SqliteRow>`
+  |
+  = note: the following trait bounds were not satisfied:
+          `TransparentId: FromRow<'r, SqliteRow>`
+  = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error[E0599]: the method `fetch_optional` exists for struct `QueryAs<'_, Postgres, TransparentId, PgArguments>`, but its trait bounds were not satisfied
-  --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:6:13
-   |
- 6 |       let _ = sql_forge!(
-   |  _____________^
- 7 | |         sqlx::Postgres,
- 8 | |         support::TransparentId,
- 9 | |         "SELECT id FROM users LIMIT 1",
-10 | |     );
-   | |_____^ method cannot be called on `QueryAs<'_, Postgres, TransparentId, PgArguments>` due to unsatisfied trait bounds
-   |
-  ::: tests/sqlite/tmp-ui/support/mod.rs
-   |
-   |   pub struct TransparentId(pub i64);
-   |   ------------------------ doesn't satisfy `TransparentId: FromRow<'r, PgRow>`
-   |
-   = note: the following trait bounds were not satisfied:
-           `TransparentId: FromRow<'r, PgRow>`
-   = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
+error[E0599]: the method `fetch_optional` exists for struct `QueryAs<'_, Sqlite, TransparentId, SqliteArguments<'args>>`, but its trait bounds were not satisfied
+ --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:6:13
+  |
+6 |       let _ = sql_forge!(
+  |  _____________^
+7 | |         support::TransparentId,
+8 | |         "SELECT id FROM users LIMIT 1",
+9 | |     );
+  | |_____^ method cannot be called due to unsatisfied trait bounds
+  |
+ ::: tests/sqlite/tmp-ui/support/mod.rs
+  |
+  |   pub struct TransparentId(pub i64);
+  |   ------------------------ doesn't satisfy `TransparentId: FromRow<'r, SqliteRow>`
+  |
+  = note: the following trait bounds were not satisfied:
+          `TransparentId: FromRow<'r, SqliteRow>`
+  = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)

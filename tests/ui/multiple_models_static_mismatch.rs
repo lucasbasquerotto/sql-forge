@@ -4,7 +4,6 @@ mod support;
 
 fn main() {
     let _ = sql_forge!(
-        sqlx::Postgres,
         (
             >user = support::User,
             >amount = support::AmountResult,

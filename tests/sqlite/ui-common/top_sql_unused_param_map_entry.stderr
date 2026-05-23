@@ -1,5 +1,5 @@
 error: sql_forge!: parameter :id is unused in the SQL template
-  --> tests/sqlite/tmp-ui/top_sql_unused_param_map_entry.rs:10:12
-   |
-10 |         ( :id = 1i64 ),
-   |            ^^
+ --> tests/sqlite/tmp-ui/top_sql_unused_param_map_entry.rs:9:12
+  |
+9 |         ( :id = 1i64 ),
+  |            ^^

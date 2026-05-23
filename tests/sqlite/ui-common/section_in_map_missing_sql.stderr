@@ -1,5 +1,5 @@
 error: sql_forge!: section `#filter` is declared in the section map but `{#filter}` never appears in the SQL
- --> tests/sqlite/tmp-ui/section_in_map_missing_sql.rs:9:9
+ --> tests/sqlite/tmp-ui/section_in_map_missing_sql.rs:8:9
   |
-9 |         "SELECT id, name FROM users",
+8 |         "SELECT id, name FROM users",
   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

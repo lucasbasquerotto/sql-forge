@@ -1,5 +1,5 @@
 error: sql_forge!: section {#filter} has no mapping
- --> tests/sqlite/tmp-ui/section_in_sql_missing_map.rs:9:9
+ --> tests/sqlite/tmp-ui/section_in_sql_missing_map.rs:8:9
   |
-9 |         "SELECT id, name FROM users {#filter}",
+8 |         "SELECT id, name FROM users {#filter}",
   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

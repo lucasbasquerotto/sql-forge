@@ -1,5 +1,5 @@
 error: sql_forge!: parameter :def has no mapping
- --> tests/postgres/tmp-ui/caveat_string_literal_colon.rs:9:9
+ --> tests/postgres/tmp-ui/caveat_string_literal_colon.rs:8:9
   |
-9 |         r#"SELECT id, name FROM users WHERE name = "abc:def""#,
+8 |         r#"SELECT id, name FROM users WHERE name = "abc:def""#,
   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

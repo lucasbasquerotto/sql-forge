@@ -1,5 +1,5 @@
 error: sql_forge!: parameter :id is unused in the SQL template
-  --> tests/mysql/tmp-ui/section_param_unused_in_section_sql.rs:13:20
+  --> tests/mysql/tmp-ui/section_param_unused_in_section_sql.rs:12:20
    |
-13 |                 ( :id = 1i64 ),
+12 |                 ( :id = 1i64 ),
    |                    ^^

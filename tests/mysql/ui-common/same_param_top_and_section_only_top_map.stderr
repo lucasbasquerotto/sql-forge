@@ -1,5 +1,5 @@
 error: sql_forge!: parameter :id has no mapping
-  --> tests/mysql/tmp-ui/same_param_top_and_section_only_top_map.rs:12:23
+  --> tests/mysql/tmp-ui/same_param_top_and_section_only_top_map.rs:11:23
    |
-12 |             #filter = " AND id <= :id ",
+11 |             #filter = " AND id <= :id ",
    |                       ^^^^^^^^^^^^^^^^^

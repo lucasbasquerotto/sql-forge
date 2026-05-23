@@ -3,12 +3,12 @@ error[E0560]: struct `AmountResult` has no field named `id`
    |
  6 |       let _ = sql_forge!(
    |  _____________^
- 7 | |         sqlx::Postgres,
- 8 | |         (
- 9 | |             >user = support::User,
-...  |
-12 | |         "SELECT id, name FROM users LIMIT 1",
-13 | |     );
+ 7 | |         (
+ 8 | |             >user = support::User,
+ 9 | |             >amount = support::AmountResult,
+10 | |         ),
+11 | |         "SELECT id, name FROM users LIMIT 1",
+12 | |     );
    | |_____^ `AmountResult` does not have this field
    |
    = note: all struct fields are already assigned
@@ -19,12 +19,12 @@ error[E0560]: struct `AmountResult` has no field named `name`
    |
  6 |       let _ = sql_forge!(
    |  _____________^
- 7 | |         sqlx::Postgres,
- 8 | |         (
- 9 | |             >user = support::User,
-...  |
-12 | |         "SELECT id, name FROM users LIMIT 1",
-13 | |     );
+ 7 | |         (
+ 8 | |             >user = support::User,
+ 9 | |             >amount = support::AmountResult,
+10 | |         ),
+11 | |         "SELECT id, name FROM users LIMIT 1",
+12 | |     );
    | |_____^ `AmountResult` does not have this field
    |
    = note: all struct fields are already assigned

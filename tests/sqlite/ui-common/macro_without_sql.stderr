@@ -1,7 +1,7 @@
 error: expected `,`
  --> tests/sqlite/tmp-ui/macro_without_sql.rs:6:13
   |
-6 |     let _ = sql_forge!(sqlx::Postgres, support::User);
-  |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+6 |     let _ = sql_forge!(support::User);
+  |             ^^^^^^^^^^^^^^^^^^^^^^^^^
   |
   = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)

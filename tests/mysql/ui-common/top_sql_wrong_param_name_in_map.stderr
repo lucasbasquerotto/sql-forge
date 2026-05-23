@@ -1,5 +1,5 @@
 error: sql_forge!: parameter :user_id is unused in the SQL template
-  --> tests/mysql/tmp-ui/top_sql_wrong_param_name_in_map.rs:10:12
-   |
-10 |         ( :user_id = 1i64 ),
-   |            ^^^^^^^
+ --> tests/mysql/tmp-ui/top_sql_wrong_param_name_in_map.rs:9:12
+  |
+9 |         ( :user_id = 1i64 ),
+  |            ^^^^^^^

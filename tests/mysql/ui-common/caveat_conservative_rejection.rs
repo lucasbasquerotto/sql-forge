@@ -11,7 +11,6 @@ fn main() {
     }
 
     let _ = sql_forge!(
-        sqlx::Postgres,
         Row,
         r#"
         SELECT t1.id AS field_1, {#field_2}

@@ -1,5 +1,5 @@
 error: sql_forge!: parameter :id has no mapping
- --> tests/sqlite/tmp-ui/top_sql_missing_param_value.rs:9:9
+ --> tests/sqlite/tmp-ui/top_sql_missing_param_value.rs:8:9
   |
-9 |         "SELECT id, name FROM users WHERE id = :id",
+8 |         "SELECT id, name FROM users WHERE id = :id",
   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

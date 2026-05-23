@@ -1,5 +1,5 @@
 error: sql_forge!: parameter :id has no mapping
-  --> tests/mysql/tmp-ui/section_sql_missing_section_param.rs:11:23
+  --> tests/mysql/tmp-ui/section_sql_missing_section_param.rs:10:23
    |
-11 |             #filter = " WHERE id = :id ",
+10 |             #filter = " WHERE id = :id ",
    |                       ^^^^^^^^^^^^^^^^^^

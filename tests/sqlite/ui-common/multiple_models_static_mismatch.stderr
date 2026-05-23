@@ -3,12 +3,12 @@ error: error returned from database: (code: 14) unable to open database file
    |
  6 |       let _ = sql_forge!(
    |  _____________^
- 7 | |         sqlx::Postgres,
- 8 | |         (
- 9 | |             >user = support::User,
-...  |
-12 | |         "SELECT id, name FROM users LIMIT 1",
-13 | |     );
+ 7 | |         (
+ 8 | |             >user = support::User,
+ 9 | |             >amount = support::AmountResult,
+10 | |         ),
+11 | |         "SELECT id, name FROM users LIMIT 1",
+12 | |     );
    | |_____^
    |
    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)

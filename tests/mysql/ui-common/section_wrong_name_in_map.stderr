@@ -1,5 +1,5 @@
 error: sql_forge!: section `#wrong` is declared in the section map but `{#wrong}` never appears in the SQL
- --> tests/mysql/tmp-ui/section_wrong_name_in_map.rs:9:9
+ --> tests/mysql/tmp-ui/section_wrong_name_in_map.rs:8:9
   |
-9 |         "SELECT id, name FROM users {#filter}",
+8 |         "SELECT id, name FROM users {#filter}",
   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
