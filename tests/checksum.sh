@@ -7,10 +7,9 @@ REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 FILES=(
     "tests/tests.rs"
     "src/lib.rs"
-    "crates/sql-forge-macro/src/lib.rs"
-    "crates/sql-forge-macro/Cargo.toml"
-    "crates/sql-forge-trait/src/lib.rs"
-    "crates/sql-forge-trait/Cargo.toml"
+    "src/traits.rs"
+    "sql-forge-macro/src/lib.rs"
+    "sql-forge-macro/Cargo.toml"
 )
 
 for file in "${FILES[@]}"; do

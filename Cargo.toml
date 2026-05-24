@@ -11,8 +11,7 @@ readme = "README.md"
 [workspace]
 members = [
 	".",
-	"crates/sql-forge-macro",
-	"crates/sql-forge-trait",
+	"sql-forge-macro",
 ]
 
 [workspace.package]
@@ -23,12 +22,11 @@ homepage = "https://github.com/lucasbasquerotto/sql-forge"
 repository = "https://github.com/lucasbasquerotto/sql-forge"
 
 [workspace.dependencies]
-sql-forge-macro = { version = "0.1.0", path = "./crates/sql-forge-macro" }
-sql-forge-trait = { version = "0.1.0", path = "./crates/sql-forge-trait" }
+sql-forge-macro = { version = "0.1.0", path = "./sql-forge-macro" }
 
 [dependencies]
 sql-forge-macro.workspace = true
-sql-forge-trait.workspace = true
+sqlx = { version = "0.8", default-features = false }
 
 [dev-dependencies]
 sqlx = { version = "0.8", features = ["mysql", "postgres", "sqlite", "runtime-tokio"] }

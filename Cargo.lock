@@ -1039,7 +1039,6 @@ name = "sql-forge"
 version = "0.1.0"
 dependencies = [
  "sql-forge-macro",
- "sql-forge-trait",
  "sqlx",
  "tokio",
  "trybuild",
@@ -1053,13 +1052,6 @@ dependencies = [
  "quote",
  "syn",
  "toml 0.8.23",
-]
-
-[[package]]
-name = "sql-forge-trait"
-version = "0.1.0"
-dependencies = [
- "sqlx",
 ]
 
 [[package]]

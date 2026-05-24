@@ -165,7 +165,7 @@ jobs:
             }
           ' Cargo.toml)
 
-          for manifest in Cargo.toml crates/sql-forge-macro/Cargo.toml crates/sql-forge-trait/Cargo.toml; do
+          for manifest in Cargo.toml sql-forge-macro/Cargo.toml; do
             if ! grep -q '^version\.workspace = true$' "$manifest"; then
               echo "ERROR: $manifest must inherit the workspace version."
               exit 1
@@ -176,14 +176,6 @@ jobs:
             echo "ERROR: Tag version ($TAG_VERSION) does not match workspace version ($WORKSPACE_VERSION)."
             exit 1
           fi
-
-      - name: Publish sql-forge-trait
-        run: cargo publish -p sql-forge-trait
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-
-      - name: Wait for sql-forge-trait to be indexed
-        run: sleep 30
 
       - name: Publish sql-forge-macro
         run: cargo publish -p sql-forge-macro
