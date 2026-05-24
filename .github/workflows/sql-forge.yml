@@ -177,6 +177,9 @@ jobs:
             exit 1
           fi
 
+      - name: Dry run publish sql-forge-macro
+        run: cargo publish -p sql-forge-macro --dry-run
+
       - name: Publish sql-forge-macro
         run: cargo publish -p sql-forge-macro
         env:
@@ -185,7 +188,10 @@ jobs:
       - name: Wait for sql-forge-macro to be indexed
         run: sleep 30
 
+      - name: Dry run publish sql-forge
+        run: cargo publish -p sql-forge --dry-run --no-verify
+
       - name: Publish sql-forge
-        run: cargo publish -p sql-forge
+        run: cargo publish -p sql-forge --no-verify
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
