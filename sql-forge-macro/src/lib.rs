@@ -1309,9 +1309,8 @@ fn render_validator_args(
         };
 
         if is_list {
-            let first = quote! { *(#local_ident).as_slice().first().unwrap_or(&0i64) };
             for _ in 0..context.list_count {
-                args.push(first.clone());
+                args.push(quote! { *(#local_ident).as_slice().first().unwrap_or(&0i64) });
             }
         } else {
             args.push(quote! { #local_ident });
@@ -1340,7 +1339,7 @@ fn render_runtime_fragment(
                 steps.push(quote! { __builder.push(#lit_str); });
             }
             TextPart::Param { name, is_list } => {
-                let Some(local_ident) = local_params.get(&name).cloned() else {
+                let Some(local_ident) = local_params.get(&name) else {
                     return Err(syn::Error::new(
                         fragment.span,
                         format!("sql_forge!: parameter :{} has no mapping", name),
@@ -1755,12 +1754,13 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
             vec![(None, None, None)]
         }
         ResultSpec::Single(ref model) => {
+            let model_ty = (**model).clone();
             let scalar = if force_scalar {
-                Some((**model).clone())
+                Some(model_ty.clone())
             } else {
                 scalar_output_type(model.as_ref()).cloned()
             };
-            vec![(None, Some((**model).clone()), scalar)]
+            vec![(None, Some(model_ty), scalar)]
         }
         ResultSpec::Group(ref cases) => {
             if force_scalar {
@@ -1785,19 +1785,20 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                     .into();
                 }
 
+                let model = case.model.clone();
                 let scalar = if case.force_scalar {
-                    Some(case.model.clone())
+                    Some(model.clone())
                 } else {
                     scalar_output_type(&case.model).cloned()
                 };
-                out.push((Some(key), Some(case.model.clone()), scalar));
+                out.push((Some(key), Some(model), scalar));
             }
             out
         }
     };
     let group_result_keys: Vec<String> = result_cases
         .iter()
-        .filter_map(|(key, _, _)| key.clone())
+        .filter_map(|(key, _, _)| key.as_ref().cloned())
         .collect();
     let is_grouped_result = !group_result_keys.is_empty();
     let sql_span = sql.span();
@@ -1869,11 +1870,10 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
             Err(err) => return err,
         };
 
-    let sections_for_validation = sections.clone();
     let mut runtime_section_actions = HashMap::<String, TokenStream2>::new();
 
     // ---- Phase 6: Process sections: build runtime actions and collect validation variants ----
-    for assign in sections {
+    for assign in &sections {
         let SectionAssign { names, value } = assign;
 
         // Build runtime actions first, while `value` is still available by reference.
@@ -1889,7 +1889,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                 .into();
             }
             let action = match build_section_runtime_action(
-                &value,
+                value,
                 section_idx,
                 &format!("section_{}", name),
             ) {
@@ -1900,14 +1900,14 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
         }
 
         // Consume `value` here so invalid grouped/nested section structures fail early.
-        if let Err(msg) = collect_section_variants(value, names.len()) {
+        if let Err(msg) = collect_section_variants(value.clone(), names.len()) {
             return syn::Error::new(names[0].span(), msg)
                 .to_compile_error()
                 .into();
         }
 
         for (name, action) in named_actions {
-            runtime_section_actions.insert(name.clone(), action);
+            runtime_section_actions.insert(name, action);
         }
     }
 
@@ -1947,17 +1947,17 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
     let mut grouped_validator_invocations = Vec::<TokenStream2>::new();
 
     for (result_key, model_opt, scalar_model_ty) in result_cases.iter() {
-        let suffix = result_key.clone().unwrap_or_else(|| "single".to_string());
+        let suffix = result_key.as_deref().unwrap_or("single");
         let query_ident = format_ident!("__SqlForgeQuery_{}", suffix);
         let query_value_ident = format_ident!("__sql_forge_value_{}", suffix);
 
         let flag_bindings = build_result_flag_bindings(&group_result_keys, result_key.as_deref());
 
         let mut section_variants_for_validation = HashMap::<String, Vec<SectionFragment>>::new();
-        for assign in sections_for_validation.iter().cloned() {
+        for assign in &sections {
             let SectionAssign { names, value } = assign;
             let variants_by_section = match collect_section_variants_for_result(
-                value,
+                value.clone(),
                 names.len(),
                 result_key.as_deref(),
             ) {
@@ -1969,7 +1969,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                 }
             };
 
-            for (name_ident, section_cases) in names.into_iter().zip(variants_by_section) {
+            for (name_ident, section_cases) in names.iter().zip(variants_by_section) {
                 section_variants_for_validation.insert(name_ident.to_string(), section_cases);
             }
         }
@@ -2469,7 +2469,6 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
             group_field_defs.push(quote! {
                 #method_ident: #query_ident<'args>
             });
-            group_field_idents.push(method_ident.clone());
             group_field_tys.push(quote! { #query_ident<'args> });
             group_method_defs.push(quote! {
                 pub fn #method_ident(self) -> #query_ident<'args> {
@@ -2489,6 +2488,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                     }
                 }
             });
+            group_field_idents.push(method_ident);
         }
     }
 
