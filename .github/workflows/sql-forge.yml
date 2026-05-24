@@ -41,7 +41,7 @@ jobs:
 
     env:
       ENV_DB_TYPE: ${{ matrix.db-type }}
-      DATABASE_URL: ${{ matrix.db-type == 'mysql' && 'mysql://root:root@127.0.0.1:3306/sql_forge_test' || matrix.db-type == 'postgres' && 'postgres://postgres:root@127.0.0.1:5432/sql_forge_test' || 'sqlite:sql_forge_test.db' }}
+      DATABASE_URL: ${{ matrix.db-type == 'mysql' && 'mysql://root:root@127.0.0.1:3306/sql_forge_test' || matrix.db-type == 'postgres' && 'postgres://postgres:root@127.0.0.1:5432/sql_forge_test' || format('sqlite:{0}/sql_forge_test.db', github.workspace) }}
       SQL_FORGE_DB_TYPE: ${{ matrix.db-type == 'mysql' && 'sqlx::MySql' || matrix.db-type == 'postgres' && 'sqlx::Postgres' || 'sqlx::Sqlite' }}
       SQLX_ENV_DIR: tests/${{ matrix.db-type }}/.sqlx
 

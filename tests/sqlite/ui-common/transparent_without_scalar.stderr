@@ -1,15 +1,3 @@
-error: error returned from database: (code: 14) unable to open database file
- --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:6:13
-  |
-6 |       let _ = sql_forge!(
-  |  _____________^
-7 | |         support::TransparentId,
-8 | |         "SELECT id FROM users LIMIT 1",
-9 | |     );
-  | |_____^
-  |
-  = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
-
 error[E0277]: the trait bound `TransparentId: FromRow<'_, SqliteRow>` is not satisfied
  --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:7:9
   |
@@ -105,3 +93,28 @@ error[E0599]: the method `fetch_optional` exists for struct `QueryAs<'_, Sqlite,
   = note: the following trait bounds were not satisfied:
           `TransparentId: FromRow<'r, SqliteRow>`
   = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0560]: struct `TransparentId` has no field named `id`
+ --> tests/sqlite/tmp-ui/transparent_without_scalar.rs:6:13
+  |
+6 |       let _ = sql_forge!(
+  |  _____________^
+7 | |         support::TransparentId,
+8 | |         "SELECT id FROM users LIMIT 1",
+9 | |     );
+  | |_____^ field does not exist
+  |
+ ::: tests/sqlite/tmp-ui/support/mod.rs
+  |
+  |   pub struct TransparentId(pub i64);
+  |              ------------- `TransparentId` defined here
+  |
+  = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: `TransparentId` is a tuple struct, use the appropriate syntax
+  |
+6 -     let _ = sql_forge!(
+7 -         support::TransparentId,
+8 -         "SELECT id FROM users LIMIT 1",
+9 -     );
+6 +     let _ = TransparentId(/* i64 */);
+  |

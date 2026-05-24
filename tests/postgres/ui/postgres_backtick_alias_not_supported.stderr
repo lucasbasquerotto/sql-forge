@@ -1,0 +1,11 @@
+error: error returned from database: syntax error at or near "`"
+  --> tests/postgres/ui/postgres_backtick_alias_not_supported.rs:9:13
+   |
+ 9 |       let _ = sql_forge!(
+   |  _____________^
+10 | |         Row,
+11 | |         "SELECT 1 AS `field_name: _`",
+12 | |     );
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)

@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        SELECT t1.id AS field_1, t1.name AS field_2\n        FROM users t1\n         JOIN organisations o ON o.id = t1.id \n        WHERE 1 = 1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "field_1",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "field_2",
+        "ordinal": 1,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "1edbd0db2440730f5c29b63ab6977a8726e479f549b301fc6b4d4385c7e8ce03"
+}

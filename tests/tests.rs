@@ -805,3 +805,11 @@ fn compile_fail() {
     let tests = trybuild::TestCases::new();
     tests.compile_fail(&pattern);
 }
+
+#[test]
+fn compile_fail_specific() {
+    let db_type = std::env::var("ENV_DB_TYPE").expect("ENV_DB_TYPE not defined");
+    let pattern = format!("tests/{db_type}/ui/*.rs");
+    let tests = trybuild::TestCases::new();
+    tests.compile_fail(&pattern);
+}

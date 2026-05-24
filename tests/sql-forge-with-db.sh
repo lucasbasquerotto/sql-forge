@@ -1,10 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-export ENV_DIR="tests/$ENV_DB_TYPE"
-export SQLX_OFFLINE_DIR="/app/$ENV_DIR/.sqlx"
-export TRYBUILD=overwrite
-
 rm -rf "$ENV_DIR/tmp-ui"
 mkdir -p "$ENV_DIR/tmp-ui"
 cp -r tests/ui/. "$ENV_DIR/tmp-ui/"

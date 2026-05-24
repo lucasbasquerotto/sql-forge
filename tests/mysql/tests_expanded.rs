@@ -7039,6 +7039,37 @@ fn compile_fail() {
     let tests = trybuild::TestCases::new();
     tests.compile_fail(&pattern);
 }
+extern crate test;
+#[rustc_test_marker = "compile_fail_specific"]
+#[doc(hidden)]
+pub const compile_fail_specific: test::TestDescAndFn = test::TestDescAndFn {
+    desc: test::TestDesc {
+        name: test::StaticTestName("compile_fail_specific"),
+        ignore: false,
+        ignore_message: ::core::option::Option::None,
+        source_file: "tests/tests.rs",
+        start_line: 810usize,
+        start_col: 4usize,
+        end_line: 810usize,
+        end_col: 25usize,
+        compile_fail: false,
+        no_run: false,
+        should_panic: test::ShouldPanic::No,
+        test_type: test::TestType::IntegrationTest,
+    },
+    testfn: test::StaticTestFn(
+        #[coverage(off)]
+        || test::assert_test_result(compile_fail_specific()),
+    ),
+};
+fn compile_fail_specific() {
+    let db_type = std::env::var("ENV_DB_TYPE").expect("ENV_DB_TYPE not defined");
+    let pattern = ::alloc::__export::must_use({
+        ::alloc::fmt::format(format_args!("tests/{0}/ui/*.rs", db_type))
+    });
+    let tests = trybuild::TestCases::new();
+    tests.compile_fail(&pattern);
+}
 #[rustc_main]
 #[coverage(off)]
 #[doc(hidden)]
@@ -7049,6 +7080,7 @@ pub fn main() -> () {
             &basic_query_with_inline_params,
             &combining_features_example,
             &compile_fail,
+            &compile_fail_specific,
             &db_type_matches_env_db_type,
             &execute_batch,
             &execute_batch_full,

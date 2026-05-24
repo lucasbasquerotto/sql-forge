@@ -1,4 +1,4 @@
-error: error returned from database: (code: 14) unable to open database file
+error: error returned from database: (code: 1) no such column: o.name
   --> tests/sqlite/tmp-ui/caveat_conservative_rejection.rs:13:13
    |
 13 |       let _ = sql_forge!(
