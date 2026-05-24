@@ -677,17 +677,11 @@ let rows: Vec<Product> = sql_forge!(
 
 ### String literals containing `:`
 
-The macro scans the SQL template text for `:parameter` tokens to locate bind parameter placeholders.
-A colon that appears **inside a SQL string literal** in the template (e.g. `"abc:def"`) is
-indistinguishable from a parameter placeholder at the text level and will cause a parse error
-or an unexpected parameter name.
+The macro scans the SQL template text for `:parameter` tokens to locate bind parameter placeholders. A colon that appears **inside a SQL string literal** in the template (e.g. `"abc:def"`) is indistinguishable from a parameter placeholder at the text level and will cause a parse error or an unexpected parameter name.
 
-This also affects MySQL-specific alias text such as ```SELECT 1 AS `my_field:String` ```.
-The parser still sees `:String` as a parameter token, so that alias form is not supported
-inside a `sql_forge!` SQL template. You can add a whitespace to avoid that: ```SELECT 1 AS `my_field: String` ```.
+This also affects MySQL-specific alias text such as ```SELECT 1 AS `my_field:String` ```. The parser still sees `:String` as a parameter token, so that alias form is not supported inside a `sql_forge!` SQL template. You can add a whitespace to avoid that: ```SELECT 1 AS `my_field: String` ```.
 
-**Workaround:** pass the value as a bind parameter and use the `:parameter` placeholder in the
-template instead of embedding the literal directly.
+**Workaround:** pass the value as a bind parameter and use the `:parameter` placeholder in the template instead of embedding the literal directly.
 
 | ❌ Inline literal (breaks)                 | ✅ Bind parameter (correct)                       |
 | ------------------------------------------ | ------------------------------------------------- |
@@ -709,12 +703,9 @@ let _query = sql_forge!(
 
 ### String literals containing `{#`
 
-The macro also scans the SQL template text for `{#section}` tokens to locate dynamic section slots.
-A `{#` sequence that appears **inside a SQL string literal** in the template (e.g. `"abc{#def"`)
-will be treated as a section slot, causing a parse error or a missing-section error.
+The macro also scans the SQL template text for `{#section}` tokens to locate dynamic section slots. A `{#` sequence that appears **inside a SQL string literal** in the template (e.g. `"abc{#def"`) will be treated as a section slot, causing a parse error or a missing-section error.
 
-**Workaround:** pass the value as a bind parameter and use the `:parameter` placeholder in the
-template instead.
+**Workaround:** pass the value as a bind parameter and use the `:parameter` placeholder in the template instead.
 
 | ❌ Inline literal (breaks)                  | ✅ Bind parameter (correct)                        |
 | ------------------------------------------- | -------------------------------------------------- |
@@ -736,13 +727,9 @@ let _query = sql_forge!(
 
 ### String literals containing `{(` or `)}`
 
-The macro also scans the SQL template text for `{( ... )}` batch sections.
-A `{(` sequence anywhere in the template starts batch parsing, even if it appeared only as part
-of a string literal. A `)}` sequence is only special while the parser is already inside a batch
-section, where it can prematurely terminate or unbalance the batch body.
+The macro also scans the SQL template text for `{( ... )}` batch sections. A `{(` sequence anywhere in the template starts batch parsing, even if it appeared only as part of a string literal. A `)}` sequence is only special while the parser is already inside a batch section, where it can prematurely terminate or unbalance the batch body.
 
-In practice, both markers should be avoided inside inline literals. Pass those values as bind
-parameters instead.
+In practice, both markers should be avoided inside inline literals. Pass those values as bind parameters instead.
 
 | ❌ Inline literal (breaks)                          | ✅ Bind parameter (correct)                         |
 | --------------------------------------------------- | -------------------------------------------------- |
@@ -888,3 +875,25 @@ sql_forge!(
 ```
 
 Grouping keeps related fragments synchronized, avoids skipped problematic combinations, and reduces fragile query shapes during maintenance.
+
+---
+
+## Development Workflow & CI Parity
+
+Before pushing changes, run the full local validation flow with Docker:
+
+```sh
+docker compose exec rust sql-forge-test
+```
+
+This command is the expected end-to-end local check for the project. It runs the full backend matrix flow and refreshes generated artifacts that are used by tests and reviews.
+
+After it finishes, verify any generated or changed artifacts before pushing, especially:
+
+- `.stderr` files under `tests/{db_type}/tmp-ui`
+- `.stderr` files under `tests/{db_type}/ui`
+- expanded Rust files under `tests/{db_type}/tests_expanded.rs`
+
+Those files can change when the macro expansion, validation behavior, expected compile-fail output, or relevant dependency and tool versions change. Review them carefully to confirm that the errors and expansions are still correct.
+
+Only commit those generated changes when they make sense for the current state of the codebase, for example when a compile-fail test still fails for the right reason and an expanded file still reflects the intended macro expansion.

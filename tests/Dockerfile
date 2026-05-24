@@ -14,14 +14,14 @@ RUN cargo install sqlx-cli --version 0.8.6 && \
 RUN cargo install cargo-expand
 
 COPY tests/sql-forge-with-db.sh /usr/local/bin/sql-forge-with-db
-COPY tests/sql-forge-test.sh  /usr/local/bin/sql-forge-test
+COPY tests/sql-forge.sh  /usr/local/bin/sql-forge
 COPY tests/env-mysql.sh  /usr/local/bin/env-mysql
 COPY tests/env-postgres.sh  /usr/local/bin/env-postgres
 COPY tests/env-sqlite.sh  /usr/local/bin/env-sqlite
 
 RUN chmod +x \
     /usr/local/bin/sql-forge-with-db \
-    /usr/local/bin/sql-forge-test \
+    /usr/local/bin/sql-forge \
     /usr/local/bin/env-mysql \
     /usr/local/bin/env-postgres \
     /usr/local/bin/env-sqlite
