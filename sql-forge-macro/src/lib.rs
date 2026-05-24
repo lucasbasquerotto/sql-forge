@@ -1470,6 +1470,7 @@ fn collect_used_param_names_in_sql(sql: &str) -> Vec<String> {
 ///     [(sections),]// optional: ( #name = ..., ... )
 ///     [..batch]    // optional: batch source expression used by {( ... )}
 /// )
+/// ```
 ///
 /// `Model` has three forms:
 /// - omitted: execute-only query; only `.execute(...)` is available
@@ -1487,8 +1488,9 @@ fn collect_used_param_names_in_sql(sql: &str) -> Vec<String> {
 /// # Parameters
 ///
 /// Named parameters are written `:name` in the SQL. At runtime each occurrence
-/// is replaced by a `push_bind` call; at compile time it becomes `?` for
-/// `query_as!` / `query_scalar!`.
+/// is replaced by a `push_bind` call; at compile time it becomes a
+/// database-specific placeholder: `?` for MySQL and SQLite, and `$1`, `$2`, ...
+/// for Postgres.
 ///
 /// **Inline map** – bind individual expressions:
 /// ```rust,ignore
@@ -1616,7 +1618,7 @@ fn collect_used_param_names_in_sql(sql: &str) -> Vec<String> {
 /// ```
 ///
 /// For compile-time checking, the validator expands the batch to 3 fake copies
-/// (`(?, ?, 10, 'Batch'), (?, ?, 10, 'Batch')`, (?, ?, 10, 'Batch')`).
+/// (`(?, ?, 10, 'Batch'), (?, ?, 10, 'Batch'), (?, ?, 10, 'Batch')`).
 /// At runtime the iterable drives the actual number of rows.
 ///
 /// # Scalar output
@@ -1639,8 +1641,8 @@ fn collect_used_param_names_in_sql(sql: &str) -> Vec<String> {
 ///     ( :cat = category_id ),
 ///     (
 ///         #fields = match {>count} {           // {>key} is true when building
-///             true  => "COUNT(*) AS total",    //   the query for that key
-///             false => "id, name, price",       //   and false otherwise
+///             true  => "COUNT(*) AS total",    // the query for that model/result
+///             false => "id, name, price",      // key and false otherwise
 ///         }
 ///     )
 /// )
@@ -1675,33 +1677,6 @@ fn collect_used_param_names_in_sql(sql: &str) -> Vec<String> {
 /// )
 /// .execute(&pool)
 /// .await?;
-/// ```
-///
-/// # Caveats
-///
-/// **String literals containing `:`**
-///
-/// In this case, the template scanner cannot distinguish
-/// a colon inside a SQL string literal from a `:name` placeholder. Embedding
-/// `"abc:def"` directly in the template will fail.
-/// Pass such values as bind parameters instead:
-///
-/// ```rust,ignore
-/// // ❌  sql_forge!(User, r#"WHERE name = "abc:def""#);
-/// // ✅
-/// sql_forge!(User, r#"WHERE name = :name"#, ( :name = "abc:def" ))
-/// ```
-///
-/// **String literals containing `{#`**
-///
-/// Similarly, a `{#` sequence inside a
-/// SQL string literal is treated as a section slot. Pass the value as a bind
-/// parameter:
-///
-/// ```rust,ignore
-/// // ❌  sql_forge!(User, r#"WHERE name = "abc{#def""#);
-/// // ✅
-/// sql_forge!(User, r#"WHERE name = :name"#, ( :name = "abc{#def" ))
 /// ```
 #[proc_macro]
 #[allow(clippy::too_many_lines)]
