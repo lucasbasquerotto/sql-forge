@@ -2726,7 +2726,6 @@ pub fn db_type(input: TokenStream) -> TokenStream {
 /// PostgreSQL databases (which require exact type matching in `query_as!`).
 ///
 /// ```rust,ignore
-/// #[sql_forge(diesel)]
 /// #[derive(Debug, PartialEq, Eq)]
 /// #[sql_forge_transparent]
 /// struct UserId(pub i64);
