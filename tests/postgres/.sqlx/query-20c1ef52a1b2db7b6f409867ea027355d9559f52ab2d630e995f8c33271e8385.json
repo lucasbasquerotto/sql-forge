@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT id, name FROM users WHERE id <= $1 LIMIT $2",
+  "query": "SELECT id, name FROM users WHERE id IN (NULL, NULL, NULL)",
   "describe": {
     "columns": [
       {
@@ -15,15 +15,12 @@
       }
     ],
     "parameters": {
-      "Left": [
-        "Int8",
-        "Int8"
-      ]
+      "Left": []
     },
     "nullable": [
       false,
       false
     ]
   },
-  "hash": "e154d06c9801af89d693577c4170583fb803b959923a192d607e84a0f1ac8a39"
+  "hash": "20c1ef52a1b2db7b6f409867ea027355d9559f52ab2d630e995f8c33271e8385"
 }

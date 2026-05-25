@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n        SELECT items.id, items.name, items.price, items.stock\n        FROM items\n        JOIN categories ON categories.id = items.category_id\n        WHERE items.category_id = $1\n        AND   items.price      >= $2\n        ORDER BY items.created_at DESC LIMIT $3 OFFSET $4\n        ",
+  "query": "\n        SELECT items.id, items.name, items.price, items.stock\n        FROM items\n        JOIN categories ON categories.id = items.category_id\n        WHERE items.category_id = NULL\n        AND   items.price      >= NULL\n        ORDER BY items.created_at DESC LIMIT NULL OFFSET NULL\n        ",
   "describe": {
     "columns": [
       {
@@ -25,12 +25,7 @@
       }
     ],
     "parameters": {
-      "Left": [
-        "Int8",
-        "Int8",
-        "Int8",
-        "Int8"
-      ]
+      "Left": []
     },
     "nullable": [
       false,
@@ -39,5 +34,5 @@
       false
     ]
   },
-  "hash": "ca3163e1f509b3a708b37d4e54d8b2a0d7deafdc0c07923c4e4b05edaa1fca71"
+  "hash": "bc8187a7861836a6263be55ed40051b894c56ca70e93938faa1a5fc4a5c5bd05"
 }

@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE products SET stock = stock + 1 WHERE id = NULL\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "57b0f8bc45792e03d378e0bafd83b6b1d5114e7e360ab811ee8f69ef56ab8742"
+}

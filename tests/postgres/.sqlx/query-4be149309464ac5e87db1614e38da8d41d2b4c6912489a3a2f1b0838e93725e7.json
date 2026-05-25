@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n        SELECT\n            p.id,\n            p.name,\n            p.price,\n            p.stock,\n            p.category\n        FROM products p\n        WHERE 1 = 1\n         AND p.category = $1 \n         AND p.price >= $2 \n         AND p.price <= $3 \n         AND p.stock > 0 \n         ORDER BY p.price ASC \n         LIMIT $4 OFFSET $5 \n        ",
+  "query": "\n        SELECT\n            p.id,\n            p.name,\n            p.price,\n            p.stock,\n            p.category\n        FROM products p\n        WHERE 1 = 1\n         AND p.category = NULL \n         AND p.price >= NULL \n         AND p.price <= NULL \n         AND p.stock > 0 \n         ORDER BY p.price ASC \n         LIMIT NULL OFFSET NULL \n        ",
   "describe": {
     "columns": [
       {
@@ -30,13 +30,7 @@
       }
     ],
     "parameters": {
-      "Left": [
-        "Text",
-        "Int8",
-        "Int8",
-        "Int8",
-        "Int8"
-      ]
+      "Left": []
     },
     "nullable": [
       false,
@@ -46,5 +40,5 @@
       false
     ]
   },
-  "hash": "44d072445940f69b71cc758e22ec316419268837c80d71457f704e1582f76ecc"
+  "hash": "4be149309464ac5e87db1614e38da8d41d2b4c6912489a3a2f1b0838e93725e7"
 }

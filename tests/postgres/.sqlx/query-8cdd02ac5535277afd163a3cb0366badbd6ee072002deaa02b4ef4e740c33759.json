@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE products\n        SET price = NULL\n        WHERE category = NULL AND name = NULL\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "8cdd02ac5535277afd163a3cb0366badbd6ee072002deaa02b4ef4e740c33759"
+}

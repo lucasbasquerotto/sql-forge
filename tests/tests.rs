@@ -11,12 +11,6 @@ type Price = i64;
 #[sqlx(transparent)]
 struct UserId(pub i64);
 
-impl sql_forge::SqlForgeValidatorValue<i64> for UserId {
-    fn sql_forge_validator_value(&self) -> i64 {
-        self.0
-    }
-}
-
 fn price_new(v: i64, scale: u32) -> Price {
     v * 10i64.pow(2 - scale)
 }

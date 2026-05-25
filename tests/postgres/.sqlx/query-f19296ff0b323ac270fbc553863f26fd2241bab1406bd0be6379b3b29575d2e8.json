@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n        SELECT name, price FROM products\n        WHERE category = $1\n        ORDER BY id\n        ",
+  "query": "\n        SELECT name, price FROM products\n        WHERE category = NULL\n        ORDER BY id\n        ",
   "describe": {
     "columns": [
       {
@@ -15,14 +15,12 @@
       }
     ],
     "parameters": {
-      "Left": [
-        "Text"
-      ]
+      "Left": []
     },
     "nullable": [
       false,
       false
     ]
   },
-  "hash": "762b2fcccfbeb25c437831b34ddef3d1d83d1463179a9b5c96d9acda4da10900"
+  "hash": "f19296ff0b323ac270fbc553863f26fd2241bab1406bd0be6379b3b29575d2e8"
 }

@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n        SELECT items.name\n        FROM items\n        WHERE items.category_id = $1\n        ",
+  "query": "\n        SELECT items.name\n        FROM items\n        WHERE items.category_id = NULL\n        ",
   "describe": {
     "columns": [
       {
@@ -10,13 +10,11 @@
       }
     ],
     "parameters": {
-      "Left": [
-        "Int8"
-      ]
+      "Left": []
     },
     "nullable": [
       false
     ]
   },
-  "hash": "af538ca66093960ff3b82cd6d812e67bb97b6cffd78baff3e02c6ac2c849acc5"
+  "hash": "3485dbceec22e49734146180a8d0c534b5d8f43077c608c0d601c96a4502d840"
 }

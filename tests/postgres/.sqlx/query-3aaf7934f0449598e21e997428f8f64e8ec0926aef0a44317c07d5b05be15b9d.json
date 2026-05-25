@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n        SELECT COUNT(*)\n        FROM items\n        WHERE items.category_id = $1\n        ",
+  "query": "SELECT COUNT(*) FROM products WHERE category = NULL",
   "describe": {
     "columns": [
       {
@@ -10,13 +10,11 @@
       }
     ],
     "parameters": {
-      "Left": [
-        "Int8"
-      ]
+      "Left": []
     },
     "nullable": [
       null
     ]
   },
-  "hash": "ad6589d182726d87d62b68789bde747e045ac61a48c6c9be570cd89cff497831"
+  "hash": "3aaf7934f0449598e21e997428f8f64e8ec0926aef0a44317c07d5b05be15b9d"
 }

@@ -89,11 +89,6 @@ where
         <i64 as ::sqlx::postgres::PgHasArrayType>::array_type_info()
     }
 }
-impl sql_forge::SqlForgeValidatorValue<i64> for UserId {
-    fn sql_forge_validator_value(&self) -> i64 {
-        self.0
-    }
-}
 fn price_new(v: i64, scale: u32) -> Price {
     v * 10i64.pow(2 - scale)
 }
@@ -316,9 +311,9 @@ pub const db_type_matches_env_db_type: test::TestDescAndFn = test::TestDescAndFn
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 66usize,
+        start_line: 60usize,
         start_col: 4usize,
-        end_line: 66usize,
+        end_line: 60usize,
         end_col: 31usize,
         compile_fail: false,
         no_run: false,
@@ -370,9 +365,9 @@ pub const basic_query_with_inline_params: test::TestDescAndFn = test::TestDescAn
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 86usize,
+        start_line: 80usize,
         start_col: 10usize,
-        end_line: 86usize,
+        end_line: 80usize,
         end_col: 40usize,
         compile_fail: false,
         no_run: false,
@@ -394,15 +389,9 @@ fn basic_query_with_inline_params() {
                 {
                     type __EnhancedModel = User;
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_max_id,
-                        );
-                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_max_id,
-                        );
-                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_limit,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_max_id;
+                        let __enhanced_validator_arg_1 = __enhanced_top_level_max_id;
+                        let __enhanced_validator_arg_2 = __enhanced_top_level_limit;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -669,9 +658,9 @@ pub const scalar_output: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 105usize,
+        start_line: 99usize,
         start_col: 10usize,
-        end_line: 105usize,
+        end_line: 99usize,
         end_col: 23usize,
         compile_fail: false,
         no_run: false,
@@ -691,9 +680,7 @@ fn scalar_output() {
                 let __enhanced_top_level_min_id = &(2i64);
                 {
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_min_id,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_min_id;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -882,9 +869,9 @@ pub const struct_source_params: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 121usize,
+        start_line: 115usize,
         start_col: 10usize,
-        end_line: 121usize,
+        end_line: 115usize,
         end_col: 30usize,
         compile_fail: false,
         no_run: false,
@@ -908,12 +895,8 @@ fn struct_source_params() {
                 {
                     type __EnhancedModel = User;
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_max_id,
-                        );
-                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_limit,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_max_id;
+                        let __enhanced_validator_arg_1 = __enhanced_top_level_limit;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -1133,9 +1116,9 @@ pub const section_dynamic_where: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 142usize,
+        start_line: 136usize,
         start_col: 10usize,
-        end_line: 142usize,
+        end_line: 136usize,
         end_col: 31usize,
         compile_fail: false,
         no_run: false,
@@ -1157,9 +1140,7 @@ fn section_dynamic_where() {
                     type __EnhancedModel = Product;
                     {
                         let __enhanced_section_case_single_0_filter_category_cat = &(cat);
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_0_filter_category_cat,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_section_case_single_0_filter_category_cat;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -1396,9 +1377,9 @@ pub const section_with_local_params: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 173usize,
+        start_line: 167usize,
         start_col: 10usize,
-        end_line: 173usize,
+        end_line: 167usize,
         end_col: 35usize,
         compile_fail: false,
         no_run: false,
@@ -1420,9 +1401,7 @@ fn section_with_local_params() {
                     type __EnhancedModel = User;
                     {
                         let __enhanced_section_case_single_0_filter_max_id = &(max_id);
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_0_filter_max_id,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_section_case_single_0_filter_max_id;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -1632,9 +1611,9 @@ pub const grouped_sections: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 196usize,
+        start_line: 190usize,
         start_col: 10usize,
-        end_line: 196usize,
+        end_line: 190usize,
         end_col: 26usize,
         compile_fail: false,
         no_run: false,
@@ -1951,9 +1930,9 @@ pub const grouped_sections_with_nested_matches: test::TestDescAndFn = test::Test
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 236usize,
+        start_line: 230usize,
         start_col: 10usize,
-        end_line: 236usize,
+        end_line: 230usize,
         end_col: 46usize,
         compile_fail: false,
         no_run: false,
@@ -2366,9 +2345,9 @@ pub const list_parameter_in_clause: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 290usize,
+        start_line: 284usize,
         start_col: 10usize,
-        end_line: 290usize,
+        end_line: 284usize,
         end_col: 34usize,
         compile_fail: false,
         no_run: false,
@@ -2395,14 +2374,12 @@ fn list_parameter_in_clause() {
                 {
                     type __EnhancedModel = User;
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            (__enhanced_top_level_ids)
-                                .as_slice()
-                                .first()
-                                .expect(
-                                    "sql_forge!: list parameters used in validation must have at least one representative element",
-                                ),
-                        );
+                        let __enhanced_validator_arg_0 = (__enhanced_top_level_ids)
+                            .as_slice()
+                            .first()
+                            .expect(
+                                "sql_forge!: list parameters used in validation must have at least one representative element",
+                            );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -2652,9 +2629,9 @@ pub const list_parameter_in_main_sql_with_match_filter: test::TestDescAndFn = te
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 311usize,
+        start_line: 305usize,
         start_col: 10usize,
-        end_line: 311usize,
+        end_line: 305usize,
         end_col: 54usize,
         compile_fail: false,
         no_run: false,
@@ -2683,14 +2660,12 @@ fn list_parameter_in_main_sql_with_match_filter() {
                 {
                     type __EnhancedModel = User;
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            (__enhanced_top_level_ids)
-                                .as_slice()
-                                .first()
-                                .expect(
-                                    "sql_forge!: list parameters used in validation must have at least one representative element",
-                                ),
-                        );
+                        let __enhanced_validator_arg_0 = (__enhanced_top_level_ids)
+                            .as_slice()
+                            .first()
+                            .expect(
+                                "sql_forge!: list parameters used in validation must have at least one representative element",
+                            );
                         let __enhanced_section_case_single_0_filter_min_id = &(match &(min_id) {
                             Some(min_id) => min_id,
                             _ => {
@@ -2702,9 +2677,7 @@ fn list_parameter_in_main_sql_with_match_filter() {
                                 );
                             }
                         });
-                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_0_filter_min_id,
-                        );
+                        let __enhanced_validator_arg_1 = __enhanced_section_case_single_0_filter_min_id;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -2763,14 +2736,12 @@ fn list_parameter_in_main_sql_with_match_filter() {
                         };
                     }
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            (__enhanced_top_level_ids)
-                                .as_slice()
-                                .first()
-                                .expect(
-                                    "sql_forge!: list parameters used in validation must have at least one representative element",
-                                ),
-                        );
+                        let __enhanced_validator_arg_0 = (__enhanced_top_level_ids)
+                            .as_slice()
+                            .first()
+                            .expect(
+                                "sql_forge!: list parameters used in validation must have at least one representative element",
+                            );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -3008,9 +2979,9 @@ pub const list_parameter_with_empty_guard: test::TestDescAndFn = test::TestDescA
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 343usize,
+        start_line: 337usize,
         start_col: 10usize,
-        end_line: 343usize,
+        end_line: 337usize,
         end_col: 41usize,
         compile_fail: false,
         no_run: false,
@@ -3081,14 +3052,12 @@ fn list_parameter_with_empty_guard() {
                                 );
                             }
                         });
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            (__enhanced_section_case_single_1_filter_ids)
-                                .as_slice()
-                                .first()
-                                .expect(
-                                    "sql_forge!: list parameters used in validation must have at least one representative element",
-                                ),
-                        );
+                        let __enhanced_validator_arg_0 = (__enhanced_section_case_single_1_filter_ids)
+                            .as_slice()
+                            .first()
+                            .expect(
+                                "sql_forge!: list parameters used in validation must have at least one representative element",
+                            );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -3307,9 +3276,9 @@ pub const multiple_results_group: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 369usize,
+        start_line: 363usize,
         start_col: 10usize,
-        end_line: 369usize,
+        end_line: 363usize,
         end_col: 32usize,
         compile_fail: false,
         no_run: false,
@@ -3335,12 +3304,8 @@ fn multiple_results_group() {
                     let __enhanced_result_flag_list: bool = false;
                     type __EnhancedModel = AmountResult;
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_category_id,
-                        );
-                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_min_price,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_category_id;
+                        let __enhanced_validator_arg_1 = __enhanced_top_level_min_price;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -3399,12 +3364,8 @@ fn multiple_results_group() {
                     let __enhanced_result_flag_list: bool = true;
                     type __EnhancedModel = Item;
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_category_id,
-                        );
-                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_min_price,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_category_id;
+                        let __enhanced_validator_arg_1 = __enhanced_top_level_min_price;
                         let __enhanced_section_case_list_0_order_limit_start = &(match &(__enhanced_result_flag_amount) {
                             false => &(0i64),
                             _ => {
@@ -3427,12 +3388,8 @@ fn multiple_results_group() {
                                 );
                             }
                         });
-                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_list_0_order_limit_limit,
-                        );
-                        let __enhanced_validator_arg_3 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_list_0_order_limit_start,
-                        );
+                        let __enhanced_validator_arg_2 = __enhanced_section_case_list_0_order_limit_limit;
+                        let __enhanced_validator_arg_3 = __enhanced_section_case_list_0_order_limit_start;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -3934,9 +3891,9 @@ pub const multiple_results_scalar_key: test::TestDescAndFn = test::TestDescAndFn
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 432usize,
+        start_line: 426usize,
         start_col: 10usize,
-        end_line: 432usize,
+        end_line: 426usize,
         end_col: 37usize,
         compile_fail: false,
         no_run: false,
@@ -3959,9 +3916,7 @@ fn multiple_results_scalar_key() {
                     let __enhanced_result_flag_amount: bool = true;
                     let __enhanced_result_flag_first_name: bool = false;
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_category_id,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_category_id;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -4001,9 +3956,7 @@ fn multiple_results_scalar_key() {
                     let __enhanced_result_flag_amount: bool = false;
                     let __enhanced_result_flag_first_name: bool = true;
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_category_id,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_category_id;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -4396,9 +4349,9 @@ pub const combining_features_example: test::TestDescAndFn = test::TestDescAndFn 
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 473usize,
+        start_line: 467usize,
         start_col: 10usize,
-        end_line: 473usize,
+        end_line: 467usize,
         end_col: 36usize,
         compile_fail: false,
         no_run: false,
@@ -4439,9 +4392,7 @@ fn combining_features_example() {
                                 );
                             }
                         });
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_0_filter_category_cat,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_section_case_single_0_filter_category_cat;
                         let __enhanced_section_case_single_0_filter_price_min_price_min = &(match &(price_min
                             .is_some())
                         {
@@ -4455,9 +4406,7 @@ fn combining_features_example() {
                                 );
                             }
                         });
-                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_0_filter_price_min_price_min,
-                        );
+                        let __enhanced_validator_arg_1 = __enhanced_section_case_single_0_filter_price_min_price_min;
                         let __enhanced_section_case_single_0_filter_price_max_price_max = &(match &(price_max
                             .is_some())
                         {
@@ -4471,9 +4420,7 @@ fn combining_features_example() {
                                 );
                             }
                         });
-                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_0_filter_price_max_price_max,
-                        );
+                        let __enhanced_validator_arg_2 = __enhanced_section_case_single_0_filter_price_max_price_max;
                         let __enhanced_section_case_single_0_limit_offset = &(match &(page_size
                             .is_some())
                         {
@@ -4500,12 +4447,8 @@ fn combining_features_example() {
                                 );
                             }
                         });
-                        let __enhanced_validator_arg_3 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_0_limit_size,
-                        );
-                        let __enhanced_validator_arg_4 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_0_limit_offset,
-                        );
+                        let __enhanced_validator_arg_3 = __enhanced_section_case_single_0_limit_size;
+                        let __enhanced_validator_arg_4 = __enhanced_section_case_single_0_limit_offset;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -4668,9 +4611,7 @@ fn combining_features_example() {
                                 );
                             }
                         });
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_2_filter_category_cat,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_section_case_single_2_filter_category_cat;
                         let __enhanced_section_case_single_2_filter_price_min_price_min = &(match &(price_min
                             .is_some())
                         {
@@ -4684,9 +4625,7 @@ fn combining_features_example() {
                                 );
                             }
                         });
-                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_2_filter_price_min_price_min,
-                        );
+                        let __enhanced_validator_arg_1 = __enhanced_section_case_single_2_filter_price_min_price_min;
                         let __enhanced_section_case_single_2_filter_price_max_price_max = &(match &(price_max
                             .is_some())
                         {
@@ -4700,9 +4639,7 @@ fn combining_features_example() {
                                 );
                             }
                         });
-                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_2_filter_price_max_price_max,
-                        );
+                        let __enhanced_validator_arg_2 = __enhanced_section_case_single_2_filter_price_max_price_max;
                         let __enhanced_section_case_single_2_limit_offset = &(match &(page_size
                             .is_some())
                         {
@@ -4729,12 +4666,8 @@ fn combining_features_example() {
                                 );
                             }
                         });
-                        let __enhanced_validator_arg_3 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_2_limit_size,
-                        );
-                        let __enhanced_validator_arg_4 = sql_forge::sql_forge_validator_value(
-                            __enhanced_section_case_single_2_limit_offset,
-                        );
+                        let __enhanced_validator_arg_3 = __enhanced_section_case_single_2_limit_size;
+                        let __enhanced_validator_arg_4 = __enhanced_section_case_single_2_limit_offset;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -5087,9 +5020,9 @@ pub const execute_only_query: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 560usize,
+        start_line: 554usize,
         start_col: 10usize,
-        end_line: 560usize,
+        end_line: 554usize,
         end_col: 28usize,
         compile_fail: false,
         no_run: false,
@@ -5109,9 +5042,7 @@ fn execute_only_query() {
                 let __enhanced_top_level_id = &(1i64);
                 {
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_id,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_id;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -5197,9 +5128,7 @@ fn execute_only_query() {
                 let __enhanced_top_level_id = &(1i64);
                 {
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_id,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_id;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -5338,9 +5267,9 @@ pub const execute_only_insert_update_delete: test::TestDescAndFn = test::TestDes
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 592usize,
+        start_line: 586usize,
         start_col: 10usize,
-        end_line: 592usize,
+        end_line: 586usize,
         end_col: 43usize,
         compile_fail: false,
         no_run: false,
@@ -5360,9 +5289,7 @@ fn execute_only_insert_update_delete() {
                 let __enhanced_top_level_category = &("Temporary");
                 {
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_category,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_category;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -5458,18 +5385,10 @@ fn execute_only_insert_update_delete() {
                     let __enhanced_top_level_category = &("Temporary");
                     {
                         {
-                            let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                                __enhanced_top_level_name,
-                            );
-                            let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
-                                __enhanced_top_level_price,
-                            );
-                            let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
-                                __enhanced_top_level_stock,
-                            );
-                            let __enhanced_validator_arg_3 = sql_forge::sql_forge_validator_value(
-                                __enhanced_top_level_category,
-                            );
+                            let __enhanced_validator_arg_0 = __enhanced_top_level_name;
+                            let __enhanced_validator_arg_1 = __enhanced_top_level_price;
+                            let __enhanced_validator_arg_2 = __enhanced_top_level_stock;
+                            let __enhanced_validator_arg_3 = __enhanced_top_level_category;
                             let _ = {
                                 #[allow(clippy::all)]
                                 {
@@ -5598,15 +5517,9 @@ fn execute_only_insert_update_delete() {
                 let __enhanced_top_level_name = &("Temp B");
                 {
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_new_price,
-                        );
-                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_category,
-                        );
-                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_name,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_new_price;
+                        let __enhanced_validator_arg_1 = __enhanced_top_level_category;
+                        let __enhanced_validator_arg_2 = __enhanced_top_level_name;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -5737,9 +5650,7 @@ fn execute_only_insert_update_delete() {
                 {
                     type __EnhancedModel = TempRow;
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_cat,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_cat;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -5967,9 +5878,7 @@ fn execute_only_insert_update_delete() {
                 let __enhanced_top_level_category = &("Temporary");
                 {
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_category,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_category;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -6059,9 +5968,7 @@ fn execute_only_insert_update_delete() {
                 let __enhanced_top_level_cat = &("Temporary");
                 {
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_cat,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_cat;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -6276,9 +6183,9 @@ pub const execute_batch: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 698usize,
+        start_line: 692usize,
         start_col: 10usize,
-        end_line: 698usize,
+        end_line: 692usize,
         end_col: 23usize,
         compile_fail: false,
         no_run: false,
@@ -6298,9 +6205,7 @@ fn execute_batch() {
                 let __enhanced_top_level_category = &("Batch");
                 {
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_category,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_category;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -6516,9 +6421,7 @@ fn execute_batch() {
                 {
                     type __EnhancedModel = BatchItem;
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_cat,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_cat;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -6788,9 +6691,7 @@ fn execute_batch() {
                 let __enhanced_top_level_category = &("Batch");
                 {
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_category,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_category;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -6932,9 +6833,9 @@ pub const execute_batch_full: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 774usize,
+        start_line: 768usize,
         start_col: 10usize,
-        end_line: 774usize,
+        end_line: 768usize,
         end_col: 28usize,
         compile_fail: false,
         no_run: false,
@@ -6954,9 +6855,7 @@ fn execute_batch_full() {
                 let __enhanced_top_level_category = &("BatchFull");
                 {
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_category,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_category;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -7190,9 +7089,7 @@ fn execute_batch_full() {
                 {
                     type __EnhancedModel = BatchFullItem;
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_cat,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_cat;
                         let _ = {
                             {
                                 #[allow(clippy::all)]
@@ -7504,9 +7401,7 @@ fn execute_batch_full() {
                 let __enhanced_top_level_category = &("BatchFull");
                 {
                     {
-                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
-                            __enhanced_top_level_category,
-                        );
+                        let __enhanced_validator_arg_0 = __enhanced_top_level_category;
                         let _ = {
                             #[allow(clippy::all)]
                             {
@@ -7616,9 +7511,9 @@ pub const compile_fail: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 844usize,
+        start_line: 838usize,
         start_col: 4usize,
-        end_line: 844usize,
+        end_line: 838usize,
         end_col: 16usize,
         compile_fail: false,
         no_run: false,
@@ -7647,9 +7542,9 @@ pub const compile_fail_specific: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 852usize,
+        start_line: 846usize,
         start_col: 4usize,
-        end_line: 852usize,
+        end_line: 846usize,
         end_col: 25usize,
         compile_fail: false,
         no_run: false,

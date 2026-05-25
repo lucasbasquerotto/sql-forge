@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        DELETE FROM products\n        WHERE category = NULL\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "13842299430f0940b4a7cd752e49c582fb0aed4c8029477b52a823361d2e9120"
+}

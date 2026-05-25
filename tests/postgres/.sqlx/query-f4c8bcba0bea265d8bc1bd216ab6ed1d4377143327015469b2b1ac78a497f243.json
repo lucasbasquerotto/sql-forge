@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            INSERT INTO products (name, price, stock, category)\n            VALUES (NULL, NULL, NULL, NULL)\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "f4c8bcba0bea265d8bc1bd216ab6ed1d4377143327015469b2b1ac78a497f243"
+}
