@@ -7,8 +7,8 @@ pub type DbPool = sqlx::Pool<AppDb>;
 
 type Price = i64;
 
-#[derive(Debug, PartialEq, Eq, sqlx::Type)]
-#[sqlx(transparent)]
+#[derive(Debug, PartialEq, Eq)]
+#[sql_forge::sql_forge_transparent]
 struct UserId(pub i64);
 
 fn price_new(v: i64, scale: u32) -> Price {

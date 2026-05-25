@@ -11,30 +11,6 @@ type Price = i64;
 #[sqlx(transparent)]
 struct UserId(pub i64);
 #[automatically_derived]
-impl ::core::fmt::Debug for UserId {
-    #[inline]
-    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-        ::core::fmt::Formatter::debug_tuple_field1_finish(f, "UserId", &&self.0)
-    }
-}
-#[automatically_derived]
-impl ::core::marker::StructuralPartialEq for UserId {}
-#[automatically_derived]
-impl ::core::cmp::PartialEq for UserId {
-    #[inline]
-    fn eq(&self, other: &UserId) -> bool {
-        self.0 == other.0
-    }
-}
-#[automatically_derived]
-impl ::core::cmp::Eq for UserId {
-    #[doc(hidden)]
-    #[coverage(off)]
-    fn assert_fields_are_eq(&self) {
-        let _: ::core::cmp::AssertParamIsEq<i64>;
-    }
-}
-#[automatically_derived]
 impl<'q, DB: ::sqlx::Database> ::sqlx::encode::Encode<'q, DB> for UserId
 where
     i64: ::sqlx::encode::Encode<'q, DB>,
@@ -87,6 +63,35 @@ where
 {
     fn array_type_info() -> ::sqlx::postgres::PgTypeInfo {
         <i64 as ::sqlx::postgres::PgHasArrayType>::array_type_info()
+    }
+}
+impl sql_forge::SqlForgeValidatorValue<i64> for UserId {
+    fn sql_forge_validator_value(&self) -> i64 {
+        self.0.clone()
+    }
+}
+#[automatically_derived]
+impl ::core::fmt::Debug for UserId {
+    #[inline]
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        ::core::fmt::Formatter::debug_tuple_field1_finish(f, "UserId", &&self.0)
+    }
+}
+#[automatically_derived]
+impl ::core::marker::StructuralPartialEq for UserId {}
+#[automatically_derived]
+impl ::core::cmp::PartialEq for UserId {
+    #[inline]
+    fn eq(&self, other: &UserId) -> bool {
+        self.0 == other.0
+    }
+}
+#[automatically_derived]
+impl ::core::cmp::Eq for UserId {
+    #[doc(hidden)]
+    #[coverage(off)]
+    fn assert_fields_are_eq(&self) {
+        let _: ::core::cmp::AssertParamIsEq<i64>;
     }
 }
 fn price_new(v: i64, scale: u32) -> Price {

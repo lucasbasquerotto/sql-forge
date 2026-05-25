@@ -13,7 +13,8 @@ use syn::parse::{Parse, ParseStream};
 use syn::parse_quote;
 use syn::spanned::Spanned;
 use syn::{
-    Expr, ExprBlock, ExprGroup, ExprLit, ExprParen, Ident, Lit, LitStr, Pat, Stmt, Token, Type,
+    Expr, ExprBlock, ExprGroup, ExprLit, ExprParen, Fields, Ident, ItemStruct, Lit, LitStr, Pat,
+    Stmt, Token, Type,
 };
 
 // =============================================================================
@@ -908,7 +909,6 @@ fn render_validator_text(
     use_dollar_params: bool,
     param_offset: &mut usize,
     list_count: usize,
-    use_null_placeholders: bool,
 ) -> (String, Vec<(String, bool)>) {
     let mut out_sql = String::new();
     let mut occurrences = Vec::new();
@@ -917,15 +917,7 @@ fn render_validator_text(
         match part {
             TextPart::Lit(lit) => out_sql.push_str(&lit),
             TextPart::Param { name, is_list } => {
-                if use_null_placeholders {
-                    if is_list && list_count > 1 {
-                        let slots: Vec<String> =
-                            (0..list_count).map(|_| "NULL".to_string()).collect();
-                        out_sql.push_str(&slots.join(", "));
-                    } else {
-                        out_sql.push_str("NULL");
-                    }
-                } else if is_list && list_count > 1 {
+                if is_list && list_count > 1 {
                     let slots: Vec<String> = if use_dollar_params {
                         (0..list_count)
                             .map(|i| format!("${}", *param_offset + i + 1))
@@ -1409,38 +1401,13 @@ fn render_validator_args(
     param_offset: &mut usize,
     arg_index: &mut usize,
     context: &ValidatorRenderContext<'_>,
-    skip_params: bool,
 ) -> Result<(String, Vec<TokenStream2>, Vec<TokenStream2>), TokenStream> {
     let (rendered_sql, occurrences) = render_validator_text(
         sql,
         context.use_dollar_params,
         param_offset,
         context.list_count,
-        skip_params,
     );
-
-    if skip_params {
-        for (name, _) in &occurrences {
-            let local_ident = if context.allow_top_level_fallback {
-                context
-                    .local_params
-                    .get(name)
-                    .or_else(|| context.top_level_params.get(name))
-            } else {
-                context.local_params.get(name)
-            };
-
-            if local_ident.is_none() {
-                return Err(syn::Error::new(
-                    context.sql_span,
-                    format!("sql_forge!: parameter :{} has no mapping", name),
-                )
-                .to_compile_error()
-                .into());
-            }
-        }
-        return Ok((rendered_sql, Vec::new(), Vec::new()));
-    }
 
     let mut setup = Vec::<TokenStream2>::new();
     let mut args = Vec::<TokenStream2>::new();
@@ -1468,20 +1435,37 @@ fn render_validator_args(
             for _ in 0..context.list_count {
                 let value_ident = format_ident!("__enhanced_validator_arg_{}", *arg_index);
                 *arg_index += 1;
-                setup.push(quote! {
-                    let #value_ident = (#local_ident)
-                        .as_slice()
-                        .first()
-                        .expect("sql_forge!: list parameters used in validation must have at least one representative element");
-                });
+                if context.use_dollar_params {
+                    setup.push(quote! {
+                        let #value_ident = sql_forge::sql_forge_validator_value(
+                            (#local_ident)
+                                .as_slice()
+                                .first()
+                                .expect("sql_forge!: list parameters used in validation must have at least one representative element")
+                        );
+                    });
+                } else {
+                    setup.push(quote! {
+                        let #value_ident = (#local_ident)
+                            .as_slice()
+                            .first()
+                            .expect("sql_forge!: list parameters used in validation must have at least one representative element");
+                    });
+                }
                 args.push(quote! { #value_ident });
             }
         } else {
             let value_ident = format_ident!("__enhanced_validator_arg_{}", *arg_index);
             *arg_index += 1;
-            setup.push(quote! {
-                let #value_ident = #local_ident;
-            });
+            if context.use_dollar_params {
+                setup.push(quote! {
+                    let #value_ident = sql_forge::sql_forge_validator_value(#local_ident);
+                });
+            } else {
+                setup.push(quote! {
+                    let #value_ident = #local_ident;
+                });
+            }
             args.push(quote! { #value_ident });
         }
     }
@@ -2142,7 +2126,6 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
             }
         }
 
-        let skip_params = use_dollar_params;
         let mut validator_cases = Vec::<(LitStr, Vec<TokenStream2>, Vec<TokenStream2>)>::new();
         for case_idx in 0..nmax {
             let mut sql_case = String::new();
@@ -2168,7 +2151,6 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                             &mut param_offset,
                             &mut arg_index,
                             &root_validator_context,
-                            skip_params,
                         ) {
                             Ok(value) => value,
                             Err(err) => return err,
@@ -2212,15 +2194,12 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                             &mut param_offset,
                             &mut arg_index,
                             &section_validator_context,
-                            skip_params,
                         ) {
                             Ok(value) => value,
                             Err(err) => return err,
                         };
                         sql_case.push_str(&chunk_sql);
-                        if !skip_params {
-                            case_setup.extend(bindings);
-                        }
+                        case_setup.extend(bindings);
                         case_setup.extend(chunk_setup);
                         case_args.extend(chunk_args);
                     }
@@ -2647,11 +2626,6 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
     }
 
     // ---- Phase 8: Emit the final token stream ----
-    let validator_param_bindings: Vec<_> = if use_dollar_params {
-        Vec::new()
-    } else {
-        validator_param_bindings
-    };
     let validator_tokens = quote! {
         let _sql_forge_validator = || {
             #( #validator_param_bindings )*
@@ -2742,4 +2716,60 @@ pub fn db_type(input: TokenStream) -> TokenStream {
             .to_compile_error()
             .into(),
     }
+}
+
+/// Marks a single-value tuple struct as a transparent wrapper.
+///
+/// Equivalent to applying `#[derive(sqlx::Type)]` + `#[sqlx(transparent)]`
+/// and additionally implements `SqlForgeValidatorValue` so that list
+/// parameters (`:ids[]`) and other bindings validate correctly for
+/// PostgreSQL databases (which require exact type matching in `query_as!`).
+///
+/// ```rust,ignore
+/// #[sql_forge(diesel)]
+/// #[derive(Debug, PartialEq, Eq)]
+/// #[sql_forge_transparent]
+/// struct UserId(pub i64);
+/// ```
+#[proc_macro_attribute]
+pub fn sql_forge_transparent(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    let input: ItemStruct = match syn::parse(item) {
+        Ok(v) => v,
+        Err(err) => return err.to_compile_error().into(),
+    };
+
+    let struct_name = &input.ident;
+    let inner_type = match &input.fields {
+        Fields::Unnamed(fields) if fields.unnamed.len() == 1 => &fields.unnamed.first().unwrap().ty,
+        _ => {
+            return syn::Error::new(
+                input.span(),
+                "#[sql_forge_transparent] expects a tuple struct with exactly one field",
+            )
+            .to_compile_error()
+            .into();
+        }
+    };
+
+    let attrs = input.attrs;
+    let generics = &input.generics;
+    let vis = &input.vis;
+    let struct_token = input.struct_token;
+    let semi_token = input.semi_token;
+    let fields = &input.fields;
+
+    let expanded = quote! {
+        #( #attrs )*
+        #[derive(sqlx::Type)]
+        #[sqlx(transparent)]
+        #vis #struct_token #struct_name #generics #fields #semi_token
+
+        impl #generics sql_forge::SqlForgeValidatorValue<#inner_type> for #struct_name #generics {
+            fn sql_forge_validator_value(&self) -> #inner_type {
+                self.0.clone()
+            }
+        }
+    };
+
+    expanded.into()
 }

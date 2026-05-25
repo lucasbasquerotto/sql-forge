@@ -11,30 +11,6 @@ type Price = i64;
 #[sqlx(transparent)]
 struct UserId(pub i64);
 #[automatically_derived]
-impl ::core::fmt::Debug for UserId {
-    #[inline]
-    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-        ::core::fmt::Formatter::debug_tuple_field1_finish(f, "UserId", &&self.0)
-    }
-}
-#[automatically_derived]
-impl ::core::marker::StructuralPartialEq for UserId {}
-#[automatically_derived]
-impl ::core::cmp::PartialEq for UserId {
-    #[inline]
-    fn eq(&self, other: &UserId) -> bool {
-        self.0 == other.0
-    }
-}
-#[automatically_derived]
-impl ::core::cmp::Eq for UserId {
-    #[doc(hidden)]
-    #[coverage(off)]
-    fn assert_fields_are_eq(&self) {
-        let _: ::core::cmp::AssertParamIsEq<i64>;
-    }
-}
-#[automatically_derived]
 impl<'q, DB: ::sqlx::Database> ::sqlx::encode::Encode<'q, DB> for UserId
 where
     i64: ::sqlx::encode::Encode<'q, DB>,
@@ -87,6 +63,35 @@ where
 {
     fn array_type_info() -> ::sqlx::postgres::PgTypeInfo {
         <i64 as ::sqlx::postgres::PgHasArrayType>::array_type_info()
+    }
+}
+impl sql_forge::SqlForgeValidatorValue<i64> for UserId {
+    fn sql_forge_validator_value(&self) -> i64 {
+        self.0.clone()
+    }
+}
+#[automatically_derived]
+impl ::core::fmt::Debug for UserId {
+    #[inline]
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        ::core::fmt::Formatter::debug_tuple_field1_finish(f, "UserId", &&self.0)
+    }
+}
+#[automatically_derived]
+impl ::core::marker::StructuralPartialEq for UserId {}
+#[automatically_derived]
+impl ::core::cmp::PartialEq for UserId {
+    #[inline]
+    fn eq(&self, other: &UserId) -> bool {
+        self.0 == other.0
+    }
+}
+#[automatically_derived]
+impl ::core::cmp::Eq for UserId {
+    #[doc(hidden)]
+    #[coverage(off)]
+    fn assert_fields_are_eq(&self) {
+        let _: ::core::cmp::AssertParamIsEq<i64>;
     }
 }
 fn price_new(v: i64, scale: u32) -> Price {
@@ -384,27 +389,123 @@ fn basic_query_with_inline_params() {
         let pool = pool().await;
         let users: Vec<User> = {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_max_id = &(3i64);
+                let __enhanced_top_level_limit = &(10i64);
                 {
                     type __EnhancedModel = User;
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_max_id,
+                        );
+                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_max_id,
+                        );
+                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_limit,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    let arg1 = &(__enhanced_validator_arg_1);
+                                    let arg2 = &(__enhanced_validator_arg_2);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg2);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            3usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg1)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg2),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg1).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg2).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "SELECT id, name FROM users WHERE id <= NULL AND NULL >= id LIMIT NULL",
+                                            "SELECT id, name FROM users WHERE id <= $1 AND $2 >= id LIMIT $3",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -647,25 +748,60 @@ fn scalar_output() {
         let pool = pool().await;
         let count: i64 = {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_min_id = &(2i64);
                 {
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_min_id,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        i64,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_scalar_with_result::<
                                     sqlx::postgres::Postgres,
                                     ::std::option::Option<i64>,
                                     _,
-                                >("SELECT COUNT(*) FROM users WHERE id > NULL", query_args)
+                                >("SELECT COUNT(*) FROM users WHERE id > $1", query_args)
                             }
                         };
                     }
@@ -846,27 +982,94 @@ fn struct_source_params() {
         let filter = Filter { max_id: 3, limit: 2 };
         let users: Vec<User> = {
             let _sql_forge_validator = || {
+                let __enhanced_source_top_level = &(filter);
+                let __enhanced_top_level_max_id = &__enhanced_source_top_level.max_id;
+                let __enhanced_top_level_limit = &__enhanced_source_top_level.limit;
                 {
                     type __EnhancedModel = User;
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_max_id,
+                        );
+                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_limit,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    let arg1 = &(__enhanced_validator_arg_1);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            2usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg1),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg1).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "SELECT id, name FROM users WHERE id <= NULL LIMIT NULL",
+                                            "SELECT id, name FROM users WHERE id <= $1 LIMIT $2",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -1073,24 +1276,59 @@ fn section_dynamic_where() {
                 {
                     type __EnhancedModel = Product;
                     {
+                        let __enhanced_section_case_single_0_filter_category_cat = &(cat);
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_0_filter_category_cat,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            &str,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            1usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "\n        SELECT id, name, price, stock, category\n        FROM products\n        WHERE 1 = 1\n         AND category = NULL \n        ",
+                                            "\n        SELECT id, name, price, stock, category\n        FROM products\n        WHERE 1 = 1\n         AND category = $1 \n        ",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -1321,26 +1559,58 @@ fn section_with_local_params() {
                 {
                     type __EnhancedModel = User;
                     {
+                        let __enhanced_section_case_single_0_filter_max_id = &(max_id);
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_0_filter_max_id,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            1usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
-                                    >(
-                                            "SELECT id, name FROM users  WHERE id <= NULL ",
-                                            query_args,
-                                        )
+                                    >("SELECT id, name FROM users  WHERE id <= $1 ", query_args)
                                         .try_map(|row: sqlx::postgres::PgRow| {
                                             use ::sqlx::Row as _;
                                             #[allow(non_snake_case)]
@@ -2299,27 +2569,137 @@ fn list_parameter_in_clause() {
         );
         let users: Vec<User> = {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_ids = &(ids);
                 {
                     type __EnhancedModel = User;
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_top_level_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
+                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_top_level_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
+                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_top_level_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    let arg1 = &(__enhanced_validator_arg_1);
+                                    let arg2 = &(__enhanced_validator_arg_2);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg2);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            3usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg1)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg2),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg1).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg2).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "SELECT id, name FROM users WHERE id IN (NULL, NULL, NULL)",
+                                            "SELECT id, name FROM users WHERE id IN ($1, $2, $3)",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -2570,27 +2950,178 @@ fn list_parameter_in_main_sql_with_match_filter() {
         let expected_ids = [UserId(3), UserId(4), UserId(5)];
         let users: Vec<User> = {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_ids = &(ids);
                 {
                     type __EnhancedModel = User;
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_top_level_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
+                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_top_level_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
+                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_top_level_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
+                        let __enhanced_section_case_single_0_filter_min_id = &(match &(min_id) {
+                            Some(min_id) => min_id,
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_validator_arg_3 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_0_filter_min_id,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    let arg1 = &(__enhanced_validator_arg_1);
+                                    let arg2 = &(__enhanced_validator_arg_2);
+                                    let arg3 = &(__enhanced_validator_arg_3);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg2);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg3);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            4usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg1)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg2)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg3),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg1).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg2).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg3).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "SELECT id, name FROM users WHERE id IN (NULL, NULL, NULL)  AND id >= NULL ORDER BY id",
+                                            "SELECT id, name FROM users WHERE id IN ($1, $2, $3)  AND id >= $4 ORDER BY id",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -2613,24 +3144,133 @@ fn list_parameter_in_main_sql_with_match_filter() {
                         };
                     }
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_top_level_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
+                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_top_level_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
+                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_top_level_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    let arg1 = &(__enhanced_validator_arg_1);
+                                    let arg2 = &(__enhanced_validator_arg_2);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg2);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            3usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg1)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg2),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg1).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg2).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "SELECT id, name FROM users WHERE id IN (NULL, NULL, NULL)  ORDER BY id",
+                                            "SELECT id, name FROM users WHERE id IN ($1, $2, $3)  ORDER BY id",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -2899,24 +3539,146 @@ fn list_parameter_with_empty_guard() {
                         };
                     }
                     {
+                        let __enhanced_section_case_single_1_filter_ids = &(match &(ids
+                            .is_empty())
+                        {
+                            false => &(ids),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_section_case_single_1_filter_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
+                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_section_case_single_1_filter_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
+                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
+                            (__enhanced_section_case_single_1_filter_ids)
+                                .as_slice()
+                                .first()
+                                .expect(
+                                    "sql_forge!: list parameters used in validation must have at least one representative element",
+                                ),
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    let arg1 = &(__enhanced_validator_arg_1);
+                                    let arg2 = &(__enhanced_validator_arg_2);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg2);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            3usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg1)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg2),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg1).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg2).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "SELECT id, name FROM users WHERE id IN (NULL, NULL, NULL)",
+                                            "SELECT id, name FROM users WHERE id IN ($1, $2, $3)",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -3130,29 +3892,95 @@ fn multiple_results_group() {
         let min_price = price_new(10000, 2);
         let group = {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_category_id = &(category_id);
+                let __enhanced_top_level_min_price = &(min_price);
                 {
                     let __enhanced_result_flag_amount: bool = true;
                     let __enhanced_result_flag_list: bool = false;
                     type __EnhancedModel = AmountResult;
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_category_id,
+                        );
+                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_min_price,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    let arg1 = &(__enhanced_validator_arg_1);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            2usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg1),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg1).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "\n        SELECT COUNT(*) AS total\n        FROM items\n        \n        WHERE items.category_id = NULL\n        AND   items.price      >= NULL\n        \n        ",
+                                            "\n        SELECT COUNT(*) AS total\n        FROM items\n        \n        WHERE items.category_id = $1\n        AND   items.price      >= $2\n        \n        ",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -3175,24 +4003,170 @@ fn multiple_results_group() {
                     let __enhanced_result_flag_list: bool = true;
                     type __EnhancedModel = Item;
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_category_id,
+                        );
+                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_min_price,
+                        );
+                        let __enhanced_section_case_list_0_order_limit_start = &(match &(__enhanced_result_flag_amount) {
+                            false => &(0i64),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_section_case_list_0_order_limit_limit = &(match &(__enhanced_result_flag_amount) {
+                            false => &(50i64),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_list_0_order_limit_limit,
+                        );
+                        let __enhanced_validator_arg_3 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_list_0_order_limit_start,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    let arg1 = &(__enhanced_validator_arg_1);
+                                    let arg2 = &(__enhanced_validator_arg_2);
+                                    let arg3 = &(__enhanced_validator_arg_3);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg2);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg3);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            4usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg1)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg2)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg3),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg1).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg2).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg3).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "\n        SELECT items.id, items.name, items.price, items.stock\n        FROM items\n        JOIN categories ON categories.id = items.category_id\n        WHERE items.category_id = NULL\n        AND   items.price      >= NULL\n        ORDER BY items.created_at DESC LIMIT NULL OFFSET NULL\n        ",
+                                            "\n        SELECT items.id, items.name, items.price, items.stock\n        FROM items\n        JOIN categories ON categories.id = items.category_id\n        WHERE items.category_id = $1\n        AND   items.price      >= $2\n        ORDER BY items.created_at DESC LIMIT $3 OFFSET $4\n        ",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -3664,28 +4638,63 @@ fn multiple_results_scalar_key() {
         let category_id = 2i64;
         let group = {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_category_id = &(category_id);
                 {
                     let __enhanced_result_flag_amount: bool = true;
                     let __enhanced_result_flag_first_name: bool = false;
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_category_id,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        i64,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_scalar_with_result::<
                                     sqlx::postgres::Postgres,
                                     ::std::option::Option<i64>,
                                     _,
                                 >(
-                                    "\n        SELECT COUNT(*)\n        FROM items\n        WHERE items.category_id = NULL\n        ",
+                                    "\n        SELECT COUNT(*)\n        FROM items\n        WHERE items.category_id = $1\n        ",
                                     query_args,
                                 )
                             }
@@ -3696,24 +4705,58 @@ fn multiple_results_scalar_key() {
                     let __enhanced_result_flag_amount: bool = false;
                     let __enhanced_result_flag_first_name: bool = true;
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_category_id,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        i64,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_scalar_with_result::<
                                     sqlx::postgres::Postgres,
                                     String,
                                     _,
                                 >(
-                                    "\n        SELECT items.name\n        FROM items\n        WHERE items.category_id = NULL\n        ",
+                                    "\n        SELECT items.name\n        FROM items\n        WHERE items.category_id = $1\n        ",
                                     query_args,
                                 )
                             }
@@ -4107,24 +5150,243 @@ fn combining_features_example() {
                 {
                     type __EnhancedModel = Product;
                     {
+                        let __enhanced_section_case_single_0_filter_category_cat = &(match &(category
+                            .is_some())
+                        {
+                            true => &(category.unwrap()),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_0_filter_category_cat,
+                        );
+                        let __enhanced_section_case_single_0_filter_price_min_price_min = &(match &(price_min
+                            .is_some())
+                        {
+                            true => &(price_min.unwrap()),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_0_filter_price_min_price_min,
+                        );
+                        let __enhanced_section_case_single_0_filter_price_max_price_max = &(match &(price_max
+                            .is_some())
+                        {
+                            true => &(price_max.unwrap()),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_0_filter_price_max_price_max,
+                        );
+                        let __enhanced_section_case_single_0_limit_offset = &(match &(page_size
+                            .is_some())
+                        {
+                            true => &(page * page_size.unwrap()),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_section_case_single_0_limit_size = &(match &(page_size
+                            .is_some())
+                        {
+                            true => &(page_size.unwrap()),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_validator_arg_3 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_0_limit_size,
+                        );
+                        let __enhanced_validator_arg_4 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_0_limit_offset,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    let arg1 = &(__enhanced_validator_arg_1);
+                                    let arg2 = &(__enhanced_validator_arg_2);
+                                    let arg3 = &(__enhanced_validator_arg_3);
+                                    let arg4 = &(__enhanced_validator_arg_4);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            &str,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg2);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg3);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg4);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            5usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg1)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg2)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg3)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg4),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg1).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg2).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg3).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg4).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "\n        SELECT\n            p.id,\n            p.name,\n            p.price,\n            p.stock,\n            p.category\n        FROM products p\n        WHERE 1 = 1\n         AND p.category = NULL \n         AND p.price >= NULL \n         AND p.price <= NULL \n         AND p.stock > 0 \n         ORDER BY p.price ASC \n         LIMIT NULL OFFSET NULL \n        ",
+                                            "\n        SELECT\n            p.id,\n            p.name,\n            p.price,\n            p.stock,\n            p.category\n        FROM products p\n        WHERE 1 = 1\n         AND p.category = $1 \n         AND p.price >= $2 \n         AND p.price <= $3 \n         AND p.stock > 0 \n         ORDER BY p.price ASC \n         LIMIT $4 OFFSET $5 \n        ",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -4217,24 +5479,243 @@ fn combining_features_example() {
                         };
                     }
                     {
+                        let __enhanced_section_case_single_2_filter_category_cat = &(match &(category
+                            .is_some())
+                        {
+                            true => &(category.unwrap()),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_2_filter_category_cat,
+                        );
+                        let __enhanced_section_case_single_2_filter_price_min_price_min = &(match &(price_min
+                            .is_some())
+                        {
+                            true => &(price_min.unwrap()),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_2_filter_price_min_price_min,
+                        );
+                        let __enhanced_section_case_single_2_filter_price_max_price_max = &(match &(price_max
+                            .is_some())
+                        {
+                            true => &(price_max.unwrap()),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_2_filter_price_max_price_max,
+                        );
+                        let __enhanced_section_case_single_2_limit_offset = &(match &(page_size
+                            .is_some())
+                        {
+                            true => &(page * page_size.unwrap()),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_section_case_single_2_limit_size = &(match &(page_size
+                            .is_some())
+                        {
+                            true => &(page_size.unwrap()),
+                            _ => {
+                                ::core::panicking::panic_fmt(
+                                    format_args!(
+                                        "internal error: entered unreachable code: {0}",
+                                        format_args!("sql_forge!: validator arm mismatch"),
+                                    ),
+                                );
+                            }
+                        });
+                        let __enhanced_validator_arg_3 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_2_limit_size,
+                        );
+                        let __enhanced_validator_arg_4 = sql_forge::sql_forge_validator_value(
+                            __enhanced_section_case_single_2_limit_offset,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    let arg1 = &(__enhanced_validator_arg_1);
+                                    let arg2 = &(__enhanced_validator_arg_2);
+                                    let arg3 = &(__enhanced_validator_arg_3);
+                                    let arg4 = &(__enhanced_validator_arg_4);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            &str,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg2);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg3);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg4);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            5usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg1)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg2)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg3)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg4),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg1).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg2).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg3).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg4).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "\n        SELECT\n            p.id,\n            p.name,\n            p.price,\n            p.stock,\n            p.category\n        FROM products p\n        WHERE 1 = 1\n         AND p.category = NULL \n         AND p.price >= NULL \n         AND p.price <= NULL \n         AND p.stock > 0 \n         ORDER BY p.id ASC \n         LIMIT NULL OFFSET NULL \n        ",
+                                            "\n        SELECT\n            p.id,\n            p.name,\n            p.price,\n            p.stock,\n            p.category\n        FROM products p\n        WHERE 1 = 1\n         AND p.category = $1 \n         AND p.price >= $2 \n         AND p.price <= $3 \n         AND p.stock > 0 \n         ORDER BY p.id ASC \n         LIMIT $4 OFFSET $5 \n        ",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -4549,25 +6030,60 @@ fn execute_only_query() {
         let pool = pool().await;
         {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_id = &(1i64);
                 {
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_id,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        i64,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_with_result::<
                                     sqlx::postgres::Postgres,
                                     _,
                                 >(
-                                    "UPDATE products SET stock = 50 WHERE id = NULL",
+                                    "UPDATE products SET stock = 50 WHERE id = $1",
                                     query_args,
                                 )
                             }
@@ -4625,25 +6141,60 @@ fn execute_only_query() {
             .expect("reset stock failed");
         {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_id = &(1i64);
                 {
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_id,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        i64,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_with_result::<
                                     sqlx::postgres::Postgres,
                                     _,
                                 >(
-                                    "\n        UPDATE products SET stock = stock + 1 WHERE id = NULL\n        ",
+                                    "\n        UPDATE products SET stock = stock + 1 WHERE id = $1\n        ",
                                     query_args,
                                 )
                             }
@@ -4773,24 +6324,59 @@ fn execute_only_insert_update_delete() {
         let pool = pool().await;
         {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_category = &("Temporary");
                 {
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_category,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        &str,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_with_result::<
                                     sqlx::postgres::Postgres,
                                     _,
-                                >("DELETE FROM products WHERE category = NULL", query_args)
+                                >("DELETE FROM products WHERE category = $1", query_args)
                             }
                         };
                     }
@@ -4849,25 +6435,157 @@ fn execute_only_insert_update_delete() {
         for (i, name) in names.iter().enumerate() {
             {
                 let _sql_forge_validator = || {
+                    let __enhanced_top_level_name = &(name);
+                    let __enhanced_top_level_price = &(price_inc(
+                        &base_price,
+                        i as i64,
+                        2,
+                    ));
+                    let __enhanced_top_level_stock = &(10i64);
+                    let __enhanced_top_level_category = &("Temporary");
                     {
                         {
+                            let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                                __enhanced_top_level_name,
+                            );
+                            let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                                __enhanced_top_level_price,
+                            );
+                            let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
+                                __enhanced_top_level_stock,
+                            );
+                            let __enhanced_validator_arg_3 = sql_forge::sql_forge_validator_value(
+                                __enhanced_top_level_category,
+                            );
                             let _ = {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    let arg1 = &(__enhanced_validator_arg_1);
+                                    let arg2 = &(__enhanced_validator_arg_2);
+                                    let arg3 = &(__enhanced_validator_arg_3);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            &str,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg2);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            i64,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg3);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            &str,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            4usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg1)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg2)
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg3),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg1).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg2).map(move |()| query_args)
+                                        })
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg3).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                        "\n            INSERT INTO products (name, price, stock, category)\n            VALUES (NULL, NULL, NULL, NULL)\n            ",
+                                        "\n            INSERT INTO products (name, price, stock, category)\n            VALUES ($1, $2, $3, $4)\n            ",
                                         query_args,
                                     )
                                 }
@@ -4942,25 +6660,122 @@ fn execute_only_insert_update_delete() {
         }
         {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_new_price = &(price_new(4999, 2));
+                let __enhanced_top_level_category = &("Temporary");
+                let __enhanced_top_level_name = &("Temp B");
                 {
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_new_price,
+                        );
+                        let __enhanced_validator_arg_1 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_category,
+                        );
+                        let __enhanced_validator_arg_2 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_name,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                let arg1 = &(__enhanced_validator_arg_1);
+                                let arg2 = &(__enhanced_validator_arg_2);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        i64,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg1);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        &str,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg2);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        &str,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        3usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0)
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg1)
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg2),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    })
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg1).map(move |()| query_args)
+                                    })
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg2).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_with_result::<
                                     sqlx::postgres::Postgres,
                                     _,
                                 >(
-                                    "\n        UPDATE products\n        SET price = NULL\n        WHERE category = NULL AND name = NULL\n        ",
+                                    "\n        UPDATE products\n        SET price = $1\n        WHERE category = $2 AND name = $3\n        ",
                                     query_args,
                                 )
                             }
@@ -5045,27 +6860,62 @@ fn execute_only_insert_update_delete() {
         }
         let rows: Vec<TempRow> = {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_cat = &("Temporary");
                 {
                     type __EnhancedModel = TempRow;
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_cat,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            &str,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            1usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "\n        SELECT name, price FROM products\n        WHERE category = NULL\n        ORDER BY id\n        ",
+                                            "\n        SELECT name, price FROM products\n        WHERE category = $1\n        ORDER BY id\n        ",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -5261,25 +7111,60 @@ fn execute_only_insert_update_delete() {
         };
         {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_category = &("Temporary");
                 {
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_category,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        &str,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_with_result::<
                                     sqlx::postgres::Postgres,
                                     _,
                                 >(
-                                    "\n        DELETE FROM products\n        WHERE category = NULL\n        ",
+                                    "\n        DELETE FROM products\n        WHERE category = $1\n        ",
                                     query_args,
                                 )
                             }
@@ -5338,26 +7223,61 @@ fn execute_only_insert_update_delete() {
             .expect("delete failed");
         let remaining: i64 = {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_cat = &("Temporary");
                 {
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_cat,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        &str,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_scalar_with_result::<
                                     sqlx::postgres::Postgres,
                                     ::std::option::Option<i64>,
                                     _,
                                 >(
-                                    "SELECT COUNT(*) FROM products WHERE category = NULL",
+                                    "SELECT COUNT(*) FROM products WHERE category = $1",
                                     query_args,
                                 )
                             }
@@ -5562,24 +7482,59 @@ fn execute_batch() {
         let pool = pool().await;
         {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_category = &("Batch");
                 {
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_category,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        &str,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_with_result::<
                                     sqlx::postgres::Postgres,
                                     _,
-                                >("DELETE FROM products WHERE category = NULL", query_args)
+                                >("DELETE FROM products WHERE category = $1", query_args)
                             }
                         };
                     }
@@ -5912,27 +7867,62 @@ fn execute_batch() {
             .expect("batch insert failed");
         let rows: Vec<BatchItem> = {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_cat = &("Batch");
                 {
                     type __EnhancedModel = BatchItem;
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_cat,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            &str,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            1usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "\n        SELECT name, price FROM products\n        WHERE category = NULL\n        ORDER BY id\n        ",
+                                            "\n        SELECT name, price FROM products\n        WHERE category = $1\n        ORDER BY id\n        ",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -6170,24 +8160,59 @@ fn execute_batch() {
         };
         {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_category = &("Batch");
                 {
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_category,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        &str,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_with_result::<
                                     sqlx::postgres::Postgres,
                                     _,
-                                >("DELETE FROM products WHERE category = NULL", query_args)
+                                >("DELETE FROM products WHERE category = $1", query_args)
                             }
                         };
                     }
@@ -6321,24 +8346,59 @@ fn execute_batch_full() {
         let pool = pool().await;
         {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_category = &("BatchFull");
                 {
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_category,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        &str,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_with_result::<
                                     sqlx::postgres::Postgres,
                                     _,
-                                >("DELETE FROM products WHERE category = NULL", query_args)
+                                >("DELETE FROM products WHERE category = $1", query_args)
                             }
                         };
                     }
@@ -6837,27 +8897,62 @@ fn execute_batch_full() {
             .expect("batch insert failed");
         let rows: Vec<BatchFullItem> = {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_cat = &("BatchFull");
                 {
                     type __EnhancedModel = BatchFullItem;
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_cat,
+                        );
                         let _ = {
                             {
                                 #[allow(clippy::all)]
                                 {
                                     use ::sqlx::Arguments as _;
+                                    let arg0 = &(__enhanced_validator_arg_0);
+                                    #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                    if false {
+                                        use ::sqlx::ty_match::{
+                                            WrapSameExt as _, MatchBorrowExt as _,
+                                        };
+                                        let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                        let ty_check = ::sqlx::ty_match::WrapSame::<
+                                            &str,
+                                            _,
+                                        >::new(&expr)
+                                            .wrap_same();
+                                        let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                            ty_check,
+                                            &expr,
+                                        );
+                                        _ty_check = match_borrow.match_borrow();
+                                        ::core::panicking::panic(
+                                            "internal error: entered unreachable code",
+                                        );
+                                    }
+                                    let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                        '_,
+                                    >::default();
+                                    query_args
+                                        .reserve(
+                                            1usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::postgres::Postgres,
+                                                >::size_hint(arg0),
+                                        );
                                     let query_args = ::core::result::Result::<
                                         _,
                                         ::sqlx::error::BoxDynError,
-                                    >::Ok(
-                                        <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                            '_,
-                                        >::default(),
-                                    );
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        });
                                     ::sqlx::__query_with_result::<
                                         sqlx::postgres::Postgres,
                                         _,
                                     >(
-                                            "\n        SELECT name, price, stock, category FROM products\n        WHERE category = NULL\n        ORDER BY id\n        ",
+                                            "\n        SELECT name, price, stock, category FROM products\n        WHERE category = $1\n        ORDER BY id\n        ",
                                             query_args,
                                         )
                                         .try_map(|row: sqlx::postgres::PgRow| {
@@ -7137,24 +9232,59 @@ fn execute_batch_full() {
         };
         {
             let _sql_forge_validator = || {
+                let __enhanced_top_level_category = &("BatchFull");
                 {
                     {
+                        let __enhanced_validator_arg_0 = sql_forge::sql_forge_validator_value(
+                            __enhanced_top_level_category,
+                        );
                         let _ = {
                             #[allow(clippy::all)]
                             {
                                 use ::sqlx::Arguments as _;
+                                let arg0 = &(__enhanced_validator_arg_0);
+                                #[allow(clippy::missing_panics_doc, clippy::unreachable)]
+                                if false {
+                                    use ::sqlx::ty_match::{
+                                        WrapSameExt as _, MatchBorrowExt as _,
+                                    };
+                                    let expr = ::sqlx::ty_match::dupe_value(arg0);
+                                    let ty_check = ::sqlx::ty_match::WrapSame::<
+                                        &str,
+                                        _,
+                                    >::new(&expr)
+                                        .wrap_same();
+                                    let (mut _ty_check, match_borrow) = ::sqlx::ty_match::MatchBorrow::new(
+                                        ty_check,
+                                        &expr,
+                                    );
+                                    _ty_check = match_borrow.match_borrow();
+                                    ::core::panicking::panic(
+                                        "internal error: entered unreachable code",
+                                    );
+                                }
+                                let mut query_args = <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
+                                    '_,
+                                >::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::postgres::Postgres,
+                                            >::size_hint(arg0),
+                                    );
                                 let query_args = ::core::result::Result::<
                                     _,
                                     ::sqlx::error::BoxDynError,
-                                >::Ok(
-                                    <sqlx::postgres::Postgres as ::sqlx::database::Database>::Arguments::<
-                                        '_,
-                                    >::default(),
-                                );
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
                                 ::sqlx::__query_with_result::<
                                     sqlx::postgres::Postgres,
                                     _,
-                                >("DELETE FROM products WHERE category = NULL", query_args)
+                                >("DELETE FROM products WHERE category = $1", query_args)
                             }
                         };
                     }

@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT COUNT(*) AS total\n        FROM items\n        \n        WHERE items.category_id = $1\n        AND   items.price      >= $2\n        \n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "total",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      null
+    ]
+  },
+  "hash": "42df064f64809d901ca2b50684e1059200576f58728bed3816dbb7f93ef04e46"
+}
