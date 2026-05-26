@@ -1,0 +1,115 @@
+error[E0277]: the trait bound `RawId: SqlForgeValidatorValue<_>` is not satisfied
+  --> tests/postgres/tmp-ui/missing_sqlx_transparent_fails.rs:7:13
+   |
+ 7 |       let _ = sql_forge!(
+   |  _____________^
+ 8 | |         support::User,
+ 9 | |         "SELECT id, name FROM users WHERE id IN (:ids[])",
+10 | |         ( :ids = ids ),
+11 | |     );
+   | |_____^ unsatisfied trait bound
+   |
+help: the trait `SqlForgeValidatorValue<_>` is not implemented for `RawId`
+  --> tests/postgres/tmp-ui/support/mod.rs
+   |
+   | pub struct RawId(pub i64);
+   | ^^^^^^^^^^^^^^^^
+   = help: the following other types implement trait `SqlForgeValidatorValue<Expected>`:
+             `&'a str` implements `SqlForgeValidatorValue<&'a str>`
+             `&T` implements `SqlForgeValidatorValue<Expected>`
+             `Option<T>` implements `SqlForgeValidatorValue<Option<U>>`
+             `Vec<u8>` implements `SqlForgeValidatorValue<Vec<u8>>`
+             `bool` implements `SqlForgeValidatorValue<bool>`
+             `f32` implements `SqlForgeValidatorValue<f32>`
+             `f64` implements `SqlForgeValidatorValue<f64>`
+             `i16` implements `SqlForgeValidatorValue<i16>`
+           and $N others
+note: required by a bound in `sql_forge::sql_forge_validator_value`
+  --> src/traits.rs
+   |
+   | pub fn sql_forge_validator_value<Expected, T>(value: &T) -> Expected
+   |        ------------------------- required by a bound in this function
+   | where
+   |     T: SqlForgeValidatorValue<Expected>,
+   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `sql_forge_validator_value`
+   = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `RawId: sqlx::Encode<'_, Postgres>` is not satisfied
+  --> tests/postgres/tmp-ui/missing_sqlx_transparent_fails.rs:7:13
+   |
+ 7 |       let _ = sql_forge!(
+   |  _____________^
+ 8 | |         support::User,
+ 9 | |         "SELECT id, name FROM users WHERE id IN (:ids[])",
+10 | |         ( :ids = ids ),
+11 | |     );
+   | |_____^ unsatisfied trait bound
+   |
+help: the trait `sqlx::Encode<'_, Postgres>` is not implemented for `RawId`
+  --> tests/postgres/tmp-ui/support/mod.rs
+   |
+   | pub struct RawId(pub i64);
+   | ^^^^^^^^^^^^^^^^
+   = help: the following other types implement trait `sqlx::Encode<'q, DB>`:
+             `&'a str` implements `sqlx::Encode<'a, sqlx::Any>`
+             `&'q [u8]` implements `sqlx::Encode<'q, Sqlite>`
+             `&'q [u8]` implements `sqlx::Encode<'q, sqlx::Any>`
+             `&'q str` implements `sqlx::Encode<'q, Sqlite>`
+             `&T` implements `sqlx::Encode<'q, DB>`
+             `&[T]` implements `sqlx::Encode<'q, Postgres>`
+             `&[u8]` implements `sqlx::Encode<'_, MySql>`
+             `&[u8]` implements `sqlx::Encode<'_, Postgres>`
+           and $N others
+note: required by a bound in `Separated::<'qb, 'args, DB, Sep>::push_bind`
+  --> $CARGO/sqlx-core-$VERSION/src/query_builder.rs
+   |
+   |     pub fn push_bind<T>(&mut self, value: T) -> &mut Self
+   |            --------- required by a bound in this associated function
+   |     where
+   |         T: 'args + Encode<'args, DB> + Type<DB>,
+   |                    ^^^^^^^^^^^^^^^^^ required by this bound in `Separated::<'qb, 'args, DB, Sep>::push_bind`
+   = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `RawId: sqlx::Type<Postgres>` is not satisfied
+  --> tests/postgres/tmp-ui/missing_sqlx_transparent_fails.rs:7:13
+   |
+ 7 |       let _ = sql_forge!(
+   |  _____________^
+ 8 | |         support::User,
+ 9 | |         "SELECT id, name FROM users WHERE id IN (:ids[])",
+10 | |         ( :ids = ids ),
+11 | |     );
+   | |_____^ unsatisfied trait bound
+   |
+help: the trait `sqlx::Type<Postgres>` is not implemented for `RawId`
+  --> tests/postgres/tmp-ui/support/mod.rs
+   |
+   | pub struct RawId(pub i64);
+   | ^^^^^^^^^^^^^^^^
+   = help: the following other types implement trait `sqlx::Type<DB>`:
+             `&T` implements `sqlx::Type<DB>`
+             `()` implements `sqlx::Type<Postgres>`
+             `(T1, T2)` implements `sqlx::Type<Postgres>`
+             `(T1, T2, T3)` implements `sqlx::Type<Postgres>`
+             `(T1, T2, T3, T4)` implements `sqlx::Type<Postgres>`
+             `(T1, T2, T3, T4, T5)` implements `sqlx::Type<Postgres>`
+             `(T1, T2, T3, T4, T5, T6)` implements `sqlx::Type<Postgres>`
+             `(T1, T2, T3, T4, T5, T6, T7)` implements `sqlx::Type<Postgres>`
+           and $N others
+note: required by a bound in `Separated::<'qb, 'args, DB, Sep>::push_bind`
+  --> $CARGO/sqlx-core-$VERSION/src/query_builder.rs
+   |
+   |     pub fn push_bind<T>(&mut self, value: T) -> &mut Self
+   |            --------- required by a bound in this associated function
+   |     where
+   |         T: 'args + Encode<'args, DB> + Type<DB>,
+   |                                        ^^^^^^^^ required by this bound in `Separated::<'qb, 'args, DB, Sep>::push_bind`
+   = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use a unary tuple instead
+   |
+ 7 ~     let _ = (sql_forge!(
+ 8 |         support::User,
+ 9 |         "SELECT id, name FROM users WHERE id IN (:ids[])",
+10 |         ( :ids = ids ),
+11 ~     ),);
+   |

@@ -2796,12 +2796,14 @@ pub fn db_type(input: TokenStream) -> TokenStream {
     }
 }
 
-/// Marks a single-value tuple struct as a transparent wrapper.
+/// Marks a single-value tuple struct as a transparent wrapper for use with
+/// `sql_forge!` parameters.
 ///
-/// Equivalent to applying `#[derive(sqlx::Type)]` + `#[sqlx(transparent)]`
-/// and additionally implements `SqlForgeValidatorValue` so that list
-/// parameters (`:ids[]`) and other bindings validate correctly for
-/// PostgreSQL databases (which require exact type matching in `query_as!`).
+/// Expands to `#[derive(sqlx::Type)]` + `#[sqlx(transparent)]` (needed for
+/// all database backends so the type implements `sqlx::Encode` + `sqlx::Type`)
+/// and additionally implements `SqlForgeValidatorValue<InnerType>`, which is
+/// **required for PostgreSQL** to pass compile-time parameter validation in
+/// `query_as!`. MySQL and SQLite do not use the trait.
 ///
 /// ```rust,ignore
 /// #[derive(Debug, PartialEq, Eq)]

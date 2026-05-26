@@ -301,6 +301,23 @@ let users: Vec<User> = sql_forge!(
 .await?;
 ```
 
+### Transparent wrapper types (`#[sql_forge::sql_forge_transparent]`)
+
+When using a custom wrapper type as a parameter with `sql_forge!`, PostgreSQL requires the type to implement `SqlForgeValidatorValue` so that the compile-time validator can convert it to the underlying SQL-facing type. Annotate the type with `#[sql_forge::sql_forge_transparent]` to derive both `#[sqlx(transparent)]` and the required trait impl:
+
+```rust
+#[derive(Debug, PartialEq, Eq)]
+#[sql_forge::sql_forge_transparent]
+struct UserId(pub i64);
+```
+
+This expands to:
+
+- `#[derive(sqlx::Type)]` + `#[sqlx(transparent)]` is needed for all database backends (enables `push_bind`)
+- `impl SqlForgeValidatorValue<i64>` is needed only for PostgreSQL (strict type matching in `query_as!`)
+
+PostgreSQL requires this for **all** parameter types (single values and `IN (:ids[])` lists). MySQL and SQLite do not use the trait at all, as `#[sqlx(transparent)]` alone is sufficient for those backends.
+
 ---
 
 ## Batch inserts (`{( ... )}`)
@@ -679,7 +696,7 @@ let rows: Vec<Product> = sql_forge!(
 
 The macro scans the SQL template text for `:parameter` tokens to locate bind parameter placeholders. A colon that appears **inside a SQL string literal** in the template (e.g. `"abc:def"`) is indistinguishable from a parameter placeholder at the text level and will cause a parse error or an unexpected parameter name.
 
-This also affects MySQL-specific alias text such as ```SELECT 1 AS `my_field:String` ```. The parser still sees `:String` as a parameter token, so that alias form is not supported inside a `sql_forge!` SQL template. You can add a whitespace to avoid that: ```SELECT 1 AS `my_field: String` ```.
+This also affects MySQL-specific alias text such as ``SELECT 1 AS `my_field:String` ``. The parser still sees `:String` as a parameter token, so that alias form is not supported inside a `sql_forge!` SQL template. You can add a whitespace to avoid that: ``SELECT 1 AS `my_field: String` ``.
 
 **Workaround:** pass the value as a bind parameter and use the `:parameter` placeholder in the template instead of embedding the literal directly.
 
@@ -731,10 +748,10 @@ The macro also scans the SQL template text for `{( ... )}` batch sections. A `{(
 
 In practice, both markers should be avoided inside inline literals. Pass those values as bind parameters instead.
 
-| ❌ Inline literal (breaks)                          | ✅ Bind parameter (correct)                         |
-| --------------------------------------------------- | -------------------------------------------------- |
-| `WHERE name = "abc{(def"` in the SQL string        | `WHERE name = :name` with `( :name = "abc{(def" )` |
-| `VALUES {("abc)}")}` inside a batch SQL template   | `VALUES {(:name)}` with `..items` and `item.name`  |
+| ❌ Inline literal (breaks)                       | ✅ Bind parameter (correct)                        |
+| ------------------------------------------------ | -------------------------------------------------- |
+| `WHERE name = "abc{(def"` in the SQL string      | `WHERE name = :name` with `( :name = "abc{(def" )` |
+| `VALUES {("abc)}")}` inside a batch SQL template | `VALUES {(:name)}` with `..items` and `item.name`  |
 
 ```rust
 // ❌ will fail, as the macro sees "{(" as the start of a batch section

@@ -13,6 +13,8 @@ pub struct AmountResult {
 #[sqlx(transparent)]
 pub struct TransparentId(pub i64);
 
+pub struct RawId(pub i64);
+
 pub struct BatchName {
     pub name: String,
 }
