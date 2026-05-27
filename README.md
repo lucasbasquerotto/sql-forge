@@ -10,7 +10,7 @@ Write SQL with named parameters and optional sections that are swapped in at run
 
 ```toml
 [dependencies]
-sql-forge = "0.4.1"
+sql-forge = "0.4.2"
 sqlx = { version = "0.9.0", features = ["mysql", "runtime-tokio"] }  # or postgres / sqlite
 ```
 
