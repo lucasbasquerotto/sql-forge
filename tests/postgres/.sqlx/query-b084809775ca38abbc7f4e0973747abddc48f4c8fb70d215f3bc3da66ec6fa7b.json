@@ -1,0 +1,21 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        INSERT INTO products (name, price, stock, category)\n        VALUES ($1, $2, 10, 'BatchWithParams'), ($3, $4, 10, 'BatchWithParams'), ($5, $6, 10, 'BatchWithParams'), ($7, $8, 10, 'BatchWithParams')\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Int8",
+        "Text",
+        "Int8",
+        "Text",
+        "Int8",
+        "Text",
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "b084809775ca38abbc7f4e0973747abddc48f4c8fb70d215f3bc3da66ec6fa7b"
+}

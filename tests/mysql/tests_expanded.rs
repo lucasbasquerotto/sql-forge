@@ -392,7 +392,7 @@ fn basic_query_with_inline_params() {
                 let __sql_forge_top_level_max_id = &(3i64);
                 let __sql_forge_top_level_limit = &(10i64);
                 {
-                    type __EnhancedModel = User;
+                    type __SqlForgeModel = User;
                     {
                         let __sql_forge_validator_arg_0 = __sql_forge_top_level_max_id;
                         let __sql_forge_validator_arg_1 = __sql_forge_top_level_max_id;
@@ -450,7 +450,7 @@ fn basic_query_with_inline_params() {
                                             let sqlx_query_as_name = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                             })
@@ -893,7 +893,7 @@ fn struct_source_params() {
                 let __sql_forge_top_level_max_id = &__sql_forge_source_top_level.max_id;
                 let __sql_forge_top_level_limit = &__sql_forge_source_top_level.limit;
                 {
-                    type __EnhancedModel = User;
+                    type __SqlForgeModel = User;
                     {
                         let __sql_forge_validator_arg_0 = __sql_forge_top_level_max_id;
                         let __sql_forge_validator_arg_1 = __sql_forge_top_level_limit;
@@ -943,7 +943,7 @@ fn struct_source_params() {
                                             let sqlx_query_as_name = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                             })
@@ -1134,7 +1134,7 @@ fn section_dynamic_where() {
         let products: Vec<Product> = {
             let _sql_forge_validator = || {
                 {
-                    type __EnhancedModel = Product;
+                    type __SqlForgeModel = Product;
                     {
                         let __sql_forge_section_case_single_0_filter_category_cat = &(cat);
                         let __sql_forge_validator_arg_0 = __sql_forge_section_case_single_0_filter_category_cat;
@@ -1189,7 +1189,7 @@ fn section_dynamic_where() {
                                             let sqlx_query_as_category = row
                                                 .try_get_unchecked::<String, _>(4usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                                 price: sqlx_query_as_price,
@@ -1392,7 +1392,7 @@ fn section_with_local_params() {
         let users: Vec<User> = {
             let _sql_forge_validator = || {
                 {
-                    type __EnhancedModel = User;
+                    type __SqlForgeModel = User;
                     {
                         let __sql_forge_section_case_single_0_filter_max_id = &(max_id);
                         let __sql_forge_validator_arg_0 = __sql_forge_section_case_single_0_filter_max_id;
@@ -1432,7 +1432,7 @@ fn section_with_local_params() {
                                             let sqlx_query_as_name = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                             })
@@ -1643,7 +1643,7 @@ fn grouped_sections() {
         let rows: Vec<Row> = {
             let _sql_forge_validator = || {
                 {
-                    type __EnhancedModel = Row;
+                    type __SqlForgeModel = Row;
                     {
                         let _ = {
                             {
@@ -1673,7 +1673,7 @@ fn grouped_sections() {
                                             let sqlx_query_as_field_2 = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 field_1: sqlx_query_as_field_1,
                                                 field_2: sqlx_query_as_field_2,
                                             })
@@ -1711,7 +1711,7 @@ fn grouped_sections() {
                                             let sqlx_query_as_field_2 = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 field_1: sqlx_query_as_field_1,
                                                 field_2: sqlx_query_as_field_2,
                                             })
@@ -1963,7 +1963,7 @@ fn grouped_sections_with_nested_matches() {
         let rows: Vec<Row> = {
             let _sql_forge_validator = || {
                 {
-                    type __EnhancedModel = Row;
+                    type __SqlForgeModel = Row;
                     {
                         let _ = {
                             {
@@ -1997,7 +1997,7 @@ fn grouped_sections_with_nested_matches() {
                                             let sqlx_query_as_field_3 = row
                                                 .try_get_unchecked::<String, _>(2usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 field_1: sqlx_query_as_field_1,
                                                 field_2: sqlx_query_as_field_2,
                                                 field_3: sqlx_query_as_field_3,
@@ -2040,7 +2040,7 @@ fn grouped_sections_with_nested_matches() {
                                             let sqlx_query_as_field_3 = row
                                                 .try_get_unchecked::<String, _>(2usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 field_1: sqlx_query_as_field_1,
                                                 field_2: sqlx_query_as_field_2,
                                                 field_3: sqlx_query_as_field_3,
@@ -2083,7 +2083,7 @@ fn grouped_sections_with_nested_matches() {
                                             let sqlx_query_as_field_3 = row
                                                 .try_get_unchecked::<String, _>(2usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 field_1: sqlx_query_as_field_1,
                                                 field_2: sqlx_query_as_field_2,
                                                 field_3: sqlx_query_as_field_3,
@@ -2353,7 +2353,7 @@ fn list_parameter_in_clause() {
             let _sql_forge_validator = || {
                 let __sql_forge_top_level_ids = &(ids);
                 {
-                    type __EnhancedModel = User;
+                    type __SqlForgeModel = User;
                     {
                         let __sql_forge_validator_arg_0 = (__sql_forge_top_level_ids)
                             .as_slice()
@@ -2426,7 +2426,7 @@ fn list_parameter_in_clause() {
                                             let sqlx_query_as_name = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                             })
@@ -2665,7 +2665,7 @@ fn list_parameter_in_main_sql_with_match_filter() {
             let _sql_forge_validator = || {
                 let __sql_forge_top_level_ids = &(ids);
                 {
-                    type __EnhancedModel = User;
+                    type __SqlForgeModel = User;
                     {
                         let __sql_forge_validator_arg_0 = (__sql_forge_top_level_ids)
                             .as_slice()
@@ -2760,7 +2760,7 @@ fn list_parameter_in_main_sql_with_match_filter() {
                                             let sqlx_query_as_name = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                             })
@@ -2841,7 +2841,7 @@ fn list_parameter_in_main_sql_with_match_filter() {
                                             let sqlx_query_as_name = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                             })
@@ -3060,7 +3060,7 @@ fn list_parameter_with_empty_guard() {
         let users: Vec<User> = {
             let _sql_forge_validator = || {
                 {
-                    type __EnhancedModel = User;
+                    type __SqlForgeModel = User;
                     {
                         let _ = {
                             {
@@ -3087,7 +3087,7 @@ fn list_parameter_with_empty_guard() {
                                             let sqlx_query_as_name = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                             })
@@ -3181,7 +3181,7 @@ fn list_parameter_with_empty_guard() {
                                             let sqlx_query_as_name = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                             })
@@ -3386,7 +3386,7 @@ fn multiple_results_group() {
                 {
                     let __sql_forge_result_flag_amount: bool = true;
                     let __sql_forge_result_flag_list: bool = false;
-                    type __EnhancedModel = AmountResult;
+                    type __SqlForgeModel = AmountResult;
                     {
                         let __sql_forge_validator_arg_0 = __sql_forge_top_level_category_id;
                         let __sql_forge_validator_arg_1 = __sql_forge_top_level_min_price;
@@ -3432,7 +3432,7 @@ fn multiple_results_group() {
                                             let sqlx_query_as_total = row
                                                 .try_get_unchecked::<i64, _>(0usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 total: sqlx_query_as_total,
                                             })
                                         })
@@ -3444,7 +3444,7 @@ fn multiple_results_group() {
                 {
                     let __sql_forge_result_flag_amount: bool = false;
                     let __sql_forge_result_flag_list: bool = true;
-                    type __EnhancedModel = Item;
+                    type __SqlForgeModel = Item;
                     {
                         let __sql_forge_validator_arg_0 = __sql_forge_top_level_category_id;
                         let __sql_forge_validator_arg_1 = __sql_forge_top_level_min_price;
@@ -3540,7 +3540,7 @@ fn multiple_results_group() {
                                             let sqlx_query_as_stock = row
                                                 .try_get_unchecked::<i32, _>(3usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                                 price: sqlx_query_as_price,
@@ -3851,12 +3851,6 @@ fn multiple_results_group() {
                 list: __SqlForgeQuery_list,
             }
             impl __SqlForgeQueryGroup {
-                pub fn amount(self) -> __SqlForgeQuery_amount {
-                    self.amount
-                }
-                pub fn list(self) -> __SqlForgeQuery_list {
-                    self.list
-                }
                 pub fn into_parts(
                     self,
                 ) -> (__SqlForgeQuery_amount, __SqlForgeQuery_list) {
@@ -4312,12 +4306,6 @@ fn multiple_results_scalar_key() {
                 first_name: __SqlForgeQuery_first_name,
             }
             impl __SqlForgeQueryGroup {
-                pub fn amount(self) -> __SqlForgeQuery_amount {
-                    self.amount
-                }
-                pub fn first_name(self) -> __SqlForgeQuery_first_name {
-                    self.first_name
-                }
                 pub fn into_parts(
                     self,
                 ) -> (__SqlForgeQuery_amount, __SqlForgeQuery_first_name) {
@@ -4443,7 +4431,7 @@ fn combining_features_example() {
         let products: Vec<Product> = {
             let _sql_forge_validator = || {
                 {
-                    type __EnhancedModel = Product;
+                    type __SqlForgeModel = Product;
                     {
                         let __sql_forge_section_case_single_0_filter_category_cat = &(match &(category
                             .is_some())
@@ -4594,7 +4582,7 @@ fn combining_features_example() {
                                             let sqlx_query_as_category = row
                                                 .try_get_unchecked::<String, _>(4usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                                 price: sqlx_query_as_price,
@@ -4647,7 +4635,7 @@ fn combining_features_example() {
                                             let sqlx_query_as_category = row
                                                 .try_get_unchecked::<String, _>(4usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                                 price: sqlx_query_as_price,
@@ -4809,7 +4797,7 @@ fn combining_features_example() {
                                             let sqlx_query_as_category = row
                                                 .try_get_unchecked::<String, _>(4usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                                 price: sqlx_query_as_price,
@@ -5694,7 +5682,7 @@ fn execute_only_insert_update_delete() {
             let _sql_forge_validator = || {
                 let __sql_forge_top_level_cat = &("Temporary");
                 {
-                    type __EnhancedModel = TempRow;
+                    type __SqlForgeModel = TempRow;
                     {
                         let __sql_forge_validator_arg_0 = __sql_forge_top_level_cat;
                         let _ = {
@@ -5736,7 +5724,7 @@ fn execute_only_insert_update_delete() {
                                             let sqlx_query_as_price = row
                                                 .try_get_unchecked::<i64, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 name: sqlx_query_as_name,
                                                 price: sqlx_query_as_price,
                                             })
@@ -6479,7 +6467,7 @@ fn execute_batch() {
             let _sql_forge_validator = || {
                 let __sql_forge_top_level_cat = &("Batch");
                 {
-                    type __EnhancedModel = BatchItem;
+                    type __SqlForgeModel = BatchItem;
                     {
                         let __sql_forge_validator_arg_0 = __sql_forge_top_level_cat;
                         let _ = {
@@ -6521,7 +6509,7 @@ fn execute_batch() {
                                             let sqlx_query_as_price = row
                                                 .try_get_unchecked::<i64, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 name: sqlx_query_as_name,
                                                 price: sqlx_query_as_price,
                                             })
@@ -6846,6 +6834,660 @@ fn execute_batch() {
             .block_on(body);
     }
 }
+extern crate test;
+#[rustc_test_marker = "execute_batch_with_params"]
+#[doc(hidden)]
+pub const execute_batch_with_params: test::TestDescAndFn = test::TestDescAndFn {
+    desc: test::TestDesc {
+        name: test::StaticTestName("execute_batch_with_params"),
+        ignore: false,
+        ignore_message: ::core::option::Option::None,
+        source_file: "tests/tests.rs",
+        start_line: 760usize,
+        start_col: 10usize,
+        end_line: 760usize,
+        end_col: 35usize,
+        compile_fail: false,
+        no_run: false,
+        should_panic: test::ShouldPanic::No,
+        test_type: test::TestType::IntegrationTest,
+    },
+    testfn: test::StaticTestFn(
+        #[coverage(off)]
+        || test::assert_test_result(execute_batch_with_params()),
+    ),
+};
+fn execute_batch_with_params() {
+    let body = async {
+        let pool = pool().await;
+        {
+            let _sql_forge_validator = || {
+                let __sql_forge_top_level_category = &("BatchWithParams");
+                {
+                    {
+                        let __sql_forge_validator_arg_0 = __sql_forge_top_level_category;
+                        let _ = {
+                            #[allow(clippy::all)]
+                            {
+                                use ::sqlx::Arguments as _;
+                                let arg0 = &(__sql_forge_validator_arg_0);
+                                let mut query_args = <sqlx::mysql::MySql as ::sqlx::database::Database>::Arguments::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::mysql::MySql,
+                                            >::size_hint(arg0),
+                                    );
+                                let query_args = ::core::result::Result::<
+                                    _,
+                                    ::sqlx::error::BoxDynError,
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
+                                ::sqlx::__query_with_result::<
+                                    sqlx::mysql::MySql,
+                                    _,
+                                >("DELETE FROM products WHERE category = ?", query_args)
+                            }
+                        };
+                    }
+                }
+            };
+            struct __SqlForgeQuery_single {
+                inner: sqlx::QueryBuilder<sqlx::MySql>,
+            }
+            impl __SqlForgeQuery_single {
+                async fn execute<'e, E>(
+                    mut self,
+                    executor: E,
+                ) -> Result<<sqlx::MySql as sqlx::Database>::QueryResult, sqlx::Error>
+                where
+                    E: sqlx::Executor<'e, Database = sqlx::MySql>,
+                {
+                    self.inner.build().execute(executor).await
+                }
+            }
+            impl sql_forge::SqlForgeQueryExecute for __SqlForgeQuery_single {
+                type Db = sqlx::MySql;
+                fn execute<'e, E>(
+                    self,
+                    executor: E,
+                ) -> impl std::future::Future<
+                    Output = Result<
+                        <sqlx::MySql as sqlx::Database>::QueryResult,
+                        sqlx::Error,
+                    >,
+                > + Send + 'e
+                where
+                    Self: Sized + 'e,
+                    E: sqlx::Executor<'e, Database = sqlx::MySql> + Send + 'e,
+                    sqlx::MySql: 'e,
+                {
+                    __SqlForgeQuery_single::execute(self, executor)
+                }
+            }
+            let __sql_forge_runtime_category = "BatchWithParams";
+            let mut __builder: sqlx::QueryBuilder<sqlx::MySql> = sqlx::QueryBuilder::new(
+                "",
+            );
+            __builder.push("DELETE FROM products WHERE category = ");
+            __builder.push_bind(__sql_forge_runtime_category);
+            let __sql_forge_value_single = __SqlForgeQuery_single {
+                inner: __builder,
+            };
+            __sql_forge_value_single
+        }
+            .execute(&pool)
+            .await
+            .ok();
+        let batch_items = ::alloc::boxed::box_assume_init_into_vec_unsafe(
+            ::alloc::intrinsics::write_box_via_move(
+                ::alloc::boxed::Box::new_uninit(),
+                [
+                    BatchItem {
+                        name: "Batch B".to_string(),
+                        price: price_new(4999, 2),
+                    },
+                    BatchItem {
+                        name: "Batch C".to_string(),
+                        price: price_new(10001, 2),
+                    },
+                ],
+            ),
+        );
+        {
+            let _sql_forge_validator = || {
+                let __sql_forge_top_level_name = &("Batch A Param".to_string());
+                let __sql_forge_top_level_price = &(price_new(8999, 2));
+                {
+                    {
+                        let __sql_forge_validator_arg_0 = __sql_forge_top_level_name;
+                        let __sql_forge_validator_arg_1 = __sql_forge_top_level_price;
+                        let _ = {
+                            #[allow(clippy::all)]
+                            {
+                                use ::sqlx::Arguments as _;
+                                let arg0 = &(__sql_forge_validator_arg_0);
+                                let arg1 = &(__sql_forge_validator_arg_1);
+                                let arg2 = &(batch_items[0].name);
+                                let arg3 = &(batch_items[0].price);
+                                let arg4 = &(batch_items[0].name);
+                                let arg5 = &(batch_items[0].price);
+                                let arg6 = &(batch_items[0].name);
+                                let arg7 = &(batch_items[0].price);
+                                let mut query_args = <sqlx::mysql::MySql as ::sqlx::database::Database>::Arguments::default();
+                                query_args
+                                    .reserve(
+                                        8usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::mysql::MySql,
+                                            >::size_hint(arg0)
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::mysql::MySql,
+                                            >::size_hint(arg1)
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::mysql::MySql,
+                                            >::size_hint(arg2)
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::mysql::MySql,
+                                            >::size_hint(arg3)
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::mysql::MySql,
+                                            >::size_hint(arg4)
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::mysql::MySql,
+                                            >::size_hint(arg5)
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::mysql::MySql,
+                                            >::size_hint(arg6)
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::mysql::MySql,
+                                            >::size_hint(arg7),
+                                    );
+                                let query_args = ::core::result::Result::<
+                                    _,
+                                    ::sqlx::error::BoxDynError,
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    })
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg1).map(move |()| query_args)
+                                    })
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg2).map(move |()| query_args)
+                                    })
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg3).map(move |()| query_args)
+                                    })
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg4).map(move |()| query_args)
+                                    })
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg5).map(move |()| query_args)
+                                    })
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg6).map(move |()| query_args)
+                                    })
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg7).map(move |()| query_args)
+                                    });
+                                ::sqlx::__query_with_result::<
+                                    sqlx::mysql::MySql,
+                                    _,
+                                >(
+                                    "\n        INSERT INTO products (name, price, stock, category)\n        VALUES (?, ?, 10, 'BatchWithParams'), (?, ?, 10, 'BatchWithParams'), (?, ?, 10, 'BatchWithParams'), (?, ?, 10, 'BatchWithParams')\n        ",
+                                    query_args,
+                                )
+                            }
+                        };
+                    }
+                }
+            };
+            struct __SqlForgeQuery_single {
+                inner: sqlx::QueryBuilder<sqlx::MySql>,
+            }
+            impl __SqlForgeQuery_single {
+                async fn execute<'e, E>(
+                    mut self,
+                    executor: E,
+                ) -> Result<<sqlx::MySql as sqlx::Database>::QueryResult, sqlx::Error>
+                where
+                    E: sqlx::Executor<'e, Database = sqlx::MySql>,
+                {
+                    self.inner.build().execute(executor).await
+                }
+            }
+            impl sql_forge::SqlForgeQueryExecute for __SqlForgeQuery_single {
+                type Db = sqlx::MySql;
+                fn execute<'e, E>(
+                    self,
+                    executor: E,
+                ) -> impl std::future::Future<
+                    Output = Result<
+                        <sqlx::MySql as sqlx::Database>::QueryResult,
+                        sqlx::Error,
+                    >,
+                > + Send + 'e
+                where
+                    Self: Sized + 'e,
+                    E: sqlx::Executor<'e, Database = sqlx::MySql> + Send + 'e,
+                    sqlx::MySql: 'e,
+                {
+                    __SqlForgeQuery_single::execute(self, executor)
+                }
+            }
+            let __sql_forge_runtime_name = "Batch A Param".to_string();
+            let __sql_forge_runtime_price = price_new(8999, 2);
+            let mut __builder: sqlx::QueryBuilder<sqlx::MySql> = sqlx::QueryBuilder::new(
+                "",
+            );
+            __builder
+                .push(
+                    "\n        INSERT INTO products (name, price, stock, category)\n        VALUES (",
+                );
+            __builder.push_bind(__sql_forge_runtime_name);
+            __builder.push(", ");
+            __builder.push_bind(__sql_forge_runtime_price);
+            __builder.push(", 10, 'BatchWithParams'), ");
+            {
+                let mut __first = true;
+                for __item in batch_items {
+                    if !__first {
+                        __builder.push(", ");
+                    }
+                    __first = false;
+                    __builder.push("(");
+                    __builder.push_bind(__item.name);
+                    __builder.push(", ");
+                    __builder.push_bind(__item.price);
+                    __builder.push(", 10, 'BatchWithParams')");
+                }
+            }
+            __builder.push("\n        ");
+            let __sql_forge_value_single = __SqlForgeQuery_single {
+                inner: __builder,
+            };
+            __sql_forge_value_single
+        }
+            .execute(&pool)
+            .await
+            .expect("batch insert failed");
+        let rows: Vec<BatchItem> = {
+            let _sql_forge_validator = || {
+                let __sql_forge_top_level_cat = &("BatchWithParams");
+                {
+                    type __SqlForgeModel = BatchItem;
+                    {
+                        let __sql_forge_validator_arg_0 = __sql_forge_top_level_cat;
+                        let _ = {
+                            {
+                                #[allow(clippy::all)]
+                                {
+                                    use ::sqlx::Arguments as _;
+                                    let arg0 = &(__sql_forge_validator_arg_0);
+                                    let mut query_args = <sqlx::mysql::MySql as ::sqlx::database::Database>::Arguments::default();
+                                    query_args
+                                        .reserve(
+                                            1usize,
+                                            0
+                                                + ::sqlx::encode::Encode::<
+                                                    sqlx::mysql::MySql,
+                                                >::size_hint(arg0),
+                                        );
+                                    let query_args = ::core::result::Result::<
+                                        _,
+                                        ::sqlx::error::BoxDynError,
+                                    >::Ok(query_args)
+                                        .and_then(move |mut query_args| {
+                                            query_args.add(arg0).map(move |()| query_args)
+                                        });
+                                    ::sqlx::__query_with_result::<
+                                        sqlx::mysql::MySql,
+                                        _,
+                                    >(
+                                            "\n        SELECT name, price FROM products\n        WHERE category = ?\n        ORDER BY id\n        ",
+                                            query_args,
+                                        )
+                                        .try_map(|row: sqlx::mysql::MySqlRow| {
+                                            use ::sqlx::Row as _;
+                                            #[allow(non_snake_case)]
+                                            let sqlx_query_as_name = row
+                                                .try_get_unchecked::<String, _>(0usize)?
+                                                .into();
+                                            #[allow(non_snake_case)]
+                                            let sqlx_query_as_price = row
+                                                .try_get_unchecked::<i64, _>(1usize)?
+                                                .into();
+                                            ::std::result::Result::Ok(__SqlForgeModel {
+                                                name: sqlx_query_as_name,
+                                                price: sqlx_query_as_price,
+                                            })
+                                        })
+                                }
+                            }
+                        };
+                    }
+                }
+            };
+            struct __SqlForgeQuery_single {
+                inner: sqlx::QueryBuilder<sqlx::MySql>,
+            }
+            impl __SqlForgeQuery_single {
+                async fn fetch_all<'e, E>(
+                    mut self,
+                    executor: E,
+                ) -> Result<Vec<BatchItem>, sqlx::Error>
+                where
+                    E: sqlx::Executor<'e, Database = sqlx::MySql>,
+                {
+                    self.inner.build_query_as::<BatchItem>().fetch_all(executor).await
+                }
+                async fn fetch_one<'e, E>(
+                    mut self,
+                    executor: E,
+                ) -> Result<BatchItem, sqlx::Error>
+                where
+                    E: sqlx::Executor<'e, Database = sqlx::MySql>,
+                {
+                    self.inner.build_query_as::<BatchItem>().fetch_one(executor).await
+                }
+                async fn fetch_optional<'e, E>(
+                    mut self,
+                    executor: E,
+                ) -> Result<Option<BatchItem>, sqlx::Error>
+                where
+                    E: sqlx::Executor<'e, Database = sqlx::MySql>,
+                {
+                    self.inner
+                        .build_query_as::<BatchItem>()
+                        .fetch_optional(executor)
+                        .await
+                }
+                async fn execute<'e, E>(
+                    mut self,
+                    executor: E,
+                ) -> Result<<sqlx::MySql as sqlx::Database>::QueryResult, sqlx::Error>
+                where
+                    E: sqlx::Executor<'e, Database = sqlx::MySql>,
+                {
+                    self.inner.build().execute(executor).await
+                }
+            }
+            impl sql_forge::SqlForgeQuery<BatchItem> for __SqlForgeQuery_single {
+                type Db = sqlx::MySql;
+                fn fetch_all<'e, E>(
+                    self,
+                    executor: E,
+                ) -> impl std::future::Future<
+                    Output = Result<Vec<BatchItem>, sqlx::Error>,
+                > + Send + 'e
+                where
+                    Self: Sized + 'e,
+                    E: sqlx::Executor<'e, Database = sqlx::MySql> + Send + 'e,
+                    sqlx::MySql: 'e,
+                {
+                    __SqlForgeQuery_single::fetch_all(self, executor)
+                }
+                fn fetch_one<'e, E>(
+                    self,
+                    executor: E,
+                ) -> impl std::future::Future<
+                    Output = Result<BatchItem, sqlx::Error>,
+                > + Send + 'e
+                where
+                    Self: Sized + 'e,
+                    E: sqlx::Executor<'e, Database = sqlx::MySql> + Send + 'e,
+                    sqlx::MySql: 'e,
+                {
+                    __SqlForgeQuery_single::fetch_one(self, executor)
+                }
+                fn fetch_optional<'e, E>(
+                    self,
+                    executor: E,
+                ) -> impl std::future::Future<
+                    Output = Result<Option<BatchItem>, sqlx::Error>,
+                > + Send + 'e
+                where
+                    Self: Sized + 'e,
+                    E: sqlx::Executor<'e, Database = sqlx::MySql> + Send + 'e,
+                    sqlx::MySql: 'e,
+                {
+                    __SqlForgeQuery_single::fetch_optional(self, executor)
+                }
+                fn execute<'e, E>(
+                    self,
+                    executor: E,
+                ) -> impl std::future::Future<
+                    Output = Result<
+                        <sqlx::MySql as sqlx::Database>::QueryResult,
+                        sqlx::Error,
+                    >,
+                > + Send + 'e
+                where
+                    Self: Sized + 'e,
+                    E: sqlx::Executor<'e, Database = sqlx::MySql> + Send + 'e,
+                    sqlx::MySql: 'e,
+                {
+                    __SqlForgeQuery_single::execute(self, executor)
+                }
+            }
+            let __sql_forge_runtime_cat = "BatchWithParams";
+            let mut __builder: sqlx::QueryBuilder<sqlx::MySql> = sqlx::QueryBuilder::new(
+                "",
+            );
+            __builder
+                .push(
+                    "\n        SELECT name, price FROM products\n        WHERE category = ",
+                );
+            __builder.push_bind(__sql_forge_runtime_cat);
+            __builder.push("\n        ORDER BY id\n        ");
+            let __sql_forge_value_single = __SqlForgeQuery_single {
+                inner: __builder,
+            };
+            __sql_forge_value_single
+        }
+            .fetch_all(&pool)
+            .await
+            .expect("select batch failed");
+        match (&rows.len(), &3) {
+            (left_val, right_val) => {
+                if !(*left_val == *right_val) {
+                    let kind = ::core::panicking::AssertKind::Eq;
+                    ::core::panicking::assert_failed(
+                        kind,
+                        &*left_val,
+                        &*right_val,
+                        ::core::option::Option::None,
+                    );
+                }
+            }
+        };
+        match (&rows[0].name, &"Batch A Param") {
+            (left_val, right_val) => {
+                if !(*left_val == *right_val) {
+                    let kind = ::core::panicking::AssertKind::Eq;
+                    ::core::panicking::assert_failed(
+                        kind,
+                        &*left_val,
+                        &*right_val,
+                        ::core::option::Option::None,
+                    );
+                }
+            }
+        };
+        match (&rows[0].price, &price_new(8999, 2)) {
+            (left_val, right_val) => {
+                if !(*left_val == *right_val) {
+                    let kind = ::core::panicking::AssertKind::Eq;
+                    ::core::panicking::assert_failed(
+                        kind,
+                        &*left_val,
+                        &*right_val,
+                        ::core::option::Option::None,
+                    );
+                }
+            }
+        };
+        match (&rows[1].name, &"Batch B") {
+            (left_val, right_val) => {
+                if !(*left_val == *right_val) {
+                    let kind = ::core::panicking::AssertKind::Eq;
+                    ::core::panicking::assert_failed(
+                        kind,
+                        &*left_val,
+                        &*right_val,
+                        ::core::option::Option::None,
+                    );
+                }
+            }
+        };
+        match (&rows[1].price, &price_new(4999, 2)) {
+            (left_val, right_val) => {
+                if !(*left_val == *right_val) {
+                    let kind = ::core::panicking::AssertKind::Eq;
+                    ::core::panicking::assert_failed(
+                        kind,
+                        &*left_val,
+                        &*right_val,
+                        ::core::option::Option::None,
+                    );
+                }
+            }
+        };
+        match (&rows[2].name, &"Batch C") {
+            (left_val, right_val) => {
+                if !(*left_val == *right_val) {
+                    let kind = ::core::panicking::AssertKind::Eq;
+                    ::core::panicking::assert_failed(
+                        kind,
+                        &*left_val,
+                        &*right_val,
+                        ::core::option::Option::None,
+                    );
+                }
+            }
+        };
+        match (&rows[2].price, &price_new(10001, 2)) {
+            (left_val, right_val) => {
+                if !(*left_val == *right_val) {
+                    let kind = ::core::panicking::AssertKind::Eq;
+                    ::core::panicking::assert_failed(
+                        kind,
+                        &*left_val,
+                        &*right_val,
+                        ::core::option::Option::None,
+                    );
+                }
+            }
+        };
+        {
+            let _sql_forge_validator = || {
+                let __sql_forge_top_level_category = &("BatchWithParams");
+                {
+                    {
+                        let __sql_forge_validator_arg_0 = __sql_forge_top_level_category;
+                        let _ = {
+                            #[allow(clippy::all)]
+                            {
+                                use ::sqlx::Arguments as _;
+                                let arg0 = &(__sql_forge_validator_arg_0);
+                                let mut query_args = <sqlx::mysql::MySql as ::sqlx::database::Database>::Arguments::default();
+                                query_args
+                                    .reserve(
+                                        1usize,
+                                        0
+                                            + ::sqlx::encode::Encode::<
+                                                sqlx::mysql::MySql,
+                                            >::size_hint(arg0),
+                                    );
+                                let query_args = ::core::result::Result::<
+                                    _,
+                                    ::sqlx::error::BoxDynError,
+                                >::Ok(query_args)
+                                    .and_then(move |mut query_args| {
+                                        query_args.add(arg0).map(move |()| query_args)
+                                    });
+                                ::sqlx::__query_with_result::<
+                                    sqlx::mysql::MySql,
+                                    _,
+                                >("DELETE FROM products WHERE category = ?", query_args)
+                            }
+                        };
+                    }
+                }
+            };
+            struct __SqlForgeQuery_single {
+                inner: sqlx::QueryBuilder<sqlx::MySql>,
+            }
+            impl __SqlForgeQuery_single {
+                async fn execute<'e, E>(
+                    mut self,
+                    executor: E,
+                ) -> Result<<sqlx::MySql as sqlx::Database>::QueryResult, sqlx::Error>
+                where
+                    E: sqlx::Executor<'e, Database = sqlx::MySql>,
+                {
+                    self.inner.build().execute(executor).await
+                }
+            }
+            impl sql_forge::SqlForgeQueryExecute for __SqlForgeQuery_single {
+                type Db = sqlx::MySql;
+                fn execute<'e, E>(
+                    self,
+                    executor: E,
+                ) -> impl std::future::Future<
+                    Output = Result<
+                        <sqlx::MySql as sqlx::Database>::QueryResult,
+                        sqlx::Error,
+                    >,
+                > + Send + 'e
+                where
+                    Self: Sized + 'e,
+                    E: sqlx::Executor<'e, Database = sqlx::MySql> + Send + 'e,
+                    sqlx::MySql: 'e,
+                {
+                    __SqlForgeQuery_single::execute(self, executor)
+                }
+            }
+            let __sql_forge_runtime_category = "BatchWithParams";
+            let mut __builder: sqlx::QueryBuilder<sqlx::MySql> = sqlx::QueryBuilder::new(
+                "",
+            );
+            __builder.push("DELETE FROM products WHERE category = ");
+            __builder.push_bind(__sql_forge_runtime_category);
+            let __sql_forge_value_single = __SqlForgeQuery_single {
+                inner: __builder,
+            };
+            __sql_forge_value_single
+        }
+            .execute(&pool)
+            .await
+            .expect("delete batch failed");
+    };
+    let mut body = body;
+    #[allow(unused_mut)]
+    let mut body = unsafe { ::tokio::macros::support::Pin::new_unchecked(&mut body) };
+    let body: ::core::pin::Pin<&mut dyn ::core::future::Future<Output = ()>> = body;
+    #[allow(
+        clippy::expect_used,
+        clippy::diverging_sub_expression,
+        clippy::needless_return,
+        clippy::unwrap_in_result
+    )]
+    {
+        use tokio::runtime::Builder;
+        return Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .expect("Failed building the Runtime")
+            .block_on(body);
+    }
+}
 struct BatchFullItem {
     name: String,
     price: Price,
@@ -6887,9 +7529,9 @@ pub const execute_batch_full: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 768usize,
+        start_line: 837usize,
         start_col: 10usize,
-        end_line: 768usize,
+        end_line: 837usize,
         end_col: 28usize,
         compile_fail: false,
         no_run: false,
@@ -7191,7 +7833,7 @@ fn execute_batch_full() {
             let _sql_forge_validator = || {
                 let __sql_forge_top_level_cat = &("BatchFull");
                 {
-                    type __EnhancedModel = BatchFullItem;
+                    type __SqlForgeModel = BatchFullItem;
                     {
                         let __sql_forge_validator_arg_0 = __sql_forge_top_level_cat;
                         let _ = {
@@ -7241,7 +7883,7 @@ fn execute_batch_full() {
                                             let sqlx_query_as_category = row
                                                 .try_get_unchecked::<String, _>(3usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 name: sqlx_query_as_name,
                                                 price: sqlx_query_as_price,
                                                 stock: sqlx_query_as_stock,
@@ -7609,9 +8251,9 @@ pub const section_match_bound_variable_no_warning: test::TestDescAndFn = test::T
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 838usize,
+        start_line: 907usize,
         start_col: 10usize,
-        end_line: 838usize,
+        end_line: 907usize,
         end_col: 49usize,
         compile_fail: false,
         no_run: false,
@@ -7630,7 +8272,7 @@ fn section_match_bound_variable_no_warning() {
         let products: Vec<Product> = {
             let _sql_forge_validator = || {
                 {
-                    type __EnhancedModel = Product;
+                    type __SqlForgeModel = Product;
                     {
                         let __sql_forge_section_case_single_0_filter_price_max_price = &(match &(max_price) {
                             Some(max_price) => {
@@ -7698,7 +8340,7 @@ fn section_match_bound_variable_no_warning() {
                                             let sqlx_query_as_category = row
                                                 .try_get_unchecked::<String, _>(4usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                                 price: sqlx_query_as_price,
@@ -7751,7 +8393,7 @@ fn section_match_bound_variable_no_warning() {
                                             let sqlx_query_as_category = row
                                                 .try_get_unchecked::<String, _>(4usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                                 price: sqlx_query_as_price,
@@ -7926,9 +8568,9 @@ pub const section_nested_match_outer_var_used: test::TestDescAndFn = test::TestD
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 865usize,
+        start_line: 934usize,
         start_col: 10usize,
-        end_line: 865usize,
+        end_line: 934usize,
         end_col: 45usize,
         compile_fail: false,
         no_run: false,
@@ -7948,7 +8590,7 @@ fn section_nested_match_outer_var_used() {
         let users: Vec<User> = {
             let _sql_forge_validator = || {
                 {
-                    type __EnhancedModel = User;
+                    type __SqlForgeModel = User;
                     {
                         let __sql_forge_section_case_single_0_limit_start = &(match &(limit_val) {
                             Some(limit) => {
@@ -8052,7 +8694,7 @@ fn section_nested_match_outer_var_used() {
                                             let sqlx_query_as_name = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                             })
@@ -8126,7 +8768,7 @@ fn section_nested_match_outer_var_used() {
                                             let sqlx_query_as_name = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                             })
@@ -8164,7 +8806,7 @@ fn section_nested_match_outer_var_used() {
                                             let sqlx_query_as_name = row
                                                 .try_get_unchecked::<String, _>(1usize)?
                                                 .into();
-                                            ::std::result::Result::Ok(__EnhancedModel {
+                                            ::std::result::Result::Ok(__SqlForgeModel {
                                                 id: sqlx_query_as_id,
                                                 name: sqlx_query_as_name,
                                             })
@@ -8352,9 +8994,9 @@ pub const execute_only_with_explicit_mysql_db: test::TestDescAndFn = test::TestD
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 903usize,
+        start_line: 972usize,
         start_col: 10usize,
-        end_line: 903usize,
+        end_line: 972usize,
         end_col: 45usize,
         compile_fail: false,
         no_run: false,
@@ -8467,9 +9109,9 @@ pub const compile_fail: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 935usize,
+        start_line: 1004usize,
         start_col: 4usize,
-        end_line: 935usize,
+        end_line: 1004usize,
         end_col: 16usize,
         compile_fail: false,
         no_run: false,
@@ -8498,9 +9140,9 @@ pub const compile_fail_specific: test::TestDescAndFn = test::TestDescAndFn {
         ignore: false,
         ignore_message: ::core::option::Option::None,
         source_file: "tests/tests.rs",
-        start_line: 943usize,
+        start_line: 1012usize,
         start_col: 4usize,
-        end_line: 943usize,
+        end_line: 1012usize,
         end_col: 25usize,
         compile_fail: false,
         no_run: false,
@@ -8534,6 +9176,7 @@ pub fn main() -> () {
             &db_type_matches_env_db_type,
             &execute_batch,
             &execute_batch_full,
+            &execute_batch_with_params,
             &execute_only_insert_update_delete,
             &execute_only_query,
             &execute_only_with_explicit_mysql_db,

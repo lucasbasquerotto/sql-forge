@@ -756,74 +756,74 @@ async fn execute_batch() {
     .expect("delete batch failed");
 }
 
-// #[tokio::test]
-// async fn execute_batch_with_params() {
-//     let pool = pool().await;
+#[tokio::test]
+async fn execute_batch_with_params() {
+    let pool = pool().await;
 
-//     sql_forge!(
-//         "DELETE FROM products WHERE category = :category",
-//         ( :category = "Batch" ),
-//     )
-//     .execute(&pool)
-//     .await
-//     .ok();
+    sql_forge!(
+        "DELETE FROM products WHERE category = :category",
+        ( :category = "BatchWithParams" ),
+    )
+    .execute(&pool)
+    .await
+    .ok();
 
-//     let items = vec![
-//         BatchItem {
-//             name: "Batch A".to_string(),
-//             price: price_new(9999, 2),
-//         },
-//         BatchItem {
-//             name: "Batch B".to_string(),
-//             price: price_new(4999, 2),
-//         },
-//         BatchItem {
-//             name: "Batch C".to_string(),
-//             price: price_new(10001, 2),
-//         },
-//     ];
+    let batch_items = vec![
+        // BatchItem {
+        //     name: "Batch A".to_string(),
+        //     price: price_new(9999, 2),
+        // },
+        BatchItem {
+            name: "Batch B".to_string(),
+            price: price_new(4999, 2),
+        },
+        BatchItem {
+            name: "Batch C".to_string(),
+            price: price_new(10001, 2),
+        },
+    ];
 
-//     sql_forge!(
-//         r#"
-//         INSERT INTO products (name, price, stock, category)
-//         VALUES (:name, :price, 10, 'Batch'), {(:name, :price, 10, 'Batch')}
-//         "#,
-//         ( :name = "Batch A Param", :price = price_new(8999, 2) ),
-//         ..items[1..]
-//     )
-//     .execute(&pool)
-//     .await
-//     .expect("batch insert failed");
+    sql_forge!(
+        r#"
+        INSERT INTO products (name, price, stock, category)
+        VALUES (:name, :price, 10, 'BatchWithParams'), {(:name, :price, 10, 'BatchWithParams')}
+        "#,
+        ( :name = "Batch A Param".to_string(), :price = price_new(8999, 2) ),
+        ..batch_items
+    )
+    .execute(&pool)
+    .await
+    .expect("batch insert failed");
 
-//     let rows: Vec<BatchItem> = sql_forge!(
-//         BatchItem,
-//         r#"
-//         SELECT name, price FROM products
-//         WHERE category = :cat
-//         ORDER BY id
-//         "#,
-//         ( :cat = "Batch" ),
-//     )
-//     .fetch_all(&pool)
-//     .await
-//     .expect("select batch failed");
+    let rows: Vec<BatchItem> = sql_forge!(
+        BatchItem,
+        r#"
+        SELECT name, price FROM products
+        WHERE category = :cat
+        ORDER BY id
+        "#,
+        ( :cat = "BatchWithParams" ),
+    )
+    .fetch_all(&pool)
+    .await
+    .expect("select batch failed");
 
-//     assert_eq!(rows.len(), 3);
-//     assert_eq!(rows[0].name, "Batch A Param");
-//     assert_eq!(rows[0].price, price_new(8999, 2));
-//     assert_eq!(rows[1].name, "Batch B");
-//     assert_eq!(rows[1].price, price_new(4999, 2));
-//     assert_eq!(rows[2].name, "Batch C");
-//     assert_eq!(rows[2].price, price_new(10001, 2));
+    assert_eq!(rows.len(), 3);
+    assert_eq!(rows[0].name, "Batch A Param");
+    assert_eq!(rows[0].price, price_new(8999, 2));
+    assert_eq!(rows[1].name, "Batch B");
+    assert_eq!(rows[1].price, price_new(4999, 2));
+    assert_eq!(rows[2].name, "Batch C");
+    assert_eq!(rows[2].price, price_new(10001, 2));
 
-//     sql_forge!(
-//         "DELETE FROM products WHERE category = :category",
-//         ( :category = "Batch" ),
-//     )
-//     .execute(&pool)
-//     .await
-//     .expect("delete batch failed");
-// }
+    sql_forge!(
+        "DELETE FROM products WHERE category = :category",
+        ( :category = "BatchWithParams" ),
+    )
+    .execute(&pool)
+    .await
+    .expect("delete batch failed");
+}
 
 #[derive(sqlx::FromRow)]
 struct BatchFullItem {

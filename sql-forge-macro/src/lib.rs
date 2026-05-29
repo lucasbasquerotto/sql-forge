@@ -939,21 +939,51 @@ fn parse_text_parts(text: &str) -> Vec<TextPart> {
     parts
 }
 
-/// Renders SQL text for the compile-time validator, replacing `:param` with DB-specific placeholders.
-fn render_validator_text(
-    text: &str,
+/// Renders SQL text for the compile-time validator, replacing `:param`/`:param[]`
+/// with DB-specific placeholders (`?` or `$N`).
+///
+/// When `batch_expr` is `Some`, each `:param` is treated as a batch-item field
+/// access (`batch_expr[0].field_ident`) and returned in `batch_args` instead of
+/// `occurrences`. List params (`:param[]`) are not allowed in batch sections
+/// (caught earlier during parsing, but defended here for safety).
+///
+/// Returns `(rendered_sql, occurrences, batch_args)` — `occurrences` is empty
+/// in batch mode and `batch_args` is empty in non-batch mode.
+#[allow(clippy::type_complexity)]
+fn render_validator_sql(
+    parts: &[TextPart],
     use_dollar_params: bool,
     param_offset: &mut usize,
     list_count: usize,
-) -> (String, Vec<(String, bool)>) {
+    batch_expr: Option<TokenStream2>,
+) -> Result<(String, Vec<(String, bool)>, Vec<TokenStream2>), TokenStream> {
     let mut out_sql = String::new();
     let mut occurrences = Vec::new();
+    let mut batch_args = Vec::new();
 
-    for part in parse_text_parts(text) {
+    for part in parts {
         match part {
-            TextPart::Lit(lit) => out_sql.push_str(&lit),
+            TextPart::Lit(lit) => out_sql.push_str(lit),
             TextPart::Param { name, is_list } => {
-                if is_list && list_count > 1 {
+                if let Some(ref batch_expr) = batch_expr {
+                    if *is_list {
+                        return Err(syn::Error::new(
+                            Span::call_site(),
+                            "sql_forge!: list parameters (:name[]) are not allowed inside {( ... )} \
+                             batch sections; use plain parameters (:name) instead",
+                        )
+                        .to_compile_error()
+                        .into());
+                    }
+                    let field_ident = format_ident!("{}", name);
+                    if use_dollar_params {
+                        *param_offset += 1;
+                        write!(out_sql, "${}", *param_offset).unwrap();
+                    } else {
+                        out_sql.push('?');
+                    }
+                    batch_args.push(quote! { #batch_expr[0].#field_ident });
+                } else if *is_list && list_count > 1 {
                     let slots: Vec<String> = if use_dollar_params {
                         (0..list_count)
                             .map(|i| format!("${}", *param_offset + i + 1))
@@ -965,18 +995,21 @@ fn render_validator_text(
                         *param_offset += list_count;
                     }
                     out_sql.push_str(&slots.join(", "));
-                } else if use_dollar_params {
-                    *param_offset += 1;
-                    write!(out_sql, "${}", *param_offset).unwrap();
+                    occurrences.push((name.clone(), *is_list));
                 } else {
-                    out_sql.push('?');
+                    if use_dollar_params {
+                        *param_offset += 1;
+                        write!(out_sql, "${}", *param_offset).unwrap();
+                    } else {
+                        out_sql.push('?');
+                    }
+                    occurrences.push((name.clone(), *is_list));
                 }
-                occurrences.push((name, is_list));
             }
         }
     }
 
-    (out_sql, occurrences)
+    Ok((out_sql, occurrences, batch_args))
 }
 
 /// Recursively strips syntactic wrapper expressions to reach the inner expression.
@@ -1455,9 +1488,7 @@ fn build_param_bindings(
 }
 
 struct ValidatorRenderContext<'a> {
-    local_params: &'a HashMap<String, syn::Ident>,
-    top_level_params: &'a HashMap<String, syn::Ident>,
-    allow_top_level_fallback: bool,
+    params: &'a HashMap<String, syn::Ident>,
     use_dollar_params: bool,
     sql_span: Span,
     list_count: usize,
@@ -1473,27 +1504,20 @@ fn render_validator_args(
     arg_index: &mut usize,
     context: &ValidatorRenderContext<'_>,
 ) -> Result<(String, Vec<TokenStream2>, Vec<TokenStream2>), TokenStream> {
-    let (rendered_sql, occurrences) = render_validator_text(
-        sql,
+    let parts = parse_text_parts(sql);
+    let (rendered_sql, occurrences, _batch_args) = render_validator_sql(
+        &parts,
         context.use_dollar_params,
         param_offset,
         context.list_count,
-    );
+        None,
+    )?;
 
     let mut setup = Vec::<TokenStream2>::new();
     let mut args = Vec::<TokenStream2>::new();
 
     for (name, is_list) in occurrences {
-        let local_ident = if context.allow_top_level_fallback {
-            context
-                .local_params
-                .get(&name)
-                .or_else(|| context.top_level_params.get(&name))
-        } else {
-            context.local_params.get(&name)
-        };
-
-        let Some(local_ident) = local_ident else {
+        let Some(local_ident) = context.params.get(&name) else {
             return Err(syn::Error::new(
                 context.sql_span,
                 format!("sql_forge!: parameter :{} has no mapping", name),
@@ -2110,17 +2134,14 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
     // They must be excluded from the usage check so that a param like :category
     // that appears only inside {( ... )} is flagged as unused when given in the
     // params map, as it would never be read from there at runtime.
-    let batch_param_names: std::collections::HashSet<String> = segments
+    //
+    // However, params that appear in both text and batch segments must NOT be
+    // excluded — the text-segment occurrence resolves against the params map.
+    let text_param_names: std::collections::HashSet<String> = segments
         .iter()
         .filter_map(|s| {
-            if let Segment::Batch { parts } = s {
-                Some(parts.iter().filter_map(|p| {
-                    if let TextPart::Param { name, .. } = p {
-                        Some(name.clone())
-                    } else {
-                        None
-                    }
-                }))
+            if let Segment::Text(text) = s {
+                Some(collect_used_param_names_in_sql(text).into_iter())
             } else {
                 None
             }
@@ -2129,7 +2150,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
         .collect();
     let top_level_used_names: Vec<String> = used_param_names
         .iter()
-        .filter(|n| !batch_param_names.contains(*n))
+        .filter(|n| text_param_names.contains(*n))
         .cloned()
         .collect();
 
@@ -2209,7 +2230,6 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
     let mut generated_query_defs = Vec::<TokenStream2>::new();
     let mut generated_query_values = Vec::<TokenStream2>::new();
     let mut group_field_defs = Vec::<TokenStream2>::new();
-    let mut group_method_defs = Vec::<TokenStream2>::new();
     let mut group_field_idents = Vec::<syn::Ident>::new();
     let mut group_field_tys = Vec::<TokenStream2>::new();
     let mut group_trait_impls = Vec::<TokenStream2>::new();
@@ -2275,11 +2295,8 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
             let mut case_args = Vec::<TokenStream2>::new();
             let mut param_offset = 0usize;
             let mut arg_index = 0usize;
-            let empty_params = HashMap::<String, syn::Ident>::new();
             let root_validator_context = ValidatorRenderContext {
-                local_params: &empty_params,
-                top_level_params: &declared_params,
-                allow_top_level_fallback: true,
+                params: &declared_params,
                 use_dollar_params,
                 sql_span,
                 list_count,
@@ -2324,9 +2341,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                             Err(err) => return err,
                         };
                         let section_validator_context = ValidatorRenderContext {
-                            local_params: &local_params,
-                            top_level_params: &declared_params,
-                            allow_top_level_fallback: false,
+                            params: &local_params,
                             use_dollar_params,
                             sql_span: fragment.span,
                             list_count,
@@ -2346,33 +2361,24 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                         case_args.extend(chunk_args);
                     }
                     Segment::Batch { parts } => {
+                        let batch_ts = batch.as_ref().map(|e| quote! { #e });
                         let mut first = true;
                         for _ in 0..list_count {
                             let sep = if first { "" } else { ", " };
                             first = false;
                             sql_case.push_str(sep);
-                            for part in parts {
-                                match part {
-                                    TextPart::Lit(lit) => sql_case.push_str(lit),
-                                    TextPart::Param { name, .. } => {
-                                        if let Some(batch_expr) = &batch {
-                                            let field_ident = format_ident!("{}", name);
-                                            if use_dollar_params {
-                                                param_offset += 1;
-                                                write!(sql_case, "${}", param_offset).unwrap();
-                                            } else {
-                                                sql_case.push('?');
-                                            }
-                                            case_args.push(quote! { #batch_expr[0].#field_ident });
-                                        } else if use_dollar_params {
-                                            param_offset += 1;
-                                            write!(sql_case, "${}", param_offset).unwrap();
-                                        } else {
-                                            sql_case.push('?');
-                                        }
-                                    }
-                                }
-                            }
+                            let (chunk_sql, _occurrences, chunk_args) = match render_validator_sql(
+                                parts,
+                                use_dollar_params,
+                                &mut param_offset,
+                                list_count,
+                                batch_ts.clone(),
+                            ) {
+                                Ok(value) => value,
+                                Err(err) => return err,
+                            };
+                            sql_case.push_str(&chunk_sql);
+                            case_args.extend(chunk_args);
                         }
                     }
                 }
@@ -2745,11 +2751,6 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                 #method_ident: #query_ident
             });
             group_field_tys.push(quote! { #query_ident });
-            group_method_defs.push(quote! {
-                pub fn #method_ident(self) -> #query_ident {
-                    self.#method_ident
-                }
-            });
 
             let key_ty_ident = format_ident!("__SqlForgeQueryGroupKey_{}", key);
             group_trait_impls.push(quote! {
@@ -2810,8 +2811,6 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
             }
 
             impl __SqlForgeQueryGroup {
-                #( #group_method_defs )*
-
                 pub fn into_parts(self) -> ( #( #group_field_tys ),* ) {
                     ( #( self.#group_field_idents ),* )
                 }
@@ -2867,7 +2866,7 @@ pub fn db_type(input: TokenStream) -> TokenStream {
 /// all database backends so the type implements `sqlx::Encode` + `sqlx::Type`)
 /// and additionally implements `SqlForgeValidatorValue<InnerType>`, which is
 /// **required for PostgreSQL** to pass compile-time parameter validation in
-/// `query_as!`. MySQL and SQLite do not use the trait.
+/// `query_as!`. MySQL and SQLite do not need to use the trait.
 ///
 /// ```rust,ignore
 /// #[derive(Debug, PartialEq, Eq)]

@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n        INSERT INTO products (name, price, stock, category)\n        VALUES (?, ?, 10, 'BatchWithParams'), (?, ?, 10, 'BatchWithParams'), (?, ?, 10, 'BatchWithParams'), (?, ?, 10, 'BatchWithParams')\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 8
+    },
+    "nullable": []
+  },
+  "hash": "6af790099dd350766697461426103f6256bf2488bc696b6f8ec98679a90047fd"
+}
