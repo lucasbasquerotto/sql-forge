@@ -1100,7 +1100,7 @@ dependencies = [
 
 [[package]]
 name = "sql-forge"
-version = "0.4.3"
+version = "0.4.5"
 dependencies = [
  "sql-forge-macro",
  "sqlx",
@@ -1110,7 +1110,7 @@ dependencies = [
 
 [[package]]
 name = "sql-forge-macro"
-version = "0.4.3"
+version = "0.4.5"
 dependencies = [
  "proc-macro2",
  "quote",

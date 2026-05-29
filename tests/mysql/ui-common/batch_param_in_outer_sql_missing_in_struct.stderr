@@ -1,0 +1,14 @@
+error[E0609]: no field `stock` on type `BatchNamePrice`
+  --> tests/mysql/tmp-ui/batch_param_in_outer_sql_missing_in_struct.rs:17:13
+   |
+17 |       let _ = sql_forge!(
+   |  _____________^
+18 | |         r#"
+19 | |         INSERT INTO products (name, price, stock, category)
+20 | |         VALUES (:name, :price, :stock, 'Test'), {(:name, :price, :stock, 'Test')}
+...  |
+23 | |         ..batch_items
+24 | |     );
+   | |_____^ unknown field
+   |
+   = note: this error originates in the macro `sql_forge` (in Nightly builds, run with -Z macro-backtrace for more info)

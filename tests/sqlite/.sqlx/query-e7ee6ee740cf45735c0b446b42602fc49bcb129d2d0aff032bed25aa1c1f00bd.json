@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        INSERT INTO products (name, price, stock, category)\n        VALUES (?, ?, ?, 'Test'), (?, ?, ?, 'Test'), (?, ?, ?, 'Test'), (?, ?, ?, 'Test')\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 12
+    },
+    "nullable": []
+  },
+  "hash": "e7ee6ee740cf45735c0b446b42602fc49bcb129d2d0aff032bed25aa1c1f00bd"
+}
