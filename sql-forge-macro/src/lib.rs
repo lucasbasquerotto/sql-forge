@@ -2351,8 +2351,8 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                             let sep = if first { "" } else { ", " };
                             first = false;
                             sql_case.push_str(sep);
-                            for tp in parts {
-                                match tp {
+                            for part in parts {
+                                match part {
                                     TextPart::Lit(lit) => sql_case.push_str(lit),
                                     TextPart::Param { name, .. } => {
                                         if let Some(batch_expr) = &batch {
@@ -2431,7 +2431,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                     {
                         #( #case_setup )*
                         let _ = sqlx::query_as!(
-                            __EnhancedModel,
+                            __SqlForgeModel,
                             #sql_lit,
                         );
                     }
@@ -2441,7 +2441,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
                     {
                         #( #case_setup )*
                         let _ = sqlx::query_as!(
-                            __EnhancedModel,
+                            __SqlForgeModel,
                             #sql_lit,
                             #( #args ),*
                         );
@@ -2452,7 +2452,7 @@ pub fn sql_forge(input: TokenStream) -> TokenStream {
 
         let model_alias = if let Some(model) = model_opt {
             if scalar_model_ty.is_none() {
-                quote! { type __EnhancedModel = #model; }
+                quote! { type __SqlForgeModel = #model; }
             } else {
                 quote! {}
             }
